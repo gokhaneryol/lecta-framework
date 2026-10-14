@@ -94,7 +94,7 @@ items:
       - {framework: KVKK, ref: "md. 6"}
       - {framework: GDPR, ref: "Art. 5(1)(c)"}
       - {framework: GDPR, ref: "Art. 25(1)"}
-      - {framework: ISO/IEC 42001, ref: "Annex A.7 [CHECK sub-control]"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.7.2, A.7.6 (data for development; data preparation)"}
     services: [AS-01, AS-02, AS-07]
     legacy: "Hygiene x Ingestion — PII detect & redact"
     status: approved
@@ -368,8 +368,8 @@ items:
     quick_scan: false
     mappings:
       - {framework: GDPR, ref: "Art. 32(1)(d)"}
-      - {framework: NIST AI RMF, ref: "MEASURE 2.10 [CHECK]"}
-      - {framework: ISO/IEC 42001, ref: "Annex A.7 [CHECK sub-control]"}
+      - {framework: NIST AI RMF, ref: "MEASURE 2.10 (privacy risk examined and documented)"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.6.2.4 (verification and validation)"}
     services: [AS-02, AS-03]
     legacy: "Hygiene x Ingestion — v0 note on recogniser coverage"
     status: approved

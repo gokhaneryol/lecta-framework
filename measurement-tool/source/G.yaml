@@ -153,7 +153,6 @@ items:
       - {framework: ISO/IEC 27001:2022, ref: "A.5.10"}
       - {framework: ISO/IEC 42001, ref: "Annex A.9.2"}
       - {framework: KVKK, ref: "md. 12(1)"}
-      - {framework: EU AI Act, ref: "Art. 26(1) [CHECK — deployer scope]"}
     services: [AS-01, AS-02, AS-04, DS-03, EN-02]
     status: approved
     since: v1.0-draft
@@ -226,9 +225,9 @@ items:
       tr: Kullanılan AI sistemlerinin ve kullanım senaryolarının, her birinin sahibiyle birlikte bir listesi var mı?
     mappings:
       - {framework: ISO/IEC 27001:2022, ref: "A.5.9"}
-      - {framework: ISO/IEC 42001, ref: "Annex A.4 [CHECK sub-control]"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.4.2 (resource documentation)"}
       - {framework: NIST AI RMF, ref: "GOVERN 1.6"}
-      - {framework: KVKK, ref: "md. 16 (VERBİS) [CHECK — processing inventory link]"}
+      - {framework: KVKK, ref: "md. 16 (VERBİS) ve Veri Sorumluları Sicili Yönetmeliği — kişisel veri işleme envanteri"}
       - {framework: GDPR, ref: "Art. 30"}
     services: [AS-01, AS-02, AS-04, SU-01]
     status: approved
@@ -304,7 +303,6 @@ items:
     mappings:
       - {framework: ISO/IEC 27001:2022, ref: "A.8.15, A.8.16"}
       - {framework: KVKK, ref: "md. 12(1)"}
-      - {framework: ISO/IEC 42001, ref: "Annex A.9.2 [CHECK]"}
     services: [AS-01, AS-02, AS-04, SU-01]
     status: approved
     since: v1.0-draft
@@ -460,7 +458,7 @@ items:
       - {framework: ISO/IEC 42001, ref: "cl. 6.1.2, 8.2"}
       - {framework: ISO/IEC 27001:2022, ref: "cl. 6.1.2"}
       - {framework: NIST AI RMF, ref: "MAP 1, MANAGE 1"}
-      - {framework: EU AI Act, ref: "Art. 9 (high-risk) [CHECK — provider duty]"}
+      - {framework: EU AI Act, ref: "Art. 9 (high-risk; provider obligation)"}
     services: [AS-01, AS-02, AS-07, SU-01]
     status: approved
     since: v1.0-draft
@@ -526,7 +524,7 @@ items:
     mappings:
       - {framework: EU AI Act, ref: "Art. 6, Annex III"}
       - {framework: EU AI Act, ref: "Art. 50"}
-      - {framework: NIST AI RMF, ref: "MAP 1.5 [CHECK]"}
+      - {framework: NIST AI RMF, ref: "MAP 1 (context established)"}
     services: [AS-02, AU-03]
     status: approved
     since: v1.0-draft
@@ -595,9 +593,9 @@ items:
     quick_scan: false
     mappings:
       - {framework: GDPR, ref: "Art. 35"}
-      - {framework: KVKK, ref: "md. 12(1) [CHECK — no explicit DPIA duty]"}
+      - {framework: KVKK, ref: "md. 12(1) (no explicit DPIA duty; risk analysis expected under security measures)"}
       - {framework: ISO/IEC 42001, ref: "cl. 6.1.4; Annex A.5.2–A.5.4"}
-      - {framework: EU AI Act, ref: "Art. 27 (FRIA, where applicable) [CHECK]"}
+      - {framework: EU AI Act, ref: "Art. 27 (FRIA: public bodies / public-service providers and Annex III 5(b)-(c) deployers; from 2 Dec 2027)"}
     services: [AS-02, AS-07]
     status: approved
     since: v1.0-draft
@@ -674,7 +672,7 @@ items:
       - {framework: ISO/IEC 27001:2022, ref: "A.5.19, A.5.23"}
       - {framework: ISO/IEC 42001, ref: "Annex A.10.3"}
       - {framework: GDPR, ref: "Art. 28(1), Chapter V"}
-      - {framework: DORA, ref: "Art. 28 [CHECK — financial entities]"}
+      - {framework: DORA, ref: "Art. 28 (financial entities)"}
     services: [AS-01, AS-02, AS-07, DS-04]
     status: approved
     since: v1.0-draft
@@ -749,8 +747,8 @@ items:
     quick_scan: false
     mappings:
       - {framework: KVKK, ref: "md. 9"}
-      - {framework: DORA, ref: "Art. 28(8) [CHECK]"}
-      - {framework: BDDK, ref: "Bilgi Sistemleri Yönetmeliği — lokalizasyon [CHECK]"}
+      - {framework: DORA, ref: "Art. 28(8) (exit strategies)"}
+      - {framework: BDDK, ref: "Bankaların Bilgi Sistemleri ve Elektronik Bankacılık Hizmetleri Hakkında Yönetmelik (RG 15.03.2020) md. 25 — birincil ve ikincil sistemler yurt içinde"}
       - {framework: ISO/IEC 27001:2022, ref: "A.5.23"}
     services: [AS-02, DS-04]
     status: approved
@@ -815,7 +813,7 @@ items:
     quick_scan: false
     mappings:
       - {framework: GDPR, ref: "Art. 28(3)"}
-      - {framework: KVKK, ref: "md. 9, md. 12(2) [CHECK]"}
+      - {framework: KVKK, ref: "md. 9, md. 12(2) (joint responsibility with processor)"}
       - {framework: ISO/IEC 27001:2022, ref: "A.5.20"}
       - {framework: ISO/IEC 42001, ref: "Annex A.10.2"}
     services: [AS-02, DS-04]
@@ -950,7 +948,7 @@ items:
     quick_scan: false
     mappings:
       - {framework: ISO/IEC 42001, ref: "cl. 7.2"}
-      - {framework: EU AI Act, ref: "Art. 26(2) [CHECK]"}
+      - {framework: EU AI Act, ref: "Art. 26(2) (high-risk deployers)"}
       - {framework: ISO/IEC 27001:2022, ref: "A.6.3"}
     services: [AS-02, EN-03]
     status: approved
@@ -1028,7 +1026,7 @@ items:
       - {framework: Law 7545, ref: "md. 7(1)(b) (gecikmeksizin bildirim); md. 16(10)"}
       - {framework: NIS2, ref: "Art. 23"}
       - {framework: ISO/IEC 27001:2022, ref: "A.5.24–A.5.28"}
-      - {framework: ISO/IEC 42001, ref: "Annex A.8.4 [CHECK]"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.8.4 (communication of incidents)"}
     services: [AS-01, AS-02, SU-05]
     status: approved
     since: v1.0-draft
@@ -1098,7 +1096,7 @@ items:
       - {framework: EU AI Act, ref: "Art. 14 (high-risk), Art. 26(2)"}
       - {framework: GDPR, ref: "Art. 22"}
       - {framework: KVKK, ref: "md. 11(1)(g)"}
-      - {framework: ISO/IEC 42001, ref: "Annex A.9 [CHECK sub-control]"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.9.2 (processes for responsible use)"}
       - {framework: NIST AI RMF, ref: "GOVERN 3.2"}
     services: [AS-02, DS-03, AU-03]
     status: approved

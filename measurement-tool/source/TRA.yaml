@@ -73,7 +73,7 @@ items:
     mappings:
       - {framework: ISO/IEC 27001:2022, ref: "A.8.15"}
       - {framework: ISO/IEC 42001, ref: "Annex A.7.5"}
-      - {framework: GDPR, ref: "Art. 30 [CHECK — records link]"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.6.2.8 (recording of event logs)"}
       - {framework: KVKK, ref: "md. 12(1)"}
     services: [AS-01, AS-02, AU-01]
     legacy: "Traceability x Ingestion — Provenance logging"

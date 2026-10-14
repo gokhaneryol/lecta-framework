@@ -9,7 +9,7 @@ date: 2026-10-14
 
 > **Lecta şablon notu — müşteriye vermeden önce bu kutuyu silin.**
 > **Karşıladığı madde:** G-RSK-03, rubric 2 — tüm pipeline aşamalarında veri haritası (Bölüm 2), yurt dışı aktarım noktaları (Bölüm 3), sahipli önlemler (Bölüm 5), kayıtlı DPO görüşü (Bölüm 6). AS-07 çekirdek çıktısının biçimi budur.
-> **Sınır:** Bölüm 4'teki hukuka uygunluk sebebi ve aktarım mekanizması alanları **hukuk danışmanı/ortağı tarafından** doldurulur; Lecta teknik analiz yapar, hukuki sonuç vermez. GDPR kapsamındaysa Art. 35 DPIA asgari içeriği ayrıca kontrol edilir `[CHECK]`.
+> **Sınır:** Bölüm 4'teki hukuka uygunluk sebebi ve aktarım mekanizması alanları **hukuk danışmanı/ortağı tarafından** doldurulur; Lecta teknik analiz yapar, hukuki sonuç vermez. GDPR kapsamındaysa Art. 35(7)'deki asgari içerik ayrıca karşılanır: işlemenin sistematik tanımı, gereklilik ve orantılılık değerlendirmesi, kişilerin hak ve özgürlüklerine yönelik riskler, önlemler.
 
 # 1. Sistem ve işleme
 

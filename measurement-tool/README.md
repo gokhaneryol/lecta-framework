@@ -254,7 +254,7 @@ Ekim sonuna kadar üç iş var: yasal atıfların doğrulanması, örnek bir Qui
 
 | # | İş | Kimde | Hedef |
 | --- | --- | --- | --- |
-| 1 | `[CHECK]` eşlemelerini ve şablonlardaki yasal süreleri doğrulamak | Gökhan + Claude | 23 Ekim |
+| 1 | ~~`[CHECK]` eşlemelerini ve şablonlardaki yasal süreleri doğrulamak~~ — tamamlandı (14 Ekim) | Gökhan + Claude | 23 Ekim |
 | 2 | EN-01'de gösterilecek sentetik bir örnek Quick Scan memo'su | Gökhan + Claude | 31 Ekim |
 | 3 | Wave A'nın dışarıya anlatımı: "Quick Scan ile başlar, Detailed Scan kapsamı matrisle genişler" | Ayhan + Gökhan | 23 Ekim |
 | 4 | Katalog önerilerinin (K-1…K-4) kataloğa işlenmesi | Ayhan | 23 Ekim |
