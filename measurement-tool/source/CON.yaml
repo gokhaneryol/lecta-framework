@@ -82,7 +82,7 @@ items:
         supports_score: 2
     mappings:
       - {framework: ISO/IEC 27001:2022, ref: "A.8.20, A.5.14"}
-      - {framework: ISO/IEC 42001, ref: "Annex A.7.3 [CHECK]"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.7.3 (acquisition of data)"}
       - {framework: KVKK, ref: "md. 12(1)"}
       - {framework: NIS2, ref: "Art. 21(2)"}
     services: [AS-01, AS-02, AS-03]
@@ -399,7 +399,7 @@ items:
     mappings:
       - {framework: KVKK, ref: "md. 9, md. 12(1)"}
       - {framework: ISO/IEC 27001:2022, ref: "A.8.20, A.8.22"}
-      - {framework: BDDK, ref: "Bilgi Sistemleri Yönetmeliği — lokalizasyon [CHECK]"}
+      - {framework: BDDK, ref: "Bankaların Bilgi Sistemleri ve Elektronik Bankacılık Hizmetleri Hakkında Yönetmelik (RG 15.03.2020) md. 25 — birincil ve ikincil sistemler yurt içinde"}
     services: [AS-01, AS-02, AS-03]
     legacy: "Containment x Inference — Execution air-gap"
     status: approved
@@ -492,7 +492,7 @@ items:
     mappings:
       - {framework: KVKK, ref: "md. 9, md. 12(1)"}
       - {framework: ISO/IEC 27001:2022, ref: "A.5.23, A.8.20"}
-      - {framework: ISO/IEC 42001, ref: "Annex A.10.3 [CHECK]"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.10.3 (suppliers)"}
     services: [AS-01, AS-02, AS-03, AS-04]
     legacy: "Containment x Inference — Controlled External counterpart (new, Y-6)"
     status: approved

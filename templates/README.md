@@ -10,7 +10,7 @@
 - **AS-01 / AS-02:** "iyi bir belge neye benzer" sorusuna örnek; memo'daki kapanış ölçütüne referans.
 - **EN-02:** eğitimde kabul edilebilir kullanım ve olay bildirimi örnekleri.
 
-**Güven zinciri:** Şablon bir başlangıç noktasıdır; doldurulmuş belge kurumun kendi belgesidir. Lecta kendi hazırladığı belgeye bağımsız değerlendirme notu vermez. Şablonlar hukuki görüş değildir; `[CHECK]` işaretli yasal süre ve atıflar kullanımdan önce hukuk danışmanıyla teyit edilir.
+**Güven zinciri:** Şablon bir başlangıç noktasıdır; doldurulmuş belge kurumun kendi belgesidir. Lecta kendi hazırladığı belgeye bağımsız değerlendirme notu vermez. Şablonlar hukuki görüş değildir. Yasal süre ve atıflar 14.10.2026'da doğrulandı; mevzuat değiştikçe güncellenir.
 
 ## Dizin
 
@@ -42,7 +42,7 @@ templates/
   tools/docx_uret.py, reference.docx
 ```
 
-- Her md'nin başında **"Lecta şablon notu"** kutusu var: hangi madde, hangi rubric ölçütü, `[CHECK]` noktaları. Bu kutu **DOCX'e girmez**.
+- Her md'nin başında **"Lecta şablon notu"** kutusu var: hangi madde, hangi rubric ölçütü, yasal dayanaklar. Bu kutu **DOCX'e girmez**.
 - `{{…}}` alanları müşteriye göre doldurulur.
 - Şablonlar arası atıflar TPL ID'leriyle; müşteride kurumun belge numaralarıyla değiştirilir.
 - Çapraz tutarlılık: dört AI olay türü (TPL-03/04/09), beş sağlayıcı konusu (TPL-06 ↔ G-SUP-01), beş sözleşme maddesi (TPL-08 ↔ G-SUP-03) framework maddeleriyle birebir aynıdır. Framework maddesi değişirse şablon da aynı oturumda güncellenir.

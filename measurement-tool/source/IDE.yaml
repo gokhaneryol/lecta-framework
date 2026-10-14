@@ -71,7 +71,7 @@ items:
     mappings:
       - {framework: ISO/IEC 27001:2022, ref: "A.5.16, A.5.17, A.8.5"}
       - {framework: KVKK, ref: "md. 12(1)"}
-      - {framework: SOC 2, ref: "CC6.1 [CHECK]"}
+      - {framework: SOC 2, ref: "CC6.1"}
     services: [AS-02, AS-03]
     legacy: "Identity x Ingestion — Source authentication"
     status: approved
