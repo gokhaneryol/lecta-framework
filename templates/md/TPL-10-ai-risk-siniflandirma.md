@@ -9,7 +9,7 @@ date: 2026-10-14
 
 > **Lecta şablon notu — müşteriye vermeden önce bu kutuyu silin.**
 > **Karşıladığı madde:** G-RSK-02, rubric 2 — sistem başına kategori, ölçütlere atıf yapan gerekçe (Bölüm 2–4), sektör kuralları (Bölüm 5), adı belli imza (Bölüm 6).
-> **`[CHECK]`:** EU AI Act kategorileri ve yürürlük takvimi (yasaklı uygulamalar 2 Şubat 2025'ten; yüksek risk rejimi için güncel tarih ve olası ertelemeler) kullanımdan önce doğrulanır. Türkiye'de AB pazarına hizmet veren, AB'deki kişilere çıktı sunan ya da AB'li müşteriye tedarik eden kurumlar için önemli; diğerleri için iyi uygulama referansı.
+> **Takvim (doğrulandı 14.10.2026; Digital Omnibus on AI, Tüzük (AB) 2026/1744, yürürlük 27.07.2026):** yasaklı uygulamalar (Art. 5) 2 Şubat 2025'ten · AI okuryazarlığı (Art. 4) 2 Şubat 2025'ten, Omnibus ile "personelin okuryazarlığı için önlem alma" yükümlülüğüne dönüştü · şeffaflık (Art. 50) 2 Ağustos 2026'dan · Omnibus'un eklediği yeni yasak (rızasız mahrem görüntü ve çocuk istismarı içeriği üretimi) 2 Aralık 2026'dan · Ek III yüksek risk **2 Aralık 2027** · Ek I yüksek risk (düzenlenmiş ürünler) **2 Ağustos 2028**. Türkiye'de AB pazarına hizmet veren, AB'deki kişilere çıktı sunan ya da AB'li müşteriye tedarik eden kurumlar için önemli; diğerleri için iyi uygulama referansı.
 > **Sınır:** Lecta sınıflandırma kararını vermez; kaydın ve gerekçenin varlığını değerlendirir. Belirsiz durumlarda hukuk görüşü alınır.
 
 # 1. Sistem
@@ -35,6 +35,7 @@ Sistem aşağıdakilerden birini yapıyor mu? Her biri için Evet/Hayır ve bir 
 | İşyeri ya da eğitim ortamında duygu tanıma (tıbbi/güvenlik istisnası hariç) | | |
 | Biyometrik veriden ırk, siyasi görüş, cinsel yönelim gibi hassas özellik çıkarmak | | |
 | Kamuya açık alanda kolluk amaçlı gerçek zamanlı uzaktan biyometrik tanıma | | |
+| Rızası olmadan mahrem görüntü ya da çocuk istismarı içeriği üretmek (Omnibus, 2 Aralık 2026'dan) | | |
 
 # 3. Adım 2 — Yüksek risk mi? (Art. 6, Ek III alanları)
 

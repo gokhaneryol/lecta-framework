@@ -30,3 +30,4 @@ changelog:
   - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "Session 4: QS level rule and 2-system limit approved; araclar/qs.py (guide, scoring CSV, indicative level + top-5 ranking); QS memo template. Stage 2 complete (draft)"}
   - {date: 2026-10-14, version: v1.0-draft, by: GE, change: "General approval of the 25 draft items (G block 15, CON 6, IDE 2, TRA 1, HYG-PRM-01); all 29 items approved"}
   - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "Template library created (library/, TPL-01..13) covering G block rubric 2; G items unchanged"}
+  - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "Legal deadlines in templates verified (KVKK 72h, Law 7545 art. 7(1)(b)/16(10), KVKK art. 9 5 business days, EU AI Act dates after Omnibus 2026/1744); TPL-03/06/10/13 and G-INC-01/G-OVS-01 mappings updated"}

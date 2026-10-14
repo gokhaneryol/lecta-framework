@@ -9,7 +9,8 @@ date: 2026-10-14
 
 > **Lecta şablon notu — müşteriye vermeden önce bu kutuyu silin.**
 > **Karşıladığı madde:** G-INC-01, rubric 2 — dört AI olay türü (Bölüm 3), adı belli rollerle raporlama zinciri (Bölüm 4–5), uygulanan bildirim süreleri (Bölüm 6), genel olay süreciyle bağlantı (Bölüm 2), son 12 ayda tatbikat ya da olay kaydı (Bölüm 8). Rubric 3: Bölüm 8'deki ders/aksiyon takibi.
-> **`[CHECK]` — kullanmadan önce güncelliği doğrulanacak:** KVKK ihlal bildirimi 72 saat (Kurul kararı 24.01.2019, 2019/10); Siber Güvenlik Kanunu 7545 kapsamındaki bildirim yükümlülüğü ve muhatabı; sektör düzenlemeleri (BDDK, EPDK, kamu). Süreler hukuk danışmanıyla teyit edilmeden müşteriye verilmez.
+> **Yasal dayanaklar (doğrulandı 14.10.2026):** KVKK md. 12(5) + Kurul kararı 24.01.2019/2019-10 → Kurula 72 saat; gecikmede gerekçe; veri işleyen veri sorumlusuna gecikmeksizin. 7545 sayılı Kanun md. 7(1)(b) → zafiyet ve siber olaylar Siber Güvenlik Başkanlığı'na **gecikmeksizin**; saatle tanımlı süre yok, usul ikincil düzenlemeye bırakılmış; aykırılık md. 16(10) → 1–10 milyon TL. Kanunun kapsamı geniş (bilişim sistemiyle hizmet sunan, veri toplayan veya işleyen herkes); kritik altyapı sektörlerinde ek yükümlülükler var.
+> **Kullanmadan önce:** 7545 ikincil düzenlemelerinin yayımlanıp yayımlanmadığı ve kurumun sektör kuralları kontrol edilir. Bu şablon hukuki görüş değildir.
 > **Sınır:** Prosedür kurumun mevcut bilgi güvenliği olay sürecine **ek**tir, onun yerine geçmez.
 
 # 1. Amaç
@@ -48,13 +49,13 @@ Bu prosedür {{Kurum}}'un **{{Bilgi Güvenliği Olay Yönetimi Prosedürü, belg
 | Hukuk | {{Ad Soyad / dış danışman}} | — |
 | İletişim | {{Ad Soyad}} | — |
 
-# 6. Yasal ve sözleşmesel bildirimler `[CHECK]`
+# 6. Yasal ve sözleşmesel bildirimler
 
 | Yükümlülük | Ne zaman | Muhatap | Karar veren |
 |---|---|---|---|
-| KVKK md. 12(5) — kişisel veri ihlali | Öğrenildikten sonra **72 saat** içinde Kurula; ilgili kişilere makul en kısa sürede | KVKK Kurumu (ihlal bildirim formu) | DPO + hukuk |
+| KVKK md. 12(5) ve Kurul kararı 2019/10 — kişisel veri ihlali | Öğrenildikten sonra **72 saat** içinde Kurula (gecikirse gerekçesiyle); ilgili kişilere makul en kısa sürede, ulaşılamıyorsa web sitesinden duyuru | KVKK Kurumu (ihlal bildirim formu) | DPO + hukuk |
 | GDPR Art. 33 — AB'deki kişilerin verisi varsa | 72 saat | Yetkili denetim makamı | DPO + hukuk |
-| Siber Güvenlik Kanunu 7545 — kapsamdaki kurumlar | {{İkincil düzenlemeye göre}} | {{Siber Güvenlik Başkanlığı / sektör SOME}} | Bilgi güvenliği + hukuk |
+| 7545 sayılı Siber Güvenlik Kanunu md. 7(1)(b) — zafiyet ve siber olaylar | **Gecikmeksizin** (usul ve ayrıntılar ikincil düzenlemeye göre: {{yayımlandıysa atıf}}) | Siber Güvenlik Başkanlığı {{ve varsa sektör SOME'si}} | Bilgi güvenliği + hukuk |
 | Sektör düzenlemesi | {{BDDK / EPDK / kamu}} | {{…}} | {{…}} |
 | Müşteri / sözleşme gereği | {{Sözleşmedeki süre}} | {{Müşteri}} | Sözleşme sahibi birim |
 | AI sağlayıcısına bildirim (AI-3, AI-4) | Değerlendirme sonrası | Sağlayıcı destek / güvenlik kanalı | Bilgi güvenliği |
