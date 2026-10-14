@@ -246,7 +246,7 @@ archive/
 | TPL-12 | Roller ve Sorumluluklar Matrisi | G-ROL-01 · G-LIT-02 |
 | TPL-13 | İnsan Gözetimi Prosedürü | G-OVS-01 |
 
-**Müşteriye vermeden önce doğrulanacaklar (`[CHECK]`):** KVKK ihlal bildiriminde 72 saat (Kurul kararı 2019/10) · 7545 sayılı Siber Güvenlik Kanunu kapsamındaki bildirim yükümlülüğü ve muhatabı · KVKK md. 9'a göre standart sözleşmenin Kurula 5 iş günü içinde bildirimi · EU AI Act yüksek risk takviminin güncel durumu.
+**Yasal süreler (doğrulandı 14.10.2026):** KVKK ihlal bildirimi 72 saat (Kurul kararı 2019/10) · 7545 md. 7(1)(b): zafiyet ve siber olaylar Siber Güvenlik Başkanlığı'na gecikmeksizin, usul ikincil düzenlemeye bağlı · KVKK md. 9: standart sözleşme 5 iş günü içinde Kurula · EU AI Act: Ek III yüksek risk 2 Aralık 2027, Ek I 2 Ağustos 2028 (Tüzük (AB) 2026/1744). Takip edilecek: 7545 ikincil düzenlemeleri.
 
 ## Sırada ne var
 

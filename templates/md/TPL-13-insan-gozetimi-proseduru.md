@@ -9,7 +9,7 @@ date: 2026-10-14
 
 > **Lecta şablon notu — müşteriye vermeden önce bu kutuyu silin.**
 > **Karşıladığı madde:** G-OVS-01, rubric 2 — sistem başına dört unsur (çıktı sınıfları, inceleyen rol, süre sınırı, bekleme durumu — Bölüm 3) ya da imzalı "inceleme gerekmez" kararı (Bölüm 4), ve **en az bir uçtan uca işletim kaydı** (Bölüm 5). Kâğıt üzerindeki prosedür 2 puan almaz. Rubric 3: süre içinde tamamlanma oranı (Bölüm 6).
-> **Bağlantı:** EU AI Act Art. 14 (yüksek risk) ve Art. 26(2); GDPR Art. 22 / KVKK md. 11(1)(g) `[CHECK]`.
+> **Bağlantı:** EU AI Act Art. 14 (yüksek risk) ve Art. 26(2); GDPR Art. 22 / KVKK md. 11(1)(g) (münhasıran otomatik analizle aleyhe sonuca itiraz hakkı).
 
 # 1. Amaç
 

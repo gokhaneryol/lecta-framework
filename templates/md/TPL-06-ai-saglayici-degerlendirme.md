@@ -9,7 +9,7 @@ date: 2026-10-14
 
 > **Lecta şablon notu — müşteriye vermeden önce bu kutuyu silin.**
 > **Karşıladığı madde:** G-SUP-01, rubric 2 — beş konu (Bölüm 2: veri yeri, saklama, eğitimde kullanım, alt işleyenler, aktarım mekanizması), ilk kullanımdan önce tarih (Bölüm 4), dayanılan belgelerin saklanması (Bölüm 3). Rubric 3: Bölüm 5'teki yeniden değerlendirme.
-> **`[CHECK]`:** KVKK md. 9 (7499 sayılı Kanunla değişik) aktarım mekanizmaları ve standart sözleşmenin Kurula bildirim süresi (5 iş günü) — hukuk danışmanıyla teyit.
+> **Yasal dayanak (doğrulandı 14.10.2026):** KVKK md. 9 (7499 sayılı Kanunla değişik; Yönetmelik RG 10.07.2024). Standart sözleşme, imzaların tamamlanmasından itibaren **5 iş günü** içinde Kurula bildirilir (KVKK'nın çevrim içi bildirim modülü); bildirim yapılmaması idari para cezası gerektirir. Kurul'un yayımladığı standart sözleşme metinleri değiştirilmeden kullanılır.
 > **Sınır:** Form değerlendirmenin yapıldığını ve kapsamını gösterir; aktarım mekanizmasının hukuken geçerli olup olmadığı hukuk danışmanının görüşüdür.
 
 # 1. Genel bilgiler
@@ -31,7 +31,7 @@ date: 2026-10-14
 | 2 | **Ne kadar süre saklanıyor?** Prompt, yanıt, yüklenen dosya ve kayıtlar için ayrı ayrı; silme talep edilebiliyor mu? | | |
 | 3 | **Müşteri verisi model eğitiminde ya da iyileştirmede kullanılıyor mu?** Varsayılan ne; kapatılabiliyor mu; bu sözleşmede yazılı mı? | | |
 | 4 | **Alt işleyenler kimler?** Liste nerede yayımlanıyor; değişiklik bildiriliyor mu? | | |
-| 5 | **Yurt dışı aktarım varsa hangi mekanizmaya dayanıyor?** ☐ Yeterlilik kararı ☐ Standart sözleşme (Kurula bildirim tarihi: ___) ☐ Bağlayıcı şirket kuralları ☐ Taahhütname ☐ Arızi aktarım istisnası ☐ Aktarım yok ☐ Belirlenemedi | | |
+| 5 | **Yurt dışı aktarım varsa hangi mekanizmaya dayanıyor?** ☐ Yeterlilik kararı ☐ Standart sözleşme (imza tamamlanma tarihi: ___ · Kurula bildirim tarihi: ___ · 5 iş günü içinde mi? ☐) ☐ Bağlayıcı şirket kuralları ☐ Taahhütname ☐ Arızi aktarım istisnası ☐ Aktarım yok ☐ Belirlenemedi | | |
 
 # 3. Dayanılan belgeler (saklanır)
 

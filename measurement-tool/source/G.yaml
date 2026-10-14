@@ -1023,9 +1023,9 @@ items:
       en: Does your incident procedure cover AI-specific incidents such as data leaking through prompts?
       tr: Olay prosedürünüz prompt üzerinden veri sızıntısı gibi AI'ye özgü olayları kapsıyor mu?
     mappings:
-      - {framework: KVKK, ref: "md. 12(5); Kurul kararı 2019/10 (72 saat) [CHECK]"}
+      - {framework: KVKK, ref: "md. 12(5); Kurul kararı 24.01.2019/2019-10 (72 saat)"}
       - {framework: GDPR, ref: "Art. 33"}
-      - {framework: Law 7545, ref: "Siber Güvenlik Kanunu — olay bildirimi [CHECK]"}
+      - {framework: Law 7545, ref: "md. 7(1)(b) (gecikmeksizin bildirim); md. 16(10)"}
       - {framework: NIS2, ref: "Art. 23"}
       - {framework: ISO/IEC 27001:2022, ref: "A.5.24–A.5.28"}
       - {framework: ISO/IEC 42001, ref: "Annex A.8.4 [CHECK]"}
@@ -1097,7 +1097,7 @@ items:
     mappings:
       - {framework: EU AI Act, ref: "Art. 14 (high-risk), Art. 26(2)"}
       - {framework: GDPR, ref: "Art. 22"}
-      - {framework: KVKK, ref: "md. 11(1)(g) [CHECK]"}
+      - {framework: KVKK, ref: "md. 11(1)(g)"}
       - {framework: ISO/IEC 42001, ref: "Annex A.9 [CHECK sub-control]"}
       - {framework: NIST AI RMF, ref: "GOVERN 3.2"}
     services: [AS-02, DS-03, AU-03]
