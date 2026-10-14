@@ -1,0 +1,32 @@
+# Lecta Sovereign AI Control Framework — meta
+framework: Lecta Sovereign AI Control Framework
+version: v1.0-draft
+schema: ../schema.md
+
+profiles:
+  CE: {name: Controlled External, desc: "Governed use of external models and services"}
+  SOV: {name: Sovereign, desc: "Processing kept inside governed boundaries"}
+
+levels:
+  L0: Infrastructure baseline
+  L1: Privacy foundation
+  L2: Access & audit
+  L3: Behavioural controls
+  L4: Compliance operationalisation
+  L5: Sector & geo compliance
+  L6: Certification & attestation readiness   # third parties certify; Lecta prepares
+
+layers: {CON: Containment, HYG: Hygiene, IDE: Identity, BEH: Behaviour, TRA: Traceability, ATT: Attestation}
+stages: {ING: Ingestion, STO: Storage, PRM: Prompt, INF: Inference, RES: Response, DWN: Downstream}
+g_domains: {POL: Policy, INV: Inventory, ROL: Roles, RSK: Risk & impact, SUP: Suppliers, LIT: Literacy & training, INC: Incidents, OVS: Human oversight}
+text_fields: bilingual {en, tr}   # Gökhan 14 Oct; notes: single language allowed
+evidence_types: {DOC: Document, CFG: Configuration, LOG: Log sample, TST: Test result, INT: Interview statement, OBS: Live observation}
+
+changelog:
+  - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "Session 1: schema draft, 36-cell analysis, HYG-ING worked example (4 items), G block headline list"}
+  - {date: 2026-10-14, version: v1.0-draft, by: GE, change: "Decisions: all text fields bilingual; 0-3 rubric skeleton approved; YAML master + G-DOMAIN-NN IDs; G block caps system level"}
+  - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "Session 2: HYG-ING-01..04 approved; G block 15 items written in full (G.yaml, draft); 9 Quick Scan items flagged"}
+  - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "Session 3: Quick Scan matrix items — CON-ING-01/02, CON-STO-01/02, CON-INF-01 (SOV) / -02 (CE), IDE-ING-01, IDE-STO-01, HYG-PRM-01, TRA-ING-01 (draft); QS cut = 17 items per profile"}
+  - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "Session 4: QS level rule and 2-system limit approved; araclar/qs.py (guide, scoring CSV, indicative level + top-5 ranking); QS memo template. Stage 2 complete (draft)"}
+  - {date: 2026-10-14, version: v1.0-draft, by: GE, change: "General approval of the 25 draft items (G block 15, CON 6, IDE 2, TRA 1, HYG-PRM-01); all 29 items approved"}
+  - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "Template library created (library/, TPL-01..13) covering G block rubric 2; G items unchanged"}

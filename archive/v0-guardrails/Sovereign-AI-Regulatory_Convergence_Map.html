@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sovereign AI — Regulatory Convergence Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:    #f9f8f4;
+  --s1:    #f1efe8;
+  --s2:    #e8e6de;
+  --s3:    #dedad0;
+  --s4:    #d0cdc3;
+  --text:  #1a1a18;
+  --t2:    #4a4844;
+  --t3:    #888680;
+  --t4:    #b8b6ae;
+  --bd:    rgba(20,20,18,.10);
+  --bd2:   rgba(20,20,18,.05);
+  --row-hover: rgba(20,20,18,.03);
+  --row-sel:   rgba(20,20,18,.055);
+  --dot-empty-bg: rgba(20,20,18,.04);
+  --dot-empty-bd: rgba(20,20,18,.08);
+  /* level colours — same hues, slightly more saturated for light bg */
+  --c1f: rgba(76,148,198,0.82);  --c1s: rgba(76,148,198,1);   --c1d: rgba(76,148,198,0.12); --c1b: rgba(76,148,198,0.38);
+  --c2f: rgba(72,164,76,0.82);   --c2s: rgba(72,164,76,1);    --c2d: rgba(72,164,76,0.12);  --c2b: rgba(72,164,76,0.38);
+  --c3f: rgba(200,138,32,0.82);  --c3s: rgba(200,138,32,1);   --c3d: rgba(200,138,32,0.12); --c3b: rgba(200,138,32,0.38);
+  --c5f: rgba(188,72,72,0.78);   --c5s: rgba(188,72,72,1);    --c5d: rgba(188,72,72,0.12);  --c5b: rgba(188,72,72,0.36);
+  --c6f: rgba(152,48,48,0.78);   --c6s: rgba(152,48,48,1);    --c6d: rgba(152,48,48,0.12);  --c6b: rgba(152,48,48,0.36);
+  --fh: 'Syne', sans-serif;
+  --fb: 'IBM Plex Sans', sans-serif;
+  --fm: 'IBM Plex Mono', monospace;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:    #0e0e0c;
+  --s1:    #161613;
+  --s2:    #1d1d1a;
+  --s3:    #252522;
+  --s4:    #2e2e2b;
+  --text:  #eceae8;
+  --t2:    #aeac9c;
+  --t3:    #6e6c60;
+  --t4:    #3e3d38;
+  --bd:    rgba(236,234,232,.07);
+  --bd2:   rgba(236,234,232,.04);
+  --row-hover: rgba(236,234,232,.028);
+  --row-sel:   rgba(236,234,232,.05);
+  --dot-empty-bg: rgba(236,234,232,0.03);
+  --dot-empty-bd: rgba(236,234,232,0.06);
+  --c1f: rgba(106,170,216,0.80); --c1s: rgba(106,170,216,1);   --c1d: rgba(106,170,216,0.13); --c1b: rgba(106,170,216,0.4);
+  --c2f: rgba(115,190,120,0.80); --c2s: rgba(115,190,120,1);   --c2d: rgba(115,190,120,0.13); --c2b: rgba(115,190,120,0.4);
+  --c3f: rgba(232,169,74,0.80);  --c3s: rgba(232,169,74,1);    --c3d: rgba(232,169,74,0.13);  --c3b: rgba(232,169,74,0.4);
+  --c5f: rgba(210,110,110,0.78); --c5s: rgba(210,110,110,1);   --c5d: rgba(210,110,110,0.13); --c5b: rgba(210,110,110,0.38);
+  --c6f: rgba(175,80,80,0.78);   --c6s: rgba(175,80,80,1);     --c6d: rgba(175,80,80,0.13);   --c6b: rgba(175,80,80,0.36);
+}}
+html[data-theme="light"]{
+  --bg:#f9f8f4;--s1:#f1efe8;--s2:#e8e6de;--s3:#dedad0;--s4:#d0cdc3;
+  --text:#1a1a18;--t2:#4a4844;--t3:#888680;--t4:#b8b6ae;
+  --bd:rgba(20,20,18,.10);--bd2:rgba(20,20,18,.05);
+  --row-hover:rgba(20,20,18,.03);--row-sel:rgba(20,20,18,.055);
+  --dot-empty-bg:rgba(20,20,18,.04);--dot-empty-bd:rgba(20,20,18,.08);
+  --c1f:rgba(76,148,198,0.82);--c1s:rgba(76,148,198,1);--c1d:rgba(76,148,198,0.12);--c1b:rgba(76,148,198,0.38);
+  --c2f:rgba(72,164,76,0.82);--c2s:rgba(72,164,76,1);--c2d:rgba(72,164,76,0.12);--c2b:rgba(72,164,76,0.38);
+  --c3f:rgba(200,138,32,0.82);--c3s:rgba(200,138,32,1);--c3d:rgba(200,138,32,0.12);--c3b:rgba(200,138,32,0.38);
+  --c5f:rgba(188,72,72,0.78);--c5s:rgba(188,72,72,1);--c5d:rgba(188,72,72,0.12);--c5b:rgba(188,72,72,0.36);
+  --c6f:rgba(152,48,48,0.78);--c6s:rgba(152,48,48,1);--c6d:rgba(152,48,48,0.12);--c6b:rgba(152,48,48,0.36);
+}
+html[data-theme="dark"]{
+  --bg:#0e0e0c;--s1:#161613;--s2:#1d1d1a;--s3:#252522;--s4:#2e2e2b;
+  --text:#eceae8;--t2:#aeac9c;--t3:#6e6c60;--t4:#3e3d38;
+  --bd:rgba(236,234,232,.07);--bd2:rgba(236,234,232,.04);
+  --row-hover:rgba(236,234,232,.028);--row-sel:rgba(236,234,232,.05);
+  --dot-empty-bg:rgba(236,234,232,0.03);--dot-empty-bd:rgba(236,234,232,0.06);
+  --c1f:rgba(106,170,216,0.80);--c1s:rgba(106,170,216,1);--c1d:rgba(106,170,216,0.13);--c1b:rgba(106,170,216,0.4);
+  --c2f:rgba(115,190,120,0.80);--c2s:rgba(115,190,120,1);--c2d:rgba(115,190,120,0.13);--c2b:rgba(115,190,120,0.4);
+  --c3f:rgba(232,169,74,0.80);--c3s:rgba(232,169,74,1);--c3d:rgba(232,169,74,0.13);--c3b:rgba(232,169,74,0.4);
+  --c5f:rgba(210,110,110,0.78);--c5s:rgba(210,110,110,1);--c5d:rgba(210,110,110,0.13);--c5b:rgba(210,110,110,0.38);
+  --c6f:rgba(175,80,80,0.78);--c6s:rgba(175,80,80,1);--c6d:rgba(175,80,80,0.13);--c6b:rgba(175,80,80,0.36);
+}
+.theme-btn{font-family:var(--fm);font-size:10px;padding:4px 10px;border-radius:5px;border:0.5px solid var(--bd);background:var(--s2);color:var(--t3);cursor:pointer;transition:all .15s;letter-spacing:.04em}
+.theme-btn:hover{color:var(--text);border-color:var(--t4)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:13px;line-height:1.5}
+body{padding:28px 32px}
+
+.hdr{margin-bottom:6px}
+.hdr h1{font-family:var(--fh);font-size:19px;font-weight:600;letter-spacing:-.01em;margin-bottom:4px}
+.hdr p{font-size:11px;color:var(--t3);font-family:var(--fm);line-height:1.6}
+
+.argument{background:var(--s2);border:0.5px solid var(--bd);border-left:2px solid rgba(106,170,216,0.45);border-radius:6px;padding:11px 14px;margin:18px 0;font-size:12px;color:var(--t2);line-height:1.65}
+.argument strong{color:var(--text)}
+
+/* matrix wrapper */
+.mx-outer{overflow-x:auto;margin-top:4px}
+.mx{border-collapse:collapse;width:100%;min-width:960px}
+
+/* column headers */
+.mx thead th{padding:0;vertical-align:bottom}
+.mx thead th.corner{width:190px;min-width:190px}
+.mx thead th.gh{width:30px;min-width:30px}
+.mx thead th.col-hdr{cursor:pointer;user-select:none}
+.col-hdr-inner{
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  padding:0 3px 8px;gap:5px;height:130px;position:relative;
+}
+.col-hdr-inner:hover .col-name{color:var(--text)}
+.col-name{font-family:var(--fm);font-size:9.5px;letter-spacing:.04em;color:var(--t3);writing-mode:vertical-lr;transform:rotate(180deg);line-height:1;white-space:nowrap;transition:color .15s;text-align:left}
+.lvbadge{font-family:var(--fm);font-size:9px;padding:2px 6px;border-radius:3px;font-weight:500;flex-shrink:0}
+.col-bar{width:3px;flex:1;border-radius:3px;opacity:.35;transition:opacity .15s}
+.col-hdr-inner:hover .col-bar{opacity:.7}
+
+/* row groups */
+.group-row td{padding:8px 0 4px 0;font-family:var(--fm);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--t4);border-bottom:0.5px solid var(--bd2)}
+.group-spacer{height:6px}
+
+/* data rows */
+.mx tbody tr.reg-row{cursor:pointer;transition:background .12s}
+.mx tbody tr.reg-row:hover td{background:var(--row-hover)}
+.mx tbody tr.reg-row.sel td{background:var(--row-sel)}
+.reg-name-cell{padding:5px 10px 5px 0;white-space:nowrap}
+.reg-name{font-size:12px;font-weight:500;color:var(--text);display:block}
+.reg-full{font-size:9.5px;color:var(--t3);font-family:var(--fm);margin-top:1px;display:block}
+.reg-geo{font-size:9.5px;color:var(--t3);display:block;margin-top:1px}
+.geo-flag{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;background:var(--s3);color:var(--t3);border:0.5px solid var(--bd);font-family:var(--fm);margin-right:4px}
+
+/* cell */
+.cell{padding:3px;text-align:center;vertical-align:middle}
+.dot{width:28px;height:28px;border-radius:5px;margin:0 auto;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:var(--fm);font-size:9px;font-weight:500}
+.dot.filled{cursor:default}
+.dot.empty{background:var(--dot-empty-bg);border:0.5px solid var(--dot-empty-bd);color:transparent}
+
+/* coverage bar row */
+.cvr-row td{padding:8px 3px 0}
+.cvr-bar-wrap{height:32px;border-radius:3px;overflow:hidden;position:relative;background:var(--s3)}
+.cvr-bar{height:100%;border-radius:3px;transition:width .3s;display:flex;align-items:center;justify-content:center}
+.cvr-ct{font-family:var(--fm);font-size:9px;font-weight:500;color:rgba(0,0,0,0.6)}
+.cvr-label{font-family:var(--fm);font-size:8.5px;color:var(--t3);text-align:center;margin-top:4px;letter-spacing:.04em}
+
+/* right panel */
+.wrap{display:grid;grid-template-columns:1fr 240px;gap:22px;align-items:start;margin-top:20px}
+.panel{background:var(--s1);border:0.5px solid var(--bd);border-radius:9px;padding:16px 18px;position:sticky;top:20px}
+.panel-title{font-family:var(--fh);font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.panel-sub{font-size:10px;color:var(--t3);font-family:var(--fm);margin-bottom:14px;padding-bottom:12px;border-bottom:0.5px solid var(--bd)}
+.pfam{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--bd2);font-size:11px}
+.pfam:last-child{border-bottom:none}
+.pfam-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;margin-top:2px}
+.pfam-name{color:var(--t2);flex:1;line-height:1.35}
+.pfam-lv{font-family:var(--fm);font-size:9px;color:var(--t3)}
+
+/* level legend */
+.lv-legend{display:flex;flex-direction:column;gap:5px;margin-top:14px;padding-top:14px;border-top:0.5px solid var(--bd)}
+.lv-item{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--t2)}
+.lv-swatch{width:22px;height:10px;border-radius:2px;flex-shrink:0}
+
+/* column highlight */
+.col-hi td .dot.filled{opacity:.25}
+.col-hi td .dot.filled.hi{opacity:1;transform:scale(1.08)}
+.row-hi .dot.filled{opacity:.25}
+.row-hi .dot.filled.hi{opacity:1;transform:scale(1.08)}
+</style>
+</head>
+<body>
+
+<div class="hdr" style="display:flex;justify-content:space-between;align-items:flex-start">
+  <div>
+    <h1>Sovereign AI — Regulatory Convergence Map</h1>
+    <p>17 frameworks · Turkey / EU / UK / US horizon · binary: technical requirement present / absent · colour = maturity level that satisfies it · <span style="color:var(--t3);font-style:italic">† caveat on Turkish sector entries — see row detail</span></p>
+  </div>
+  <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">☀ Light</button>
+</div>
+
+<div class="argument">
+  <strong>The convergence argument.</strong> Across all 17 frameworks, the same ten technical requirement families recur — with near-identical definitions. The left columns are claimed by almost every regulation simultaneously; the right columns by progressively fewer. The maturity levels are not an arbitrary tier system: they reflect the natural clustering order in which regulations demand these controls, from universal to sector-specific to certification-grade.
+</div>
+
+<div class="wrap">
+  <div class="mx-outer">
+    <table class="mx" id="matrix">
+      <thead id="thead"></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <div class="panel" id="panel">
+    <div class="panel-title">Click any row or column</div>
+    <div class="panel-sub">to see requirement details</div>
+    <div id="panel-body">
+      <div id="fam-list"></div>
+      <div class="lv-legend" id="lv-legend"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────
+const families=[
+  {id:'enc',  name:'Encryption',           lv:1, short:'Enc',  desc:'At-rest and in-transit encryption, key management. Addressed at L1 — sovereign storage and local model serving.'},
+  {id:'acc',  name:'Access control',       lv:2, short:'RBAC', desc:'RBAC, authentication, session management, principle of least privilege. Addressed at L2 via Keycloak + OPA.'},
+  {id:'aud',  name:'Audit & records',      lv:2, short:'Audit',desc:'Immutable logging, records of processing, tamper-evident audit trail. Addressed at L2 via OTel + OpenSearch + Langfuse.'},
+  {id:'pii',  name:'PII handling',         lv:1, short:'PII',  desc:'Detection, redaction, minimisation, data subject rights infrastructure. Addressed at L1 via Presidio; rights workflows at L4.'},
+  {id:'int',  name:'Data integrity',       lv:2, short:'Integ',desc:'Schema validation, data quality enforcement, corruption detection. Addressed at L2 via Great Expectations + Pydantic.'},
+  {id:'beh',  name:'Behavioural controls', lv:3, short:'Behav',desc:'Input/output guardrails, policy enforcement, toxicity filtering, drift monitoring. Addressed at L3 via NeMo + LLM Guard + Evidently.'},
+  {id:'idp',  name:'Identity & provenance',lv:2, short:'Prov', desc:'Source authentication, data lineage, model versioning, session attribution. Addressed at L2 via Keycloak + DVC + MLflow.'},
+  {id:'mgv',  name:'Model governance',     lv:5, short:'MdlGv',desc:'Model cards, risk classification, intended use documentation, AI system transparency. Addressed at L5 as evidence artefacts.'},
+  {id:'trf',  name:'Transfer & residency', lv:5, short:'Xfer', desc:'Cross-border transfer mechanisms, data localisation, adequacy decisions. Addressed at L5 via topology and documented SCCs/BCRs.'},
+  {id:'att',  name:'Attestation',          lv:6, short:'Attest',desc:'Third-party audit evidence, conformity assessment, continuous compliance posture. Addressed at L6 as evidence package.'},
+];
+
+const groups=[
+  {label:'Privacy laws — Turkey · EU · UK · US',regs:[
+    {id:'gdpr',   name:'GDPR',          full:'General Data Protection Regulation',    geo:'EU / EEA',
+     req:[1,1,1,1,1,0,1,0,1,0]},
+    {id:'ukgdpr', name:'UK GDPR',       full:'UK General Data Protection Regulation', geo:'United Kingdom',
+     req:[1,1,1,1,1,0,1,0,1,0]},
+    {id:'kvkk',   name:'KVKK',          full:'Kişisel Verileri Koruma Kanunu',         geo:'Turkey',
+     req:[1,1,1,1,1,0,1,0,1,0]},
+    {id:'ccpa',   name:'CCPA / CPRA',   full:'California Consumer Privacy Act',       geo:'USA — California',
+     req:[1,1,0,1,0,0,1,0,1,0]},
+  ]},
+  {label:'EU sector & cyber frameworks',regs:[
+    {id:'euai',   name:'EU AI Act',     full:'EU Artificial Intelligence Act',        geo:'EU',
+     req:[0,1,1,0,1,1,1,1,0,1]},
+    {id:'nis2',   name:'NIS2',          full:'Network & Information Security Dir. 2', geo:'EU',
+     req:[1,1,1,0,1,1,1,0,0,1]},
+    {id:'dora',   name:'DORA',          full:'Digital Operational Resilience Act',    geo:'EU — Financial',
+     req:[1,1,1,0,1,1,1,0,0,1]},
+  ]},
+  {label:'US sector frameworks',regs:[
+    {id:'hipaa',  name:'HIPAA',         full:'Health Insurance Portability Act',      geo:'USA — Healthcare',
+     req:[1,1,1,1,1,1,1,0,1,1]},
+    {id:'pci',    name:'PCI DSS',       full:'Payment Card Industry Data Security',   geo:'Global — Payments',
+     req:[1,1,1,1,1,0,1,0,0,1]},
+    {id:'fedramp',name:'FedRAMP',       full:'Federal Risk & Authorization Program',  geo:'USA — Federal',
+     req:[1,1,1,1,1,1,1,0,1,1]},
+  ]},
+  {label:'Global standards',regs:[
+    {id:'iso27',  name:'ISO 27001',     full:'Information Security Management System',geo:'Global standard',
+     req:[1,1,1,1,1,0,1,0,1,1]},
+    {id:'iso42',  name:'ISO 42001',     full:'AI Management System Standard',         geo:'Global standard',
+     req:[0,1,1,0,1,1,1,1,0,1]},
+    {id:'soc2',   name:'SOC 2',         full:'System & Organisation Controls 2',      geo:'Global (US origin)',
+     req:[1,1,1,1,1,1,1,0,0,1]},
+    {id:'nist',   name:'NIST AI RMF',   full:'AI Risk Management Framework',          geo:'USA (voluntary)',
+     req:[0,1,1,0,1,1,1,1,0,1]},
+  ]},
+  {label:'Turkey — Sector frameworks',regs:[
+    {id:'ddobig', name:'DDO BIG Rehberi', full:'BDDK Bilgi İşlem ve Bilgi Güvenliği Rehberi', geo:'Turkey — Banking (BDDK)',
+     req:[1,1,1,1,1,0,1,0,1,1],
+     note:'AI-specific behavioural controls and model governance provisions are emerging in current revision cycles but not yet formally codified as technical requirements.'},
+    {id:'bddk',   name:'BDDK Circulars',  full:'Cloud computing, outsourcing & fintech technology circulars', geo:'Turkey — Banking (BDDK)',
+     req:[1,1,1,1,1,0,1,0,1,1],
+     note:'Cloud and outsourcing circulars impose explicit data localisation and third-party audit obligations beyond the BIG Rehberi scope. Treated as a distinct row for that reason.'},
+    {id:'epdk',   name:'EPDK Guide',      full:'Enerji Piyasası Siber Güvenlik Rehberi', geo:'Turkey — Energy (EPDK)',
+     req:[1,1,1,0,1,0,1,0,1,1],
+     note:'PII handling is lighter than BDDK — energy operational data focus rather than financial customer data. AI-specific guidance is thin and evolving; this mapping reflects the current framework, not anticipated revisions.'},
+  ]},
+];
+
+const lc={
+  1:{f:'rgba(106,170,216,0.78)',s:'rgba(106,170,216,0.95)',d:'rgba(106,170,216,0.13)',b:'rgba(106,170,216,0.38)',bar:'#4a8ab8'},
+  2:{f:'rgba(115,190,120,0.78)',s:'rgba(115,190,120,0.95)',d:'rgba(115,190,120,0.13)',b:'rgba(115,190,120,0.38)',bar:'#4a8a4e'},
+  3:{f:'rgba(232,169,74,0.78)', s:'rgba(232,169,74,0.95)', d:'rgba(232,169,74,0.13)', b:'rgba(232,169,74,0.38)', bar:'#a87030'},
+  5:{f:'rgba(210,110,110,0.76)',s:'rgba(210,110,110,0.95)',d:'rgba(210,110,110,0.13)',b:'rgba(210,110,110,0.36)',bar:'#904040'},
+  6:{f:'rgba(175,80,80,0.76)',  s:'rgba(175,80,80,0.95)',  d:'rgba(175,80,80,0.13)',  b:'rgba(175,80,80,0.36)',  bar:'#703030'},
+};
+const lvNames={1:'L1 Privacy foundation',2:'L2 Access & audit',3:'L3 Behavioural controls',5:'L5 Sector & geo',6:'L6 Certification'};
+
+// flatten regs for indexing
+const allRegs=groups.flatMap(g=>g.regs);
+const nF=families.length, nR=allRegs.length;
+
+let selCol=-1, selRow=-1;
+
+// ── Build column coverage counts ──────────────────────────────────────────
+const colCounts=families.map((_,fi)=>allRegs.filter(r=>r.req[fi]===1).length);
+const maxCount=Math.max(...colCounts);
+
+// ── Render thead ──────────────────────────────────────────────────────────
+function buildHead(){
+  const thead=document.getElementById('thead');
+  let h=`<tr><th class="corner"></th><th class="gh"></th>`;
+  families.forEach((f,fi)=>{
+    const c=lc[f.lv];
+    h+=`<th class="col-hdr" onclick="toggleCol(${fi})">
+      <div class="col-hdr-inner">
+        <div class="col-bar" style="background:${c.bar}"></div>
+        <span class="col-name">${f.name}</span>
+        <span class="lvbadge" style="background:${c.d};color:${c.s};border:0.5px solid ${c.b}">L${f.lv}</span>
+      </div>
+    </th>`;
+  });
+  h+=`<th style="width:28px;min-width:28px"></th></tr>`;
+  thead.innerHTML=h;
+}
+
+// ── Render tbody ──────────────────────────────────────────────────────────
+function buildBody(){
+  const tbody=document.getElementById('tbody');
+  let h='';
+  let ri=0;
+  groups.forEach(g=>{
+    h+=`<tr class="group-row"><td colspan="${nF+3}" style="padding-left:0">${g.label}</td></tr>`;
+    g.regs.forEach(reg=>{
+      const regIdx=ri;
+      const rowCount=reg.req.filter(v=>v===1).length;
+      h+=`<tr class="reg-row" id="row-${reg.id}" onclick="toggleRow(${regIdx})">`;
+      h+=`<td class="reg-name-cell">
+        <span class="reg-name">${reg.name}</span>
+        <span class="reg-full">${reg.full}</span>
+        <span class="reg-geo"><span class="geo-flag">${reg.geo}</span></span>
+      </td>`;
+      h+=`<td style="padding:0 6px 0 0;text-align:right;vertical-align:middle">
+        <span style="font-family:var(--fm);font-size:9px;color:var(--t3)">${rowCount}/${nF}</span>
+      </td>`;
+      reg.req.forEach((v,fi)=>{
+        const fam=families[fi];
+        const c=lc[fam.lv];
+        if(v===1){
+          h+=`<td class="cell"><div class="dot filled" style="background:${c.f};border:0.5px solid ${c.s}" id="d-${regIdx}-${fi}"></div></td>`;
+        } else {
+          h+=`<td class="cell"><div class="dot empty" id="d-${regIdx}-${fi}"></div></td>`;
+        }
+      });
+      h+=`<td></td></tr>`;
+      ri++;
+    });
+    h+=`<tr class="group-spacer"><td colspan="${nF+3}"></td></tr>`;
+  });
+
+  // coverage count bar row
+  h+=`<tr class="cvr-row"><td colspan="2" style="padding:8px 0 2px;font-family:var(--fm);font-size:8.5px;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;vertical-align:bottom">Coverage<br>(# regulations)</td>`;
+  families.forEach((f,fi)=>{
+    const c=lc[f.lv];
+    const pct=Math.round(colCounts[fi]/maxCount*100);
+    h+=`<td class="cell" style="vertical-align:bottom;padding:3px">
+      <div class="cvr-bar-wrap" title="${colCounts[fi]} of ${nR} frameworks require this">
+        <div class="cvr-bar" style="width:${pct}%;background:${c.f}">
+          <span class="cvr-ct">${colCounts[fi]}</span>
+        </div>
+      </div>
+      <div class="cvr-label">${f.short}</div>
+    </td>`;
+  });
+  h+=`<td></td></tr>`;
+  tbody.innerHTML=h;
+}
+
+// ── Interaction ───────────────────────────────────────────────────────────
+function clearHighlight(){
+  document.querySelectorAll('.dot').forEach(d=>{d.classList.remove('hi');d.style.opacity='';d.style.transform='';});
+  document.querySelectorAll('.reg-row').forEach(r=>r.classList.remove('sel'));
+}
+
+function toggleCol(fi){
+  clearHighlight();
+  if(selCol===fi){selCol=-1;selRow=-1;renderDefaultPanel();return;}
+  selCol=fi;selRow=-1;
+  const fam=families[fi];
+  // highlight filled cells in this column
+  allRegs.forEach((_,ri)=>{
+    const d=document.getElementById(`d-${ri}-${fi}`);
+    if(d&&d.classList.contains('filled')){d.classList.add('hi');d.style.opacity='1';d.style.transform='scale(1.12)';}
+    else if(d){d.style.opacity='0.12';}
+  });
+  renderColPanel(fi);
+}
+
+function toggleRow(ri){
+  clearHighlight();
+  if(selRow===ri){selRow=-1;selCol=-1;renderDefaultPanel();return;}
+  selRow=ri;selCol=-1;
+  const reg=allRegs[ri];
+  document.getElementById(`row-${reg.id}`).classList.add('sel');
+  // highlight filled cells in this row
+  families.forEach((_,fi)=>{
+    const d=document.getElementById(`d-${ri}-${fi}`);
+    if(d&&d.classList.contains('filled')){d.classList.add('hi');d.style.opacity='1';d.style.transform='scale(1.1)';}
+    else if(d){d.style.opacity='0.1';}
+  });
+  renderRowPanel(ri);
+}
+
+// ── Panel renders ─────────────────────────────────────────────────────────
+function renderDefaultPanel(){
+  document.getElementById('panel').innerHTML=`
+    <div class="panel-title">Convergence summary</div>
+    <div class="panel-sub" style="margin-bottom:10px">Click any column or row to explore</div>
+    <div style="font-size:11px;color:var(--t2);line-height:1.65;margin-bottom:14px">
+      <strong style="color:var(--text)">Encryption, access control, and audit</strong> are required by ${colCounts[0]}, ${colCounts[1]}, and ${colCounts[2]} of the ${nR} frameworks — the universal baseline.<br><br>
+      <strong style="color:var(--text)">Behavioural controls</strong> are required by ${colCounts[5]} frameworks — all AI-specific or sector-specific.<br><br>
+      <strong style="color:var(--text)">Model governance and attestation</strong> appear in ${colCounts[7]} and ${colCounts[9]} frameworks — certification-grade requirements only.<br><br>
+      <strong style="color:var(--text)">Turkish sector frameworks</strong> (DDO BIG Rehberi, BDDK circulars, EPDK) cluster with ISO 27001 and HIPAA on the infrastructure controls — diverging only on behavioural and model governance where AI-specific provisions are not yet formally codified.
+    </div>
+    <div class="lv-legend">
+      ${Object.entries(lvNames).map(([lv,name])=>`
+        <div class="lv-item">
+          <span class="lv-swatch" style="background:${lc[lv].f};border:0.5px solid ${lc[lv].b}"></span>
+          <span>${name}</span>
+        </div>`).join('')}
+    </div>`;
+}
+
+function renderColPanel(fi){
+  const fam=families[fi];
+  const c=lc[fam.lv];
+  const reqs=allRegs.filter((_,ri)=>allRegs[ri].req[fi]===1);
+  const notreqs=allRegs.filter((_,ri)=>allRegs[ri].req[fi]===0);
+  document.getElementById('panel').innerHTML=`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <span style="width:12px;height:12px;border-radius:3px;background:${c.f};border:0.5px solid ${c.b};flex-shrink:0"></span>
+      <span class="panel-title">${fam.name}</span>
+    </div>
+    <div class="panel-sub">Addressed at L${fam.lv} · required by ${reqs.length} of ${nR} frameworks</div>
+    <div style="font-size:11px;color:var(--t2);line-height:1.6;margin-bottom:14px;padding-bottom:12px;border-bottom:0.5px solid var(--bd)">${fam.desc}</div>
+    <div style="font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px">Required by (${reqs.length})</div>
+    <div style="margin-bottom:12px">${reqs.map(r=>`<span style="display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;background:${c.d};color:${c.s};border:0.5px solid ${c.b};margin:2px 3px 2px 0;font-family:var(--fm)">${r.name}</span>`).join('')}</div>
+    ${notreqs.length?`<div style="font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px">Not required by (${notreqs.length})</div>
+    <div>${notreqs.map(r=>`<span style="display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;background:var(--s3);color:var(--t3);border:0.5px solid var(--bd);margin:2px 3px 2px 0;font-family:var(--fm)">${r.name}</span>`).join('')}</div>`:''}`;
+}
+
+function renderRowPanel(ri){
+  const reg=allRegs[ri];
+  const reqdFams=families.filter((_,fi)=>reg.req[fi]===1);
+  const notFams=families.filter((_,fi)=>reg.req[fi]===0);
+  // group required fams by level
+  const byLv={};
+  reqdFams.forEach(f=>{if(!byLv[f.lv])byLv[f.lv]=[];byLv[f.lv].push(f);});
+  // highest level required = minimum maturity needed
+  const maxLv=reqdFams.length?Math.max(...reqdFams.map(f=>f.lv)):0;
+  const c=lc[maxLv]||lc[1];
+  document.getElementById('panel').innerHTML=`
+    <div class="panel-title" style="margin-bottom:2px">${reg.name}</div>
+    <div style="font-family:var(--fm);font-size:9.5px;color:var(--t3);margin-bottom:4px">${reg.full}</div>
+    <div class="panel-sub">
+      <span class="geo-flag">${reg.geo}</span>
+      ${reqdFams.length}/${nF} technical families · minimum stack level:
+      <span style="font-weight:500;color:${c.s}"> L${maxLv}</span>
+    </div>
+    <div style="font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px">Required technical families</div>
+    ${Object.entries(byLv).sort(([a],[b])=>a-b).map(([lv,fams])=>`
+      <div style="margin-bottom:8px">
+        <div style="font-family:var(--fm);font-size:8.5px;color:${lc[lv].s};letter-spacing:.06em;margin-bottom:4px">${lvNames[lv]||'L'+lv}</div>
+        ${fams.map(f=>`<div style="display:flex;align-items:flex-start;gap:7px;margin-bottom:4px">
+          <span style="width:9px;height:9px;border-radius:2px;flex-shrink:0;margin-top:2px;background:${lc[lv].f};border:0.5px solid ${lc[lv].b}"></span>
+          <span style="font-size:10.5px;color:var(--t2)">${f.name}</span>
+        </div>`).join('')}
+      </div>`).join('')}
+    ${notFams.length?`<div style="font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-top:6px;margin-bottom:6px">Not required (${notFams.length})</div>
+    <div>${notFams.map(f=>`<span style="display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;background:var(--s3);color:var(--t3);border:0.5px solid var(--bd);margin:2px 3px 2px 0;font-family:var(--fm)">${f.name}</span>`).join('')}</div>`:''}
+    ${reg.note?`<div style="margin-top:12px;font-size:10px;color:var(--t3);line-height:1.55;padding:7px 10px;background:var(--s3);border-radius:5px;border:0.5px solid var(--bd);border-left:2px solid rgba(232,169,74,0.4);font-style:italic">† ${reg.note}</div>`:''}`;
+}
+
+// ── Theme toggle ──────────────────────────────────────────────────────────
+function toggleTheme(){
+  const html=document.documentElement;
+  const cur=html.getAttribute('data-theme');
+  const sysDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  // cycle: auto → forced opposite → auto
+  if(!cur){
+    html.setAttribute('data-theme', sysDark ? 'light' : 'dark');
+  } else {
+    html.removeAttribute('data-theme');
+  }
+  updateThemeBtn();
+}
+function updateThemeBtn(){
+  const html=document.documentElement;
+  const cur=html.getAttribute('data-theme');
+  const sysDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark=cur==='dark'||(cur===null&&sysDark);
+  const btn=document.getElementById('theme-btn');
+  if(btn) btn.textContent=isDark ? '☀ Light' : '☾ Dark';
+}
+updateThemeBtn();
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateThemeBtn);
+
+// ── Init ──────────────────────────────────────────────────────────────────
+buildHead();
+buildBody();
+renderDefaultPanel();
+</script>
+</body>
+</html>

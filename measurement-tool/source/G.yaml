@@ -1,0 +1,1108 @@
+# Lecta Sovereign AI Control Framework — G block (governance)
+# framework v1.0-draft · schema: ../schema.md
+# Measured once per organisation. Text fields bilingual {en, tr}; notes internal.
+# Level per profile is used when the G block caps a system of that profile (schema 5.3).
+# Session 2 (14 Oct 2026): full items, status draft — awaiting GE review.
+
+items:
+
+  # ---------------------------------------------------------------- POL
+  - id: G-POL-01
+    block: governance
+    domain: POL
+    title:
+      en: AI policy
+      tr: Yapay zekâ politikası
+    objective:
+      en: >
+        The organisation has an approved AI policy that states the purpose and limits of AI
+        use, who is accountable, and how AI systems are approved, and the policy is
+        communicated to staff.
+      tr: >
+        Kurumun, yapay zekâ kullanımının amacını ve sınırlarını, hesap verecek kişileri ve
+        AI sistemlerinin nasıl onaylandığını belirten, onaylanmış ve çalışanlara duyurulmuş
+        bir yapay zekâ politikası vardır.
+    question:
+      en: Does the organisation have an approved AI policy, and how was it communicated to staff?
+      tr: Kurumun onaylanmış bir yapay zekâ politikası var mı ve çalışanlara nasıl duyuruldu?
+    level: {CE: L1, SOV: L1}
+    applicability:
+      en: Always applicable.
+      tr: Her zaman uygulanır.
+    evidence:
+      - type: DOC
+        en: AI policy document with approval record (approver, date, version)
+        tr: Onay kaydıyla (onaylayan, tarih, sürüm) yapay zekâ politikası
+      - type: DOC
+        en: Communication record (intranet publication, e-mail, acknowledgement list)
+        tr: Duyuru kaydı (intranet yayını, e-posta, okundu listesi)
+    rubric:
+      0:
+        en: No AI policy, and AI is not addressed in any other approved policy.
+        tr: Yapay zekâ politikası yok ve AI başka hiçbir onaylı politikada ele alınmıyor.
+      1:
+        en: >
+          A policy or draft exists, but at least one of these is true: it is not approved by
+          top management or a body it delegated to; it does not name an accountable role; it
+          does not define how a new AI system is approved; there is no record that it was
+          communicated to staff.
+        tr: >
+          Politika ya da taslak var ama şunlardan en az biri geçerli: üst yönetim ya da
+          yetkilendirdiği bir kurul tarafından onaylanmamış; hesap verecek rolü belirtmiyor;
+          yeni bir AI sisteminin nasıl onaylanacağını tanımlamıyor; çalışanlara duyurulduğuna
+          dair kayıt yok.
+      2:
+        en: >
+          The policy is approved by top management or a delegated body, names the accountable
+          role, defines the approval route for new AI systems, references G-POL-02, and a
+          record shows it was communicated to all staff in scope.
+        tr: >
+          Politika üst yönetim ya da yetkilendirilmiş kurul tarafından onaylanmış, hesap
+          verecek rolü belirtiyor, yeni AI sistemleri için onay yolunu tanımlıyor, G-POL-02'ye
+          atıf yapıyor ve kapsamdaki tüm çalışanlara duyurulduğuna dair kayıt var.
+      3:
+        en: >
+          Meets 2, and the policy was reviewed within review_interval with a dated record
+          stating changes or confirming no change.
+        tr: >
+          2'yi karşılıyor ve politika review_interval içinde gözden geçirilmiş; değişiklikleri
+          ya da değişiklik olmadığını belirten tarihli kayıt var.
+    review_interval: 12
+    quick_scan: true
+    qs_question:
+      en: Is there an approved AI policy, and has it been communicated to staff?
+      tr: Onaylanmış bir yapay zekâ politikanız var mı, çalışanlara duyuruldu mu?
+    mappings:
+      - {framework: ISO/IEC 42001, ref: "cl. 5.2"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.2.2, A.2.4"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.5.1"}
+      - {framework: NIST AI RMF, ref: "GOVERN 1.2"}
+    services: [AS-01, AS-02, DS-03, SU-01]
+    status: approved
+    since: v1.0-draft
+    notes: >
+      AI'nin bilgi güvenliği politikası içinde ayrı bir bölüm olarak ele alınması da kabul
+      edilir; ölçüt içerik, belge adı değil. DS-03 bu maddeyi kapatan hizmet.
+
+  - id: G-POL-02
+    block: governance
+    domain: POL
+    title:
+      en: Acceptable use of AI tools
+      tr: Yapay zekâ araçlarının kabul edilebilir kullanımı
+    objective:
+      en: >
+        Staff have written rules stating which AI tools may be used and which data
+        classes may be entered into each, and a list of sanctioned tools is maintained.
+      tr: >
+        Çalışanlar için hangi yapay zekâ araçlarının kullanılabileceğini ve her birine
+        hangi veri sınıflarının girilebileceğini belirten yazılı kurallar ve güncel bir onaylı
+        araç listesi vardır.
+    question:
+      en: Can staff tell which AI tools they may use and what data they may enter into them?
+      tr: Çalışanlar hangi yapay zekâ araçlarını kullanabileceklerini ve bunlara hangi verileri girebileceklerini biliyor mu?
+    level: {CE: L0, SOV: L0}
+    applicability:
+      en: Always applicable.
+      tr: Her zaman uygulanır.
+    evidence:
+      - type: DOC
+        en: Acceptable use rules (stand-alone or within the AI or acceptable use policy)
+        tr: Kabul edilebilir kullanım kuralları (ayrı belge ya da AI/kabul edilebilir kullanım politikası içinde)
+      - type: DOC
+        en: Sanctioned AI tool list with the data classes allowed per tool and last update date
+        tr: Araç başına izin verilen veri sınıflarını ve son güncelleme tarihini gösteren onaylı AI araç listesi
+      - type: INT
+        en: Two or more staff from different units describe the rules consistently
+        tr: Farklı birimlerden en az iki çalışan kuralları tutarlı biçimde anlatıyor
+    rubric:
+      0:
+        en: No written rules on staff use of AI tools.
+        tr: Çalışanların AI araçlarını kullanımına dair yazılı kural yok.
+      1:
+        en: >
+          Rules exist but at least one of these is true: they do not refer to the
+          organisation's data classification; there is no sanctioned tool list; the list
+          has not been updated in the last 12 months; staff interviewed do not know the rules.
+        tr: >
+          Kurallar var ama şunlardan en az biri geçerli: kurumun veri sınıflandırmasına atıf
+          yapmıyor; onaylı araç listesi yok; liste son 12 ayda güncellenmemiş; görüşülen
+          çalışanlar kuralları bilmiyor.
+      2:
+        en: >
+          Rules refer to the data classification, a sanctioned tool list states the allowed
+          data classes per tool and was updated in the last 12 months, and at least two
+          interviewed staff from different units describe the rules consistently.
+        tr: >
+          Kurallar veri sınıflandırmasına atıf yapıyor; onaylı araç listesi araç başına izin
+          verilen veri sınıflarını belirtiyor ve son 12 ayda güncellenmiş; farklı birimlerden
+          görüşülen en az iki çalışan kuralları tutarlı anlatıyor.
+      3:
+        en: >
+          Meets 2, and compliance with the rules is checked against G-INV-02 data within
+          review_interval, with a dated record of findings and actions.
+        tr: >
+          2'yi karşılıyor ve kurallara uyum review_interval içinde G-INV-02 verileriyle
+          karşılaştırılarak kontrol edilmiş; bulgu ve aksiyonların tarihli kaydı var.
+    review_interval: 6
+    quick_scan: true
+    qs_question:
+      en: Are there written rules on which AI tools staff may use and which data may be entered?
+      tr: Çalışanların hangi AI araçlarını kullanabileceği ve hangi verileri girebileceğine dair yazılı kural var mı?
+    mappings:
+      - {framework: ISO/IEC 27001:2022, ref: "A.5.10"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.9.2"}
+      - {framework: KVKK, ref: "md. 12(1)"}
+      - {framework: EU AI Act, ref: "Art. 26(1) [CHECK — deployer scope]"}
+    services: [AS-01, AS-02, AS-04, DS-03, EN-02]
+    status: approved
+    since: v1.0-draft
+    notes: >
+      L0: dış araçlara veri girişi teknik kontrol kurulmadan da başlar; kuralın olmaması
+      kurumun her profilde ilk açığı. Kurumun veri sınıflandırması yoksa 1'in üstüne çıkmaz.
+
+  # ---------------------------------------------------------------- INV
+  - id: G-INV-01
+    block: governance
+    domain: INV
+    title:
+      en: AI system inventory
+      tr: Yapay zekâ sistem envanteri
+    objective:
+      en: >
+        The organisation keeps an inventory of AI systems and AI use cases, recording for
+        each its purpose, owner, user groups, data categories, provider and profile.
+      tr: >
+        Kurum, yapay zekâ sistemlerinin ve kullanım senaryolarının envanterini tutar; her
+        biri için amaç, sahip, kullanıcı grupları, veri kategorileri, sağlayıcı ve profil
+        kaydedilir.
+    question:
+      en: Which AI systems and use cases are in operation or pilot, and where are they recorded?
+      tr: Hangi yapay zekâ sistemleri ve kullanım senaryoları canlıda ya da pilotta, nerede kayıtlı?
+    level: {CE: L1, SOV: L1}
+    applicability:
+      en: Always applicable.
+      tr: Her zaman uygulanır.
+    evidence:
+      - type: DOC
+        en: Inventory with the fields purpose, owner, users, data categories, provider, profile, status
+        tr: Amaç, sahip, kullanıcılar, veri kategorileri, sağlayıcı, profil ve durum alanlarını içeren envanter
+      - type: DOC
+        en: Sanctioned tool list (G-POL-02) and procurement or project records, used for reconciliation
+        tr: Karşılaştırma için onaylı araç listesi (G-POL-02) ve satın alma ya da proje kayıtları
+    rubric:
+      0:
+        en: No inventory of AI systems or use cases.
+        tr: AI sistemleri ya da kullanım senaryoları için envanter yok.
+      1:
+        en: >
+          An inventory exists but at least one of these is true: a required field is empty
+          for one or more entries; a system found in procurement records, the sanctioned tool
+          list or interviews is missing; it was not updated in the last 6 months.
+        tr: >
+          Envanter var ama şunlardan en az biri geçerli: bir ya da daha fazla kayıtta zorunlu
+          bir alan boş; satın alma kayıtlarında, onaylı araç listesinde ya da görüşmelerde
+          görülen bir sistem envanterde yok; son 6 ayda güncellenmemiş.
+      2:
+        en: >
+          Every entry has all required fields, no system found in procurement records, the
+          sanctioned tool list or interviews is missing, and the inventory was updated in the
+          last 6 months.
+        tr: >
+          Her kayıtta tüm zorunlu alanlar dolu; satın alma kayıtlarında, onaylı araç
+          listesinde ya da görüşmelerde görülen hiçbir sistem eksik değil; envanter son 6 ayda
+          güncellenmiş.
+      3:
+        en: >
+          Meets 2, and the inventory was reconciled against G-INV-02 traffic data within
+          review_interval, with a dated record of additions and removals.
+        tr: >
+          2'yi karşılıyor ve envanter review_interval içinde G-INV-02 trafik verileriyle
+          karşılaştırılmış; eklenen ve çıkarılan kayıtların tarihli kaydı var.
+    review_interval: 6
+    quick_scan: true
+    qs_question:
+      en: Is there a list of the AI systems and use cases in operation, with an owner for each?
+      tr: Kullanılan AI sistemlerinin ve kullanım senaryolarının, her birinin sahibiyle birlikte bir listesi var mı?
+    mappings:
+      - {framework: ISO/IEC 27001:2022, ref: "A.5.9"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.4 [CHECK sub-control]"}
+      - {framework: NIST AI RMF, ref: "GOVERN 1.6"}
+      - {framework: KVKK, ref: "md. 16 (VERBİS) [CHECK — processing inventory link]"}
+      - {framework: GDPR, ref: "Art. 30"}
+    services: [AS-01, AS-02, AS-04, SU-01]
+    status: approved
+    since: v1.0-draft
+    notes: >
+      Envanter, AS-02 kapsamının (hangi sistemler matrisle ölçülecek) girdisi. Profil alanı
+      CE/SOV/hibrit: hibrit sistemde iki profil de ayrı ölçülür.
+
+  - id: G-INV-02
+    block: governance
+    domain: INV
+    title:
+      en: Visibility of AI service use
+      tr: AI servis kullanımının görünürlüğü
+    objective:
+      en: >
+        Network traffic from the organisation to external AI services is identifiable and
+        logged at metadata level, so that AI use can be measured by unit and volume.
+      tr: >
+        Kurumdan dış yapay zekâ servislerine giden ağ trafiği tanımlanabilir ve üst veri
+        düzeyinde kayıt altındadır; böylece AI kullanımı birim ve hacim bazında ölçülebilir.
+    question:
+      en: Can you show which external AI services were reached from your network last month, and by which units?
+      tr: Geçen ay ağınızdan hangi dış AI servislerine, hangi birimlerden erişildiğini gösterebilir misiniz?
+    level: {CE: L1, SOV: L2}
+    applicability:
+      en: Always applicable.
+      tr: Her zaman uygulanır.
+    evidence:
+      - type: CFG
+        en: DNS, proxy or firewall logging configuration and retention period
+        tr: DNS, proxy ya da firewall kayıt yapılandırması ve saklama süresi
+      - type: DOC
+        en: Maintained list of AI service domains/endpoints used for identification, with update date
+        tr: Tanımlama için kullanılan, güncelleme tarihli AI servis alan adı/uç nokta listesi
+      - type: LOG
+        en: Report or query result of AI service traffic by unit for a period of at least 30 days
+        tr: En az 30 günlük dönem için birim bazında AI servis trafiği raporu ya da sorgu sonucu
+    rubric:
+      0:
+        en: Traffic to AI services cannot be identified, or the relevant logs are not kept.
+        tr: AI servislerine giden trafik tanımlanamıyor ya da ilgili kayıtlar tutulmuyor.
+      1:
+        en: >
+          Logs exist but at least one of these is true: retention is under 90 days; traffic
+          cannot be attributed to a unit or user group; no AI service domain list is
+          maintained; no report has ever been produced.
+        tr: >
+          Kayıtlar var ama şunlardan en az biri geçerli: saklama 90 günden kısa; trafik bir
+          birime ya da kullanıcı grubuna atfedilemiyor; AI servis alan adı listesi tutulmuyor;
+          hiç rapor üretilmemiş.
+      2:
+        en: >
+          Logs are retained for at least 90 days, traffic is attributable to a unit or user
+          group, the AI service domain list was updated in the last 6 months, and a report
+          covering at least 30 days can be produced on request.
+        tr: >
+          Kayıtlar en az 90 gün saklanıyor, trafik bir birime ya da kullanıcı grubuna
+          atfedilebiliyor, AI servis alan adı listesi son 6 ayda güncellenmiş ve talep
+          edildiğinde en az 30 günlük rapor üretilebiliyor.
+      3:
+        en: >
+          Meets 2, and reports are reviewed within review_interval; traffic to services not
+          on the sanctioned list (G-POL-02) triggers a recorded follow-up.
+        tr: >
+          2'yi karşılıyor; raporlar review_interval içinde gözden geçiriliyor ve onaylı
+          listede (G-POL-02) olmayan servislere giden trafik kayıtlı bir takip başlatıyor.
+    review_interval: 3
+    quick_scan: true
+    qs_question:
+      en: Can you see from network logs which external AI services staff are using?
+      tr: Çalışanların hangi dış AI servislerini kullandığını ağ kayıtlarından görebiliyor musunuz?
+    mappings:
+      - {framework: ISO/IEC 27001:2022, ref: "A.8.15, A.8.16"}
+      - {framework: KVKK, ref: "md. 12(1)"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.9.2 [CHECK]"}
+    services: [AS-01, AS-02, AS-04, SU-01]
+    status: approved
+    since: v1.0-draft
+    notes: >
+      AS-04'ün ölçüm aracındaki karşılığı. Yalnız üst veri; içerik incelemesi bu madde
+      kapsamında değil. CE'de L1 çünkü veri dışarıya bu kanaldan çıkıyor; SOV'da L2.
+      90 gün eşiği mevzuat şartı değil, operasyonel tercih — pilotta kalibre edilecek.
+
+  # ---------------------------------------------------------------- ROL
+  - id: G-ROL-01
+    block: governance
+    domain: ROL
+    title:
+      en: Roles and accountability
+      tr: Roller ve hesap verebilirlik
+    objective:
+      en: >
+        Each AI system in the inventory has a named owner, an organisation-wide AI
+        governance role is assigned, and the points at which data protection and security
+        functions must be consulted are defined.
+      tr: >
+        Envanterdeki her AI sisteminin adı belli bir sahibi vardır; kurum genelinde bir
+        yapay zekâ yönetişim rolü atanmıştır ve veri koruma ile güvenlik birimlerine
+        danışılması gereken noktalar tanımlıdır.
+    question:
+      en: Who is accountable for each AI system, and when must the DPO and the security function be involved?
+      tr: Her AI sisteminden kim sorumlu? KVKK irtibat kişisi/DPO ve güvenlik birimi hangi noktalarda devreye girmek zorunda?
+    level: {CE: L1, SOV: L1}
+    applicability:
+      en: Always applicable.
+      tr: Her zaman uygulanır.
+    evidence:
+      - type: DOC
+        en: Owner field in G-INV-01 with named persons or roles
+        tr: G-INV-01'de kişi ya da rol adıyla doldurulmuş sahip alanı
+      - type: DOC
+        en: Appointment or job description for the AI governance role
+        tr: AI yönetişim rolü için atama yazısı ya da görev tanımı
+      - type: DOC
+        en: Defined consultation points (e.g. new system, new data category, new provider) for DPO and security
+        tr: DPO ve güvenlik için tanımlı danışma noktaları (ör. yeni sistem, yeni veri kategorisi, yeni sağlayıcı)
+    rubric:
+      0:
+        en: No named owners and no governance role.
+        tr: Adı belli sahip yok, yönetişim rolü yok.
+      1:
+        en: >
+          At least one of these is true: one or more inventoried systems have no named owner;
+          the governance role is not formally assigned; consultation points for DPO and
+          security are not defined.
+        tr: >
+          Şunlardan en az biri geçerli: envanterdeki bir ya da daha fazla sistemin adı belli
+          sahibi yok; yönetişim rolü resmî olarak atanmamış; DPO ve güvenlik için danışma
+          noktaları tanımlı değil.
+      2:
+        en: >
+          Every inventoried system has a named owner, the governance role is formally
+          assigned, consultation points are defined, and at least one record shows a
+          consultation took place (or none was triggered in the last 12 months, stated).
+        tr: >
+          Envanterdeki her sistemin adı belli sahibi var, yönetişim rolü resmî olarak
+          atanmış, danışma noktaları tanımlı ve en az bir danışmanın yapıldığına dair kayıt
+          var (ya da son 12 ayda tetiklenmediği belirtilmiş).
+      3:
+        en: >
+          Meets 2, and owners and role assignments were confirmed within review_interval,
+          with a dated record including changes after staff turnover.
+        tr: >
+          2'yi karşılıyor ve sahipler ile rol atamaları review_interval içinde teyit edilmiş;
+          personel değişikliği sonrası güncellemeleri de içeren tarihli kayıt var.
+    review_interval: 12
+    quick_scan: true
+    qs_question:
+      en: Does each AI system have a named owner, and is someone responsible for AI governance overall?
+      tr: Her AI sisteminin adı belli bir sahibi ve genel olarak AI yönetişiminden sorumlu biri var mı?
+    mappings:
+      - {framework: ISO/IEC 42001, ref: "cl. 5.3"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.3.2"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.5.2"}
+      - {framework: NIST AI RMF, ref: "GOVERN 2.1"}
+    services: [AS-01, AS-02, DS-03]
+    status: approved
+    since: v1.0-draft
+
+  # ---------------------------------------------------------------- RSK
+  - id: G-RSK-01
+    block: governance
+    domain: RSK
+    title:
+      en: AI risk assessment
+      tr: Yapay zekâ risk değerlendirmesi
+    objective:
+      en: >
+        A written risk assessment exists for each AI system before production use, using a
+        defined method, and is repeated on defined triggers.
+      tr: >
+        Her AI sistemi için canlı kullanımdan önce, tanımlı bir yöntemle yazılı risk
+        değerlendirmesi yapılır ve tanımlı tetikleyicilerde tekrarlanır.
+    question:
+      en: How are the risks of an AI system assessed before it goes live, and when is that assessment repeated?
+      tr: Bir AI sisteminin riskleri canlıya alınmadan önce nasıl değerlendiriliyor ve bu değerlendirme ne zaman tekrarlanıyor?
+    level: {CE: L2, SOV: L2}
+    applicability:
+      en: Always applicable.
+      tr: Her zaman uygulanır.
+    evidence:
+      - type: DOC
+        en: Risk assessment method (criteria, scales, acceptance) covering AI-specific risks
+        tr: AI'ye özgü riskleri kapsayan risk değerlendirme yöntemi (kriterler, ölçekler, kabul)
+      - type: DOC
+        en: Risk assessment per inventoried system, dated, with treatment decisions and owner sign-off
+        tr: Envanterdeki her sistem için tarihli, muamele kararlarını ve sahip onayını içeren risk değerlendirmesi
+      - type: DOC
+        en: Defined re-assessment triggers (new model or provider, new data category, new user group, incident)
+        tr: Tanımlı yeniden değerlendirme tetikleyicileri (yeni model ya da sağlayıcı, yeni veri kategorisi, yeni kullanıcı grubu, olay)
+    rubric:
+      0:
+        en: No risk assessment for any AI system.
+        tr: Hiçbir AI sistemi için risk değerlendirmesi yok.
+      1:
+        en: >
+          At least one of these is true: assessments exist for only some systems; there is no
+          written method; assessments do not address AI-specific risks (data leaving via
+          prompts, wrong or harmful output, unauthorised access through the model, provider
+          dependency); no re-assessment triggers are defined.
+        tr: >
+          Şunlardan en az biri geçerli: yalnız bazı sistemler için değerlendirme var; yazılı
+          yöntem yok; değerlendirmeler AI'ye özgü riskleri (prompt ile veri çıkışı, yanlış ya
+          da zararlı çıktı, model üzerinden yetkisiz erişim, sağlayıcı bağımlılığı) ele
+          almıyor; yeniden değerlendirme tetikleyicileri tanımlı değil.
+      2:
+        en: >
+          Every production system has a dated assessment made with the written method that
+          addresses the four AI-specific risk groups, with treatment decisions signed off by
+          the owner, and re-assessment triggers are defined.
+        tr: >
+          Canlıdaki her sistem için, yazılı yöntemle yapılmış, dört AI'ye özgü risk grubunu
+          ele alan, muamele kararları sahip tarafından onaylanmış tarihli bir değerlendirme var
+          ve yeniden değerlendirme tetikleyicileri tanımlı.
+      3:
+        en: >
+          Meets 2, and each assessment was repeated within review_interval or after each
+          trigger event, whichever is earlier, with records.
+        tr: >
+          2'yi karşılıyor ve her değerlendirme review_interval içinde ya da her tetikleyici
+          olaydan sonra (hangisi önce gelirse) tekrarlanmış, kayıtları var.
+    review_interval: 12
+    quick_scan: true
+    qs_question:
+      en: Is a written risk assessment made before an AI system goes live?
+      tr: Bir AI sistemi canlıya alınmadan önce yazılı risk değerlendirmesi yapılıyor mu?
+    mappings:
+      - {framework: ISO/IEC 42001, ref: "cl. 6.1.2, 8.2"}
+      - {framework: ISO/IEC 27001:2022, ref: "cl. 6.1.2"}
+      - {framework: NIST AI RMF, ref: "MAP 1, MANAGE 1"}
+      - {framework: EU AI Act, ref: "Art. 9 (high-risk) [CHECK — provider duty]"}
+    services: [AS-01, AS-02, AS-07, SU-01]
+    status: approved
+    since: v1.0-draft
+    notes: >
+      Dört AI risk grubu sabit liste olarak verildi ki "AI'ye özgü" ölçütü yoruma kalmasın.
+      Kurum ISO 27001 risk yöntemini kullanıyorsa ve dört grup içindeyse kabul edilir.
+
+  - id: G-RSK-02
+    block: governance
+    domain: RSK
+    title:
+      en: AI risk classification
+      tr: Yapay zekâ risk sınıflandırması
+    objective:
+      en: >
+        Each AI system is classified against the applicable regulatory risk categories
+        (EU AI Act categories and relevant sector rules), with documented rationale and
+        sign-off by a named person.
+      tr: >
+        Her AI sistemi uygulanabilir düzenleyici risk kategorilerine (EU AI Act kategorileri
+        ve ilgili sektör kuralları) göre sınıflandırılır; gerekçe yazılıdır ve adı belli bir
+        kişi tarafından onaylanır.
+    question:
+      en: Into which regulatory risk category does each AI system fall, and who signed that decision?
+      tr: Her AI sistemi hangi düzenleyici risk kategorisine giriyor ve bu kararı kim imzaladı?
+    level: {CE: L3, SOV: L3}
+    applicability:
+      en: Always applicable.
+      tr: Her zaman uygulanır.
+    evidence:
+      - type: DOC
+        en: Classification record per system with category, rationale referencing the criteria, signatory and date
+        tr: Sistem başına kategori, ölçütlere atıf yapan gerekçe, imzalayan ve tarih içeren sınıflandırma kaydı
+    rubric:
+      0:
+        en: No system has been classified.
+        tr: Hiçbir sistem sınıflandırılmamış.
+      1:
+        en: >
+          At least one of these is true: only some systems are classified; the rationale does
+          not reference the criteria applied; there is no named signatory; sector rules
+          applicable to the organisation are not considered.
+        tr: >
+          Şunlardan en az biri geçerli: yalnız bazı sistemler sınıflandırılmış; gerekçe
+          uygulanan ölçütlere atıf yapmıyor; adı belli imzalayan yok; kuruma uygulanan sektör
+          kuralları dikkate alınmamış.
+      2:
+        en: >
+          Every inventoried system has a classification with rationale referencing the
+          criteria, applicable sector rules are considered, and a named person signed it.
+        tr: >
+          Envanterdeki her sistemin, ölçütlere atıf yapan gerekçeli bir sınıflandırması var,
+          uygulanabilir sektör kuralları dikkate alınmış ve adı belli bir kişi imzalamış.
+      3:
+        en: >
+          Meets 2, and classifications were reconfirmed within review_interval and after
+          every change of purpose or user group, with records.
+        tr: >
+          2'yi karşılıyor ve sınıflandırmalar review_interval içinde ve her amaç ya da
+          kullanıcı grubu değişikliğinden sonra yeniden teyit edilmiş, kayıtları var.
+    review_interval: 12
+    quick_scan: false
+    mappings:
+      - {framework: EU AI Act, ref: "Art. 6, Annex III"}
+      - {framework: EU AI Act, ref: "Art. 50"}
+      - {framework: NIST AI RMF, ref: "MAP 1.5 [CHECK]"}
+    services: [AS-02, AU-03]
+    status: approved
+    since: v1.0-draft
+    notes: >
+      v0'da L5 artefaktıydı. L3'e çekildi: hangi yükümlülüklerin uygulanacağını bu karar
+      belirliyor, L5'i beklemek geç. Hukuki yorum gerekirse hukuk ortağı; Lecta kararı
+      vermez, kayıt ve gerekçenin varlığını ölçer.
+
+  - id: G-RSK-03
+    block: governance
+    domain: RSK
+    title:
+      en: Impact assessment for personal data
+      tr: Kişisel veri etki değerlendirmesi
+    objective:
+      en: >
+        For AI systems that process personal data, an impact assessment covering data flow,
+        necessity, risks to individuals and technical mitigations is completed before
+        production use.
+      tr: >
+        Kişisel veri işleyen AI sistemleri için canlı kullanımdan önce veri akışını,
+        gerekliliği, kişiler üzerindeki riskleri ve teknik önlemleri kapsayan bir etki
+        değerlendirmesi tamamlanır.
+    question:
+      en: For AI systems that process personal data, has an impact assessment been done before go-live?
+      tr: Kişisel veri işleyen AI sistemleri için canlıya geçmeden önce etki değerlendirmesi yapıldı mı?
+    level: {CE: L2, SOV: L2}
+    applicability:
+      en: Not applicable if, per G-INV-01, no AI system processes personal data.
+      tr: G-INV-01'e göre hiçbir AI sistemi kişisel veri işlemiyorsa uygulanmaz.
+    evidence:
+      - type: DOC
+        en: Impact assessment per system with data map across pipeline stages, risk list, mitigations and DPO opinion
+        tr: Sistem başına, pipeline aşamalarında veri haritası, risk listesi, önlemler ve DPO görüşünü içeren etki değerlendirmesi
+    rubric:
+      0:
+        en: No impact assessment for any AI system processing personal data.
+        tr: Kişisel veri işleyen hiçbir AI sistemi için etki değerlendirmesi yok.
+      1:
+        en: >
+          At least one of these is true: assessments exist for only some systems; the data map
+          does not cover all pipeline stages; points where data leaves the country are not
+          identified; there is no DPO opinion.
+        tr: >
+          Şunlardan en az biri geçerli: yalnız bazı sistemler için değerlendirme var; veri
+          haritası tüm pipeline aşamalarını kapsamıyor; verinin yurt dışına çıktığı noktalar
+          belirlenmemiş; DPO görüşü yok.
+      2:
+        en: >
+          Every AI system processing personal data has an assessment with a data map across
+          all pipeline stages, identified cross-border points, mitigations with owners, and a
+          recorded DPO opinion.
+        tr: >
+          Kişisel veri işleyen her AI sisteminin, tüm pipeline aşamalarında veri haritası,
+          belirlenmiş yurt dışı aktarım noktaları, sahipli önlemler ve kayıtlı DPO görüşü
+          içeren değerlendirmesi var.
+      3:
+        en: >
+          Meets 2, and mitigations are tracked to closure, and each assessment was updated
+          within review_interval or after a change of data categories or provider.
+        tr: >
+          2'yi karşılıyor; önlemler kapanışa kadar izleniyor ve her değerlendirme
+          review_interval içinde ya da veri kategorisi veya sağlayıcı değişikliğinden sonra
+          güncellenmiş.
+    review_interval: 12
+    quick_scan: false
+    mappings:
+      - {framework: GDPR, ref: "Art. 35"}
+      - {framework: KVKK, ref: "md. 12(1) [CHECK — no explicit DPIA duty]"}
+      - {framework: ISO/IEC 42001, ref: "cl. 6.1.4; Annex A.5.2–A.5.4"}
+      - {framework: EU AI Act, ref: "Art. 27 (FRIA, where applicable) [CHECK]"}
+    services: [AS-02, AS-07]
+    status: approved
+    since: v1.0-draft
+    notes: >
+      AS-07 çekirdek çıktısı bu maddeyi 2'ye taşır. Hukuki sonuç (hukuka uygunluk sebebi,
+      aktarım mekanizması) bu maddenin ölçütü değil; o kısım hukuk ortağında.
+
+  # ---------------------------------------------------------------- SUP
+  - id: G-SUP-01
+    block: governance
+    domain: SUP
+    title:
+      en: AI provider assessment before use
+      tr: Kullanım öncesi AI sağlayıcı değerlendirmesi
+    objective:
+      en: >
+        Before an external AI model or service is used with organisational data, the
+        provider is assessed on data location, retention, use of customer data for
+        training, sub-processors and the cross-border transfer mechanism.
+      tr: >
+        Dış bir AI modeli ya da servisi kurum verisiyle kullanılmadan önce sağlayıcı; verinin
+        tutulduğu yer, saklama süresi, müşteri verisinin eğitimde kullanımı, alt işleyenler ve
+        yurt dışı aktarım mekanizması açısından değerlendirilir.
+    question:
+      en: Before using an external AI service, what do you check about where data goes and how the provider uses it?
+      tr: Dış bir AI servisini kullanmadan önce verinin nereye gittiği ve sağlayıcının onu nasıl kullandığı konusunda neyi kontrol ediyorsunuz?
+    level: {CE: L1, SOV: L2}
+    applicability:
+      en: Not applicable if no external AI model or service is used with organisational data (per G-INV-01 and G-INV-02).
+      tr: Kurum verisiyle hiçbir dış AI modeli ya da servisi kullanılmıyorsa uygulanmaz (G-INV-01 ve G-INV-02'ye göre).
+    evidence:
+      - type: DOC
+        en: Assessment record per provider covering the five topics, dated before first use
+        tr: Sağlayıcı başına beş konuyu kapsayan, ilk kullanımdan önce tarihli değerlendirme kaydı
+      - type: DOC
+        en: Provider documents relied on (terms, data processing addendum, sub-processor list, data residency statement)
+        tr: Dayanılan sağlayıcı belgeleri (koşullar, veri işleme eki, alt işleyen listesi, veri yerleşimi beyanı)
+    rubric:
+      0:
+        en: External AI services are used without any provider assessment.
+        tr: Dış AI servisleri hiçbir sağlayıcı değerlendirmesi olmadan kullanılıyor.
+      1:
+        en: >
+          At least one of these is true: only some providers are assessed; an assessment
+          omits one of the five topics; the assessment is dated after first use; the provider
+          documents relied on are not retained.
+        tr: >
+          Şunlardan en az biri geçerli: yalnız bazı sağlayıcılar değerlendirilmiş; bir
+          değerlendirme beş konudan birini atlıyor; değerlendirme ilk kullanımdan sonra
+          tarihli; dayanılan sağlayıcı belgeleri saklanmamış.
+      2:
+        en: >
+          Every provider used with organisational data has an assessment covering all five
+          topics, dated before first use, with the provider documents relied on retained.
+        tr: >
+          Kurum verisiyle kullanılan her sağlayıcının, beş konunun hepsini kapsayan, ilk
+          kullanımdan önce tarihli değerlendirmesi var ve dayanılan sağlayıcı belgeleri
+          saklanıyor.
+      3:
+        en: >
+          Meets 2, and each assessment was repeated within review_interval and after every
+          notified change of provider terms or sub-processors, with records.
+        tr: >
+          2'yi karşılıyor ve her değerlendirme review_interval içinde ve sağlayıcı
+          koşullarında ya da alt işleyenlerde bildirilen her değişiklikten sonra tekrarlanmış,
+          kayıtları var.
+    review_interval: 12
+    quick_scan: true
+    qs_question:
+      en: Before using an external AI service, do you check where data is kept and whether the provider may use it for training?
+      tr: Dış bir AI servisini kullanmadan önce verinin nerede tutulduğunu ve sağlayıcının onu eğitimde kullanıp kullanmadığını kontrol ediyor musunuz?
+    mappings:
+      - {framework: KVKK, ref: "md. 9 (Law 7499 amendment)"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.5.19, A.5.23"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.10.3"}
+      - {framework: GDPR, ref: "Art. 28(1), Chapter V"}
+      - {framework: DORA, ref: "Art. 28 [CHECK — financial entities]"}
+    services: [AS-01, AS-02, AS-07, DS-04]
+    status: approved
+    since: v1.0-draft
+    notes: >
+      CE profilinin çekirdek maddesi, bu yüzden CE'de L1. v0'da ATT-ING (L4) içindeydi.
+      Hukuki yeterlilik (aktarım mekanizmasının geçerliliği) hukuk ortağında; bu madde
+      değerlendirmenin yapılıp yapılmadığını ve kapsamını ölçer.
+
+  - id: G-SUP-02
+    block: governance
+    domain: SUP
+    title:
+      en: Sovereignty test
+      tr: Egemenlik testi
+    objective:
+      en: >
+        For each AI provider and hosting arrangement, three questions are answered with
+        evidence: the legal jurisdiction of the ultimate parent company; evidence of the
+        architectural boundary within which data is processed; and the ability to operate
+        or exit the service independently of the provider.
+      tr: >
+        Her AI sağlayıcısı ve barındırma düzeni için üç soru kanıtla cevaplanır: nihai ana
+        şirketin hukuki yetki alanı; verinin işlendiği mimari sınırın kanıtı; sağlayıcıdan
+        bağımsız işletebilme ya da hizmetten çıkabilme.
+    question:
+      en: For each AI provider, which jurisdiction can compel access to your data, where is the processing boundary, and could you continue without them?
+      tr: Her AI sağlayıcısı için verinize hangi hukuki yetki alanı erişim zorlayabilir, işleme sınırı nerede ve sağlayıcı olmadan devam edebilir misiniz?
+    level: {CE: L2, SOV: L1}
+    applicability:
+      en: Applicable to every external AI provider and to third-party hosting of sovereign systems.
+      tr: Her dış AI sağlayıcısına ve egemen sistemlerin üçüncü taraf barındırmasına uygulanır.
+    evidence:
+      - type: DOC
+        en: Record per provider answering the three questions, with sources (corporate registry, contracts, architecture documents)
+        tr: Sağlayıcı başına üç soruyu kaynaklarıyla (şirket sicili, sözleşmeler, mimari belgeler) cevaplayan kayıt
+      - type: DOC
+        en: Exit plan or alternative-provider assessment for each provider rated critical
+        tr: Kritik olarak nitelenen her sağlayıcı için çıkış planı ya da alternatif sağlayıcı değerlendirmesi
+      - type: LOG
+        en: For the boundary question, egress or residency evidence (not only a provider statement)
+        tr: Sınır sorusu için çıkış trafiği ya da veri yerleşimi kanıtı (yalnız sağlayıcı beyanı değil)
+    rubric:
+      0:
+        en: The three questions have not been addressed for any provider.
+        tr: Üç soru hiçbir sağlayıcı için ele alınmamış.
+      1:
+        en: >
+          At least one of these is true: answered for only some providers; one of the three
+          questions is unanswered; the boundary answer rests only on a provider statement;
+          no exit plan exists for a critical provider.
+        tr: >
+          Şunlardan en az biri geçerli: yalnız bazı sağlayıcılar için cevaplanmış; üç
+          sorudan biri cevapsız; sınır cevabı yalnız sağlayıcı beyanına dayanıyor; kritik bir
+          sağlayıcı için çıkış planı yok.
+      2:
+        en: >
+          All three questions are answered with sources for every provider in scope, the
+          boundary answer is supported by egress or residency evidence, and every critical
+          provider has an exit plan or an alternative-provider assessment.
+        tr: >
+          Kapsamdaki her sağlayıcı için üç soru kaynaklarıyla cevaplanmış, sınır cevabı çıkış
+          trafiği ya da veri yerleşimi kanıtıyla destekleniyor ve her kritik sağlayıcının çıkış
+          planı ya da alternatif sağlayıcı değerlendirmesi var.
+      3:
+        en: >
+          Meets 2, and the exit plan for at least one critical provider was exercised
+          (tabletop or technical test) within review_interval, with a record.
+        tr: >
+          2'yi karşılıyor ve en az bir kritik sağlayıcının çıkış planı review_interval içinde
+          işletilmiş (masa başı ya da teknik test), kaydı var.
+    review_interval: 12
+    quick_scan: false
+    mappings:
+      - {framework: KVKK, ref: "md. 9"}
+      - {framework: DORA, ref: "Art. 28(8) [CHECK]"}
+      - {framework: BDDK, ref: "Bilgi Sistemleri Yönetmeliği — lokalizasyon [CHECK]"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.5.23"}
+    services: [AS-02, DS-04]
+    status: approved
+    since: v1.0-draft
+    notes: >
+      AS-05'ten gelen egemenlik testi (S-11). SOV'da L1: egemenlik iddiasının kendisi bu
+      üç soruya dayanıyor. "Kritik sağlayıcı" tanımı değerlendirme kaydında kurum tarafından
+      yapılır; tanım yoksa 2 verilmez.
+
+  - id: G-SUP-03
+    block: governance
+    domain: SUP
+    title:
+      en: Contractual safeguards with AI providers
+      tr: AI sağlayıcılarıyla sözleşmesel güvenceler
+    objective:
+      en: >
+        Contracts with AI providers include data processing terms, a prohibition or opt-out
+        on use of customer data for training, deletion on termination, breach notification
+        within a stated time, and audit or assurance rights.
+      tr: >
+        AI sağlayıcılarıyla sözleşmeler; veri işleme şartlarını, müşteri verisinin eğitimde
+        kullanılmasının yasağını ya da bundan çıkışı, sona ermede silmeyi, belirtilmiş süre
+        içinde ihlal bildirimini ve denetim ya da güvence haklarını içerir.
+    question:
+      en: Do your AI provider contracts cover training use, deletion, breach notification and audit rights?
+      tr: AI sağlayıcı sözleşmeleriniz eğitimde kullanım, silme, ihlal bildirimi ve denetim haklarını kapsıyor mu?
+    level: {CE: L2, SOV: L2}
+    applicability:
+      en: Same as G-SUP-01.
+      tr: G-SUP-01 ile aynı.
+    evidence:
+      - type: DOC
+        en: Contract or accepted terms per provider, with the five clauses marked
+        tr: Sağlayıcı başına, beş madde işaretlenmiş sözleşme ya da kabul edilmiş koşullar
+    rubric:
+      0:
+        en: No contract or terms reviewed for any provider, or none of the five clauses present.
+        tr: Hiçbir sağlayıcı için sözleşme ya da koşullar incelenmemiş ya da beş maddenin hiçbiri yok.
+      1:
+        en: >
+          At least one provider used with organisational data lacks one or more of the five
+          clauses, without a recorded risk acceptance by the system owner.
+        tr: >
+          Kurum verisiyle kullanılan en az bir sağlayıcıda beş maddeden biri ya da daha fazlası
+          eksik ve sistem sahibinin kayıtlı risk kabulü yok.
+      2:
+        en: >
+          Every provider used with organisational data has all five clauses, or each missing
+          clause has a risk acceptance signed by the system owner and referenced in G-RSK-01.
+        tr: >
+          Kurum verisiyle kullanılan her sağlayıcıda beş maddenin hepsi var ya da eksik her
+          madde için sistem sahibinin imzaladığı ve G-RSK-01'de atıf yapılan bir risk kabulü var.
+      3:
+        en: >
+          Meets 2, and provider term changes are monitored: a record shows terms were
+          re-checked within review_interval for every provider.
+        tr: >
+          2'yi karşılıyor ve sağlayıcı koşul değişiklikleri izleniyor: her sağlayıcı için
+          koşulların review_interval içinde yeniden kontrol edildiğini gösteren kayıt var.
+    review_interval: 12
+    quick_scan: false
+    mappings:
+      - {framework: GDPR, ref: "Art. 28(3)"}
+      - {framework: KVKK, ref: "md. 9, md. 12(2) [CHECK]"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.5.20"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.10.2"}
+    services: [AS-02, DS-04]
+    status: approved
+    since: v1.0-draft
+    notes: >
+      Hukuki yeterlilik değil maddelerin varlığı ölçülür. Tıkla-kabul SaaS koşulları da
+      "sözleşme" sayılır; kurum pazarlık edemiyorsa risk kabulü yolu açık.
+
+  # ---------------------------------------------------------------- LIT
+  - id: G-LIT-01
+    block: governance
+    domain: LIT
+    title:
+      en: AI literacy for all users
+      tr: Tüm kullanıcılar için yapay zekâ okuryazarlığı
+    objective:
+      en: >
+        Staff who use AI systems complete a defined AI literacy programme covering
+        acceptable use, data risks and the limits of AI output, and completion is recorded.
+      tr: >
+        AI sistemlerini kullanan çalışanlar; kabul edilebilir kullanımı, veri risklerini ve
+        AI çıktısının sınırlarını kapsayan tanımlı bir okuryazarlık programını tamamlar ve
+        tamamlama kayıt altındadır.
+    question:
+      en: What training do AI users receive, and what share of them has completed it?
+      tr: AI kullanıcıları hangi eğitimi alıyor ve ne kadarı tamamladı?
+    level: {CE: L1, SOV: L1}
+    applicability:
+      en: Always applicable.
+      tr: Her zaman uygulanır.
+    evidence:
+      - type: DOC
+        en: Programme content covering the three topics
+        tr: Üç konuyu kapsayan program içeriği
+      - type: LOG
+        en: Completion records with date per person; count of AI users from G-INV-01 for the denominator
+        tr: Kişi başına tarihli tamamlama kayıtları; payda için G-INV-01'den AI kullanıcı sayısı
+    rubric:
+      0:
+        en: No AI literacy programme.
+        tr: Yapay zekâ okuryazarlık programı yok.
+      1:
+        en: >
+          A programme exists but at least one of these is true: it omits one of the three
+          topics; completion is not recorded; recorded completion is below 80% of AI users.
+        tr: >
+          Program var ama şunlardan en az biri geçerli: üç konudan birini atlıyor; tamamlama
+          kaydedilmiyor; kayıtlı tamamlama AI kullanıcılarının %80'inin altında.
+      2:
+        en: >
+          The programme covers the three topics and at least 80% of AI users have a recorded
+          completion; new users complete it within 60 days of access.
+        tr: >
+          Program üç konuyu kapsıyor ve AI kullanıcılarının en az %80'inin kayıtlı
+          tamamlaması var; yeni kullanıcılar erişimden sonraki 60 gün içinde tamamlıyor.
+      3:
+        en: >
+          Meets 2, content was updated within review_interval, and understanding is measured
+          (quiz or exercise) with results recorded.
+        tr: >
+          2'yi karşılıyor; içerik review_interval içinde güncellenmiş ve anlama ölçülüyor
+          (sınav ya da uygulama), sonuçlar kayıtlı.
+    review_interval: 12
+    quick_scan: true
+    qs_question:
+      en: Have staff who use AI tools received training on safe use?
+      tr: AI araçlarını kullanan çalışanlar güvenli kullanım eğitimi aldı mı?
+    mappings:
+      - {framework: EU AI Act, ref: "Art. 4"}
+      - {framework: ISO/IEC 42001, ref: "cl. 7.3"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.6.3"}
+      - {framework: NIST AI RMF, ref: "GOVERN 2.2"}
+    services: [AS-01, AS-02, EN-02]
+    status: approved
+    since: v1.0-draft
+    notes: >
+      %80 ve 60 gün eşikleri ölçütü sayılabilir kılmak için konuldu; pilotta kalibre edilecek.
+      EN-02 bu maddeyi kapatan hizmet.
+
+  - id: G-LIT-02
+    block: governance
+    domain: LIT
+    title:
+      en: Role-based training
+      tr: Role özgü eğitim
+    objective:
+      en: >
+        People who build, operate or review AI systems, or perform human oversight, receive
+        training specific to their role, and completion is recorded.
+      tr: >
+        AI sistemlerini geliştiren, işleten, gözden geçiren ya da insan gözetimi yapan
+        kişiler rollerine özgü eğitim alır ve tamamlama kayıt altındadır.
+    question:
+      en: What training do developers, operators and reviewers of AI systems receive for their roles?
+      tr: AI sistemlerinin geliştiricileri, işletenleri ve gözden geçirenleri rollerine yönelik hangi eğitimi alıyor?
+    level: {CE: L3, SOV: L3}
+    applicability:
+      en: Always applicable.
+      tr: Her zaman uygulanır.
+    evidence:
+      - type: DOC
+        en: List of AI roles (from G-ROL-01 and G-OVS-01) mapped to training modules
+        tr: Eğitim modülleriyle eşlenmiş AI rolleri listesi (G-ROL-01 ve G-OVS-01'den)
+      - type: LOG
+        en: Completion records per role holder
+        tr: Rol sahibi başına tamamlama kayıtları
+    rubric:
+      0:
+        en: No role-based AI training.
+        tr: Role özgü AI eğitimi yok.
+      1:
+        en: >
+          At least one of these is true: roles are not mapped to modules; one or more role
+          holders have no recorded completion.
+        tr: >
+          Şunlardan en az biri geçerli: roller modüllerle eşlenmemiş; bir ya da daha fazla rol
+          sahibinin kayıtlı tamamlaması yok.
+      2:
+        en: >
+          Every AI role is mapped to a module and every current role holder has a recorded
+          completion.
+        tr: >
+          Her AI rolü bir modülle eşlenmiş ve her güncel rol sahibinin kayıtlı tamamlaması var.
+      3:
+        en: >
+          Meets 2, and role holders completed a refresher within review_interval.
+        tr: >
+          2'yi karşılıyor ve rol sahipleri review_interval içinde tazeleme eğitimini
+          tamamlamış.
+    review_interval: 12
+    quick_scan: false
+    mappings:
+      - {framework: ISO/IEC 42001, ref: "cl. 7.2"}
+      - {framework: EU AI Act, ref: "Art. 26(2) [CHECK]"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.6.3"}
+    services: [AS-02, EN-03]
+    status: approved
+    since: v1.0-draft
+
+  # ---------------------------------------------------------------- INC
+  - id: G-INC-01
+    block: governance
+    domain: INC
+    title:
+      en: AI incident procedure
+      tr: Yapay zekâ olay prosedürü
+    objective:
+      en: >
+        The incident procedure defines AI-specific incident types, the reporting chain, and
+        the regulatory notification deadlines that apply, and is linked to the general
+        security incident process.
+      tr: >
+        Olay prosedürü AI'ye özgü olay türlerini, raporlama zincirini ve uygulanan
+        düzenleyici bildirim sürelerini tanımlar ve genel güvenlik olay süreciyle bağlantılıdır.
+    question:
+      en: If personal data leaked through a prompt or an AI system produced a harmful output, who would be notified, by whom, and within what time?
+      tr: Bir prompt üzerinden kişisel veri sızsa ya da bir AI sistemi zararlı bir çıktı üretse kime, kim tarafından, ne kadar sürede bildirilir?
+    level: {CE: L2, SOV: L2}
+    applicability:
+      en: Always applicable.
+      tr: Her zaman uygulanır.
+    evidence:
+      - type: DOC
+        en: Procedure naming at least these AI incident types — data leakage via prompt or output, harmful or wrong output with impact, unauthorised access through the model, provider-side incident
+        tr: En az şu AI olay türlerini adlandıran prosedür — prompt ya da çıktı yoluyla veri sızıntısı, etkisi olan zararlı ya da yanlış çıktı, model üzerinden yetkisiz erişim, sağlayıcı tarafı olay
+      - type: DOC
+        en: Notification deadlines table (e.g. KVKK breach notification, sector and cyber security obligations)
+        tr: Bildirim süreleri tablosu (ör. KVKK ihlal bildirimi, sektör ve siber güvenlik yükümlülükleri)
+      - type: TST
+        en: Record of an exercise or a handled AI incident
+        tr: Bir tatbikatın ya da ele alınmış bir AI olayının kaydı
+    rubric:
+      0:
+        en: AI incidents are not covered by any procedure.
+        tr: AI olayları hiçbir prosedürde ele alınmıyor.
+      1:
+        en: >
+          At least one of these is true: the procedure does not name the four AI incident
+          types; the reporting chain has no named roles; applicable notification deadlines
+          are missing; it is not linked to the general incident process.
+        tr: >
+          Şunlardan en az biri geçerli: prosedür dört AI olay türünü adlandırmıyor; raporlama
+          zincirinde adı belli roller yok; uygulanan bildirim süreleri eksik; genel olay
+          süreciyle bağlantılı değil.
+      2:
+        en: >
+          The procedure names the four incident types, the reporting chain with named roles
+          and the applicable deadlines, is linked to the general process, and an exercise or a
+          handled AI incident is recorded in the last 12 months.
+        tr: >
+          Prosedür dört olay türünü, adı belli rollerle raporlama zincirini ve uygulanan
+          süreleri tanımlıyor, genel süreçle bağlantılı ve son 12 ayda bir tatbikat ya da ele
+          alınmış bir AI olayı kayıtlı.
+      3:
+        en: >
+          Meets 2, and lessons from each exercise or incident are recorded with actions tracked
+          to closure, and the procedure was reviewed within review_interval.
+        tr: >
+          2'yi karşılıyor; her tatbikat ya da olaydan çıkan dersler kayıtlı, aksiyonlar
+          kapanışa kadar izleniyor ve prosedür review_interval içinde gözden geçirilmiş.
+    review_interval: 12
+    quick_scan: true
+    qs_question:
+      en: Does your incident procedure cover AI-specific incidents such as data leaking through prompts?
+      tr: Olay prosedürünüz prompt üzerinden veri sızıntısı gibi AI'ye özgü olayları kapsıyor mu?
+    mappings:
+      - {framework: KVKK, ref: "md. 12(5); Kurul kararı 2019/10 (72 saat) [CHECK]"}
+      - {framework: GDPR, ref: "Art. 33"}
+      - {framework: Law 7545, ref: "Siber Güvenlik Kanunu — olay bildirimi [CHECK]"}
+      - {framework: NIS2, ref: "Art. 23"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.5.24–A.5.28"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.8.4 [CHECK]"}
+    services: [AS-01, AS-02, SU-05]
+    status: approved
+    since: v1.0-draft
+    notes: SU-05 bu maddeyi kapatan hizmet.
+
+  # ---------------------------------------------------------------- OVS
+  - id: G-OVS-01
+    block: governance
+    domain: OVS
+    title:
+      en: Human oversight
+      tr: İnsan gözetimi
+    objective:
+      en: >
+        For each AI system, the output classes that require human review are defined,
+        together with the reviewer role, the time limit for a decision, and what happens to
+        the output while review is pending; the procedure has been exercised end to end.
+      tr: >
+        Her AI sistemi için insan incelemesi gerektiren çıktı sınıfları, inceleyen rol, karar
+        için süre sınırı ve inceleme beklerken çıktıya ne olacağı tanımlıdır; prosedür uçtan
+        uca işletilmiştir.
+    question:
+      en: Which AI outputs must a person review before they take effect, who does it, and how quickly?
+      tr: Hangi AI çıktıları etkili olmadan önce bir insan tarafından incelenmeli, bunu kim yapıyor ve ne kadar sürede?
+    level: {CE: L3, SOV: L3}
+    applicability:
+      en: Always applicable. A documented decision that a system needs no human review (with rationale signed by the owner) counts as a definition for that system.
+      tr: Her zaman uygulanır. Bir sistem için insan incelemesine gerek olmadığına dair, sahibinin imzaladığı gerekçeli karar o sistem için tanım sayılır.
+    evidence:
+      - type: DOC
+        en: Oversight procedure per system with the four elements (output classes, reviewer role, time limit, pending state)
+        tr: Sistem başına dört unsuru (çıktı sınıfları, inceleyen rol, süre sınırı, bekleme durumu) içeren gözetim prosedürü
+      - type: TST
+        en: Record of at least one end-to-end run (real case or test) per system
+        tr: Sistem başına en az bir uçtan uca işletim kaydı (gerçek vaka ya da test)
+      - type: LOG
+        en: Review queue records showing decisions and times
+        tr: Kararları ve süreleri gösteren inceleme kuyruğu kayıtları
+    rubric:
+      0:
+        en: No human oversight defined for any system.
+        tr: Hiçbir sistem için insan gözetimi tanımlı değil.
+      1:
+        en: >
+          At least one of these is true: defined for only some systems; one of the four
+          elements is missing; the procedure has never been run end to end.
+        tr: >
+          Şunlardan en az biri geçerli: yalnız bazı sistemler için tanımlı; dört unsurdan biri
+          eksik; prosedür hiç uçtan uca işletilmemiş.
+      2:
+        en: >
+          Every system has the four elements defined (or a signed no-review decision), and
+          each system with defined review classes has at least one recorded end-to-end run.
+        tr: >
+          Her sistem için dört unsur tanımlı (ya da imzalı inceleme-gerekmez kararı var) ve
+          inceleme sınıfı tanımlı her sistemin en az bir kayıtlı uçtan uca işletimi var.
+      3:
+        en: >
+          Meets 2, and within review_interval the share of reviews completed within the time
+          limit is measured and recorded per system.
+        tr: >
+          2'yi karşılıyor ve review_interval içinde süre sınırında tamamlanan incelemelerin
+          oranı sistem başına ölçülmüş ve kaydedilmiş.
+    review_interval: 6
+    quick_scan: false
+    mappings:
+      - {framework: EU AI Act, ref: "Art. 14 (high-risk), Art. 26(2)"}
+      - {framework: GDPR, ref: "Art. 22"}
+      - {framework: KVKK, ref: "md. 11(1)(g) [CHECK]"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.9 [CHECK sub-control]"}
+      - {framework: NIST AI RMF, ref: "GOVERN 3.2"}
+    services: [AS-02, DS-03, AU-03]
+    status: approved
+    since: v1.0-draft
+    notes: >
+      v0'da L3 "process gap" notu + L5 artefaktıydı. Uçtan uca işletim şartı 2'ye kondu:
+      kâğıt üzerindeki prosedür L3 kapısını açmaz. BEH-RES escalation bu maddeye bağlanır.

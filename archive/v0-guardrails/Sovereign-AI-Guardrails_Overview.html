@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sovereign AI Guardrails Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #f9f8f4;
+  --s1:       #f1efe8;
+  --s2:       #e8e6de;
+  --s3:       #dedad0;
+  --s4:       #d0cdc3;
+  --text:     #1a1a18;
+  --text2:    #4a4844;
+  --text3:    #888680;
+  --amber:    #b87820;
+  --amber-d:  rgba(184,120,32,.11);
+  --amber-b:  rgba(184,120,32,.30);
+  --green:    #3a8a3c;
+  --green-d:  rgba(58,138,60,.10);
+  --green-b:  rgba(58,138,60,.28);
+  --blue:     #3a7ab8;
+  --blue-d:   rgba(58,122,184,.10);
+  --blue-b:   rgba(58,122,184,.28);
+  --red:      #b84848;
+  --red-d:    rgba(184,72,72,.10);
+  --red-b:    rgba(184,72,72,.28);
+  --bd:       rgba(20,20,18,.10);
+  --bd2:      rgba(20,20,18,.05);
+  --tab-hover-bd: rgba(20,20,18,.18);
+  --svg-box:  #e8e6de;
+  --svg-text: rgba(20,20,18,0.80);
+  --svg-dim:  rgba(20,20,18,0.40);
+  --svg-dimmer: rgba(20,20,18,0.22);
+  --svg-faint: rgba(20,20,18,0.06);
+  --svg-arr:  rgba(20,20,18,0.28);
+  --svg-leg:  rgba(20,20,18,0.025);
+  --svg-legbd:rgba(20,20,18,0.06);
+  --posture-center: rgba(249,248,244,0.85);
+  --posture-div: rgba(249,248,244,0.88);
+  --posture-seg-empty: rgba(20,20,18,0.04);
+  --posture-seg-ebd: rgba(20,20,18,0.07);
+  --fh: 'Syne', sans-serif;
+  --fb: 'IBM Plex Sans', sans-serif;
+  --fm: 'IBM Plex Mono', monospace;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0f0f0d;--s1:#171714;--s2:#1f1f1c;--s3:#292926;--s4:#333330;
+  --text:#edecea;--text2:#b2b09f;--text3:#767469;
+  --amber:#e8a94a;--amber-d:rgba(232,169,74,.13);--amber-b:rgba(232,169,74,.32);
+  --green:#7ec47f;--green-d:rgba(126,196,127,.12);--green-b:rgba(126,196,127,.28);
+  --blue:#6aaad8;--blue-d:rgba(106,170,216,.12);--blue-b:rgba(106,170,216,.28);
+  --red:#e07878;--red-d:rgba(224,120,120,.12);--red-b:rgba(224,120,120,.28);
+  --bd:rgba(237,236,234,.08);--bd2:rgba(237,236,234,.04);
+  --tab-hover-bd:rgba(237,236,234,.15);
+  --svg-box:#1f1f1c;--svg-text:rgba(237,236,234,0.90);--svg-dim:rgba(237,236,234,0.40);
+  --svg-dimmer:rgba(237,236,234,0.22);--svg-faint:rgba(237,236,234,0.06);
+  --svg-arr:rgba(237,236,234,0.25);--svg-leg:rgba(237,236,234,0.025);--svg-legbd:rgba(237,236,234,0.05);
+  --posture-center:rgba(15,15,13,0.75);--posture-div:rgba(15,15,13,0.88);
+  --posture-seg-empty:rgba(237,236,234,0.03);--posture-seg-ebd:rgba(237,236,234,0.07);
+}}
+html[data-theme="light"]{
+  --bg:#f9f8f4;--s1:#f1efe8;--s2:#e8e6de;--s3:#dedad0;--s4:#d0cdc3;
+  --text:#1a1a18;--text2:#4a4844;--text3:#888680;
+  --amber:#b87820;--amber-d:rgba(184,120,32,.11);--amber-b:rgba(184,120,32,.30);
+  --green:#3a8a3c;--green-d:rgba(58,138,60,.10);--green-b:rgba(58,138,60,.28);
+  --blue:#3a7ab8;--blue-d:rgba(58,122,184,.10);--blue-b:rgba(58,122,184,.28);
+  --red:#b84848;--red-d:rgba(184,72,72,.10);--red-b:rgba(184,72,72,.28);
+  --bd:rgba(20,20,18,.10);--bd2:rgba(20,20,18,.05);--tab-hover-bd:rgba(20,20,18,.18);
+  --svg-box:#e8e6de;--svg-text:rgba(20,20,18,0.80);--svg-dim:rgba(20,20,18,0.40);
+  --svg-dimmer:rgba(20,20,18,0.22);--svg-faint:rgba(20,20,18,0.06);
+  --svg-arr:rgba(20,20,18,0.28);--svg-leg:rgba(20,20,18,0.025);--svg-legbd:rgba(20,20,18,0.06);
+  --posture-center:rgba(249,248,244,0.85);--posture-div:rgba(249,248,244,0.88);
+  --posture-seg-empty:rgba(20,20,18,0.04);--posture-seg-ebd:rgba(20,20,18,0.07);
+}
+html[data-theme="dark"]{
+  --bg:#0f0f0d;--s1:#171714;--s2:#1f1f1c;--s3:#292926;--s4:#333330;
+  --text:#edecea;--text2:#b2b09f;--text3:#767469;
+  --amber:#e8a94a;--amber-d:rgba(232,169,74,.13);--amber-b:rgba(232,169,74,.32);
+  --green:#7ec47f;--green-d:rgba(126,196,127,.12);--green-b:rgba(126,196,127,.28);
+  --blue:#6aaad8;--blue-d:rgba(106,170,216,.12);--blue-b:rgba(106,170,216,.28);
+  --red:#e07878;--red-d:rgba(224,120,120,.12);--red-b:rgba(224,120,120,.28);
+  --bd:rgba(237,236,234,.08);--bd2:rgba(237,236,234,.04);--tab-hover-bd:rgba(237,236,234,.15);
+  --svg-box:#1f1f1c;--svg-text:rgba(237,236,234,0.90);--svg-dim:rgba(237,236,234,0.40);
+  --svg-dimmer:rgba(237,236,234,0.22);--svg-faint:rgba(237,236,234,0.06);
+  --svg-arr:rgba(237,236,234,0.25);--svg-leg:rgba(237,236,234,0.025);--svg-legbd:rgba(237,236,234,0.05);
+  --posture-center:rgba(15,15,13,0.75);--posture-div:rgba(15,15,13,0.88);
+  --posture-seg-empty:rgba(237,236,234,0.03);--posture-seg-ebd:rgba(237,236,234,0.07);
+}
+.theme-btn{font-family:var(--fm);font-size:10px;padding:4px 10px;border-radius:5px;border:0.5px solid var(--bd);background:var(--s2);color:var(--text3);cursor:pointer;transition:all .15s;letter-spacing:.04em;white-space:nowrap}
+.theme-btn:hover{color:var(--text);border-color:var(--text3)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);padding:28px 32px;font-size:14px;line-height:1.55;min-height:100vh}
+
+/* header */
+.hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;padding-bottom:20px;border-bottom:0.5px solid var(--bd)}
+.hdr-l h1{font-family:var(--fh);font-size:20px;font-weight:600;letter-spacing:-.01em;color:var(--text);margin-bottom:3px}
+.hdr-l p{font-size:11px;color:var(--text3);font-family:var(--fm)}
+.hdr-r{display:flex;gap:6px;align-items:center}
+.badge{font-family:var(--fm);font-size:10px;padding:3px 8px;border-radius:4px;border:0.5px solid var(--bd);color:var(--text3)}
+.badge.amber{border-color:var(--amber-b);color:var(--amber);background:var(--amber-d)}
+
+/* tabs */
+.tabs{display:flex;gap:3px;margin-bottom:24px}
+.tab{font-family:var(--fh);font-size:12px;font-weight:500;padding:7px 16px;border-radius:6px;border:0.5px solid var(--bd);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s;letter-spacing:.01em}
+.tab:hover{color:var(--text2);border-color:var(--tab-hover-bd)}
+.tab.act{background:var(--amber-d);color:var(--amber);border-color:var(--amber-b)}
+
+/* pipeline view */
+.pipe-wrap{background:var(--s1);border:0.5px solid var(--bd);border-radius:12px;padding:24px;overflow-x:auto}
+.pipe-svg-wrap{min-width:820px}
+svg text{font-family:'IBM Plex Sans',sans-serif}
+
+/* concern coverage grid below pipeline */
+.cov-grid{display:grid;grid-template-columns:110px repeat(6,1fr);gap:3px;margin-top:20px;min-width:820px}
+.cov-stage-hdr{font-family:var(--fm);font-size:9px;color:var(--text3);text-align:center;padding:4px 2px;letter-spacing:.06em;text-transform:uppercase}
+.cov-concern{font-size:10px;color:var(--text2);padding:4px 8px;display:flex;align-items:center;font-weight:500}
+.cov-cell{border-radius:3px;padding:3px 4px;text-align:center;font-family:var(--fm);font-size:9px;font-weight:500;line-height:1.3}
+.lv0{background:rgba(106,170,216,.18);color:var(--blue);border:0.5px solid var(--blue-b)}
+.lv1{background:rgba(126,196,127,.18);color:var(--green);border:0.5px solid var(--green-b)}
+.lv2{background:rgba(126,196,127,.12);color:#5fab62;border:0.5px solid rgba(126,196,127,.2)}
+.lv3{background:rgba(232,169,74,.15);color:var(--amber);border:0.5px solid var(--amber-b)}
+.lv4{background:rgba(232,169,74,.09);color:#c48b2a;border:0.5px solid rgba(232,169,74,.2)}
+.lv5{background:rgba(224,120,120,.13);color:var(--red);border:0.5px solid var(--red-b)}
+.lv6{background:rgba(224,120,120,.08);color:#b85555;border:0.5px solid rgba(224,120,120,.18)}
+.cov-note{grid-column:1/-1;font-size:10px;color:var(--text3);margin-top:8px;display:flex;gap:16px;flex-wrap:wrap}
+.cov-note span{display:flex;align-items:center;gap:5px}
+
+/* maturity view */
+.mat-wrap{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+.staircase{display:flex;align-items:flex-end;gap:6px;height:280px;padding:0 4px}
+.step{flex:1;border-radius:6px 6px 0 0;cursor:pointer;transition:all .2s;border:0.5px solid var(--bd);background:var(--s2);display:flex;flex-direction:column;justify-content:flex-end;padding:10px 8px 12px;position:relative;overflow:hidden}
+.step::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s;background:var(--amber-d)}
+.step:hover::before,.step.act::before{opacity:1}
+.step.act{border-color:var(--amber-b)}
+.step.done{background:var(--s2);border-color:var(--green-b)}
+.step.done::before{background:var(--green-d);opacity:1}
+.step-lvl{font-family:var(--fm);font-size:9px;color:var(--text3);margin-bottom:4px}
+.step.act .step-lvl{color:var(--amber)}
+.step.done .step-lvl{color:var(--green)}
+.step-name{font-family:var(--fh);font-size:10px;font-weight:600;color:var(--text2);line-height:1.3;margin-bottom:6px}
+.step.act .step-name{color:var(--text)}
+.step-ct{font-family:var(--fm);font-size:9px;color:var(--text3)}
+.step.act .step-ct{color:var(--amber)}
+.step-cond{position:absolute;top:6px;right:6px;font-size:8px;font-family:var(--fm);padding:2px 5px;border-radius:3px;background:var(--red-d);color:var(--red);border:0.5px solid var(--red-b)}
+
+/* detail panel */
+.detail{background:var(--s1);border:0.5px solid var(--bd);border-radius:10px;padding:18px 20px;min-height:280px}
+.detail-lvl{font-family:var(--fm);font-size:10px;color:var(--amber);margin-bottom:4px}
+.detail-name{font-family:var(--fh);font-size:16px;font-weight:600;color:var(--text);margin-bottom:10px;line-height:1.2}
+.detail-delta{font-size:12px;color:var(--text2);line-height:1.65;margin-bottom:14px;padding-bottom:14px;border-bottom:0.5px solid var(--bd)}
+.detail-sub{font-family:var(--fm);font-size:9px;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
+.reg-pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;background:var(--blue-d);color:var(--blue);border:0.5px solid var(--blue-b);margin:2px 3px 2px 0}
+.detail-gate{font-size:11px;margin-top:14px;padding:8px 11px;border-radius:5px;line-height:1.55}
+.gate-new{background:var(--green-d);color:var(--green);border:0.5px solid var(--green-b)}
+.gate-cond{background:var(--red-d);color:var(--red);border:0.5px solid var(--red-b);margin-top:6px;font-size:10px}
+
+/* shared */
+.view{display:none}
+.view.act{display:block}
+.sec-label{font-family:var(--fh);font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-l">
+    <h1>Sovereign AI Guardrails Overview</h1>
+    <p>Privacy-preserving framework · Turkey / EU / UK / US regulatory horizon</p>
+  </div>
+  <div class="hdr-r">
+    <span class="badge amber">36 controls</span>
+    <span class="badge">L0 → L6</span>
+    <span class="badge">24 frameworks</span>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">☀ Light</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab act" onclick="show('pipe')">Pipeline view</button>
+  <button class="tab" onclick="show('mat')">Maturity levels</button>
+  <button class="tab" onclick="show('posture')">Posture map</button>
+</div>
+
+<!-- PIPELINE VIEW -->
+<div id="v-pipe" class="view act">
+  <p style="font-size:11px;color:var(--text3);margin-bottom:14px;line-height:1.6">Data journey through the sovereign boundary · concern layers operating at each stage · activation level per cell</p>
+  <div class="pipe-wrap">
+    <div class="pipe-svg-wrap">
+
+    <!-- ARCHITECTURE SVG — rendered by renderPipeline() -->
+    <svg id="pipe-svg" viewBox="0 0 860 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin-bottom:4px"></svg>
+
+    <!-- CONCERN COVERAGE GRID -->
+    <div style="margin-top:20px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px">Concern × Stage activation levels</div>
+      <div class="cov-grid">
+        <div></div>
+        <div class="cov-stage-hdr">Ingestion</div>
+        <div class="cov-stage-hdr">Storage</div>
+        <div class="cov-stage-hdr">Prompt</div>
+        <div class="cov-stage-hdr">Inference</div>
+        <div class="cov-stage-hdr">Response</div>
+        <div class="cov-stage-hdr">Downstream</div>
+
+        <div class="cov-concern">Containment</div>
+        <div class="cov-cell lv0">L0</div><div class="cov-cell lv0">L0</div><div class="cov-cell lv1">L1</div><div class="cov-cell lv1">L1</div><div class="cov-cell lv2">L2</div><div class="cov-cell lv3">L3</div>
+
+        <div class="cov-concern">Hygiene</div>
+        <div class="cov-cell lv1">L1</div><div class="cov-cell lv1">L1</div><div class="cov-cell lv2">L2</div><div class="cov-cell lv3">L3</div><div class="cov-cell lv2">L2</div><div class="cov-cell lv4">L4</div>
+
+        <div class="cov-concern">Identity</div>
+        <div class="cov-cell lv0">L0</div><div class="cov-cell lv1">L1</div><div class="cov-cell lv2">L2</div><div class="cov-cell lv2">L2</div><div class="cov-cell lv3">L3</div><div class="cov-cell lv4">L4</div>
+
+        <div class="cov-concern">Behaviour</div>
+        <div class="cov-cell lv2">L2</div><div class="cov-cell lv2">L2</div><div class="cov-cell lv3">L3</div><div class="cov-cell lv3">L3</div><div class="cov-cell lv3">L3</div><div class="cov-cell lv5">L5</div>
+
+        <div class="cov-concern">Traceability</div>
+        <div class="cov-cell lv1">L1</div><div class="cov-cell lv1">L1</div><div class="cov-cell lv2">L2</div><div class="cov-cell lv2">L2</div><div class="cov-cell lv3">L3</div><div class="cov-cell lv4">L4</div>
+
+        <div class="cov-concern">Attestation</div>
+        <div class="cov-cell lv4">L4</div><div class="cov-cell lv4">L4</div><div class="cov-cell lv5">L5</div><div class="cov-cell lv5">L5</div><div class="cov-cell lv5">L5</div><div class="cov-cell lv6">L6</div>
+
+        <div class="cov-note">
+          <span><span style="width:10px;height:10px;background:rgba(106,170,216,.18);border:0.5px solid rgba(106,170,216,.3);border-radius:2px;display:inline-block"></span>L0 Infrastructure baseline</span>
+          <span><span style="width:10px;height:10px;background:rgba(126,196,127,.18);border:0.5px solid rgba(126,196,127,.3);border-radius:2px;display:inline-block"></span>L1 Privacy foundation</span>
+          <span><span style="width:10px;height:10px;background:rgba(126,196,127,.12);border:0.5px solid rgba(126,196,127,.2);border-radius:2px;display:inline-block"></span>L2 Access &amp; audit</span>
+          <span><span style="width:10px;height:10px;background:rgba(232,169,74,.15);border:0.5px solid rgba(232,169,74,.3);border-radius:2px;display:inline-block"></span>L3 Behavioural controls</span>
+          <span><span style="width:10px;height:10px;background:rgba(232,169,74,.09);border:0.5px solid rgba(232,169,74,.2);border-radius:2px;display:inline-block"></span>L4 Compliance ops.</span>
+          <span><span style="width:10px;height:10px;background:rgba(224,120,120,.13);border:0.5px solid rgba(224,120,120,.3);border-radius:2px;display:inline-block"></span>L5 Sector &amp; geo</span>
+          <span><span style="width:10px;height:10px;background:rgba(224,120,120,.08);border:0.5px solid rgba(224,120,120,.18);border-radius:2px;display:inline-block"></span>L6 Certification</span>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- /pipe-svg-wrap -->
+  </div><!-- /pipe-wrap -->
+</div><!-- /v-pipe -->
+
+<!-- MATURITY VIEW -->
+<div id="v-mat" class="view">
+  <p style="font-size:11px;color:var(--text3);margin-bottom:20px;line-height:1.6">Click any level to explore · bar height reflects controls active · <span style="color:var(--red)">* sector-conditional</span> — L5 required only for healthcare, finance, or public-sector deployments</p>
+  <div class="mat-wrap">
+    <div>
+      <div class="staircase" id="staircase"></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 4px 0;font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:var(--text3)">
+        <span>minimum viable</span>
+        <span style="color:var(--text3)">regulated deployment →</span>
+        <span style="color:var(--red)">sector-conditional →</span>
+        <span>certification</span>
+      </div>
+    </div>
+    <div class="detail" id="detail-panel">
+      <div style="font-size:12px;color:var(--text3);font-style:italic">Select a level to explore</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const lvls=[
+  {n:'L0',name:'Infrastructure baseline',delta:'Container perimeter defined and enforced. TLS throughout. Source authentication at all entry points. Network segmentation active. Nothing communicates outside the boundary by default.',
+   controls:4,new:4,
+   regs:['ISO 27001 A.8','HIPAA §164.312 baseline','SOC 2 CC6.6','GDPR Art.32','NIS2 Art.21'],
+   gate:'Container perimeter, TLS, and source authentication active. No data processing begins before this level.',
+   cond:null},
+  {n:'L1',name:'Privacy foundation',delta:'All model inference runs locally — no external API calls. Encryption at rest enforced on all storage. PII detected and redacted at ingestion. Immutable audit log and dataset versioning initialised.',
+   controls:16,new:12,
+   regs:['GDPR Art.32','UK GDPR Art.32','KVKK Art.12','HIPAA encryption','CCPA/CPRA baseline','PIPL Art.51','DPDP Act 2023 Art.8'],
+   gate:'Sovereign data boundary active. Raw personal data does not persist beyond the ingestion stage.',
+   cond:null},
+  {n:'L2',name:'Access & audit',delta:'RBAC enforced at every pipeline stage via OPA and Keycloak. Immutable prompt and response logging via Langfuse, bound to session identity. Schema validation gates ingestion. Model lineage fully tracked via MLflow and DVC.',
+   controls:27,new:11,
+   regs:['GDPR Art.30','SOC 2 CC6–CC7','HIPAA access ctrl','ISO 27001 A.9','NIS2 Art.21','DORA Art.9','PCI DSS Req.7/8/10','KVKK Art.12'],
+   gate:'No pipeline stage accessible without a validated identity token. Audit trail active and searchable.',
+   cond:null},
+  {n:'L3',name:'Behavioural controls',delta:'Input guardrails active — NeMo Guardrails and LLM Guard scan every prompt before inference. Output classification via Detoxify and LLM Guard filters responses before delivery. Evidently AI monitors drift. Human escalation path must be defined architecturally at this level.',
+   controls:33,new:6,
+   regs:['EU AI Act Art.52','HIPAA admin safeguards','SOC 2 CC8','NIST AI RMF','ISO/IEC 42001 baseline','FFIEC guidance'],
+   gate:'Behavioural policy enforced at both pipeline boundaries. Drift monitoring active.',
+   cond:null},
+  {n:'L4',name:'Compliance operationalisation',delta:'All 36 controls active. CVE scanning gates every container deployment via Trivy. Infrastructure compliance benchmarked via OpenSCAP. Clean handoff enforced on all downstream data. Identity context propagated via Istio. Attestation evidence collection begins.',
+   controls:36,new:3,
+   regs:['GDPR DSAR technical foundation','SOC 2 Type II evidence period begins','EU AI Act limited risk — full','KVKK Art.11','CCPA/CPRA consumer rights','ISO 27001 operational controls','PDPA Singapore','APPI Japan'],
+   gate:'All technical controls active. Earliest point at which a SOC 2 Type II evidence period can meaningfully begin.',
+   cond:null},
+  {n:'L5',name:'Sector & geo compliance',delta:'No new tools deployed. Satisfied by evidence artefacts: AI risk classification, model cards, human oversight procedure, sector agreements (BAAs / DORA register entries), cross-border transfer mechanisms documented, bias assessment conducted, data residency verified by egress audit.',
+   controls:36,new:0,
+   regs:['EU AI Act Art.9–15 high-risk','HIPAA full + BAAs','DORA Art.30','NIS2 essential entity','APRA CPS 234','PIPL full + cross-border','DPDP Act 2023 full','FedRAMP Moderate'],
+   gate:'Required for healthcare, financial services, and public-sector deployments. Evidence artefacts, not additional controls.',
+   cond:'sector-conditional'},
+  {n:'L6',name:'Certification & attestation',delta:'No new tools deployed. Requires building an evidence aggregation pipeline across Langfuse, MLflow, Trivy, and OpenSCAP. Produces documentation sufficient for third-party audit: SOC 2 Type II scope, ISO 27001 ISMS package, ISO 42001 AI management docs, EU AI Act Art.43 technical file, independent penetration test report.',
+   controls:36,new:0,
+   regs:['SOC 2 Type II audit report','ISO/IEC 27001 certification','ISO/IEC 42001 certification','EU AI Act Art.43 conformity','FedRAMP High','HITRUST r2','PCI DSS QSA'],
+   gate:'Third-party verifiable evidence package covering the full pipeline. Maintenance: annual re-assessment required.',
+   cond:null},
+];
+
+let selLvl=2;
+
+function renderStaircase(){
+  const maxH=228, minH=60;
+  const range=maxH-minH;
+  const s=document.getElementById('staircase');
+  s.innerHTML=lvls.map((l,i)=>{
+    const h=minH+Math.round(range*(i/6));
+    const done=i<selLvl, act=i===selLvl;
+    const cls=act?'step act':done?'step done':'step';
+    return `<div class="${cls}" style="height:${h}px" onclick="selLvl=${i};renderStaircase();renderDetail()">
+      ${l.cond?`<span class="step-cond">*</span>`:''}
+      <div class="step-lvl">${l.n}</div>
+      <div class="step-name">${l.name}</div>
+      <div class="step-ct">${l.controls}/36</div>
+    </div>`;
+  }).join('');
+}
+
+function renderDetail(){
+  const l=lvls[selLvl];
+  const p=document.getElementById('detail-panel');
+  const newBadge=l.new>0?`<span style="font-family:'IBM Plex Mono';font-size:9px;padding:1px 6px;border-radius:3px;background:var(--amber-d);color:var(--amber);border:0.5px solid var(--amber-b);margin-left:8px">+${l.new} controls</span>`:'<span style="font-family:\'IBM Plex Mono\';font-size:9px;padding:1px 6px;border-radius:3px;background:var(--s3);color:var(--text3);border:0.5px solid var(--bd);margin-left:8px">evidence artefacts</span>';
+  p.innerHTML=`
+    <div class="detail-lvl">${l.n} — ${l.controls} of 36 controls active ${newBadge}</div>
+    <div class="detail-name">${l.name}</div>
+    <div class="detail-delta">${l.delta}</div>
+    <div class="detail-sub">Regulatory frameworks addressed</div>
+    <div>${l.regs.map(r=>`<span class="reg-pill">${r}</span>`).join('')}</div>
+    <div class="detail-gate gate-new" style="margin-top:14px">✓ ${l.gate}</div>
+    ${l.cond?`<div class="detail-gate gate-cond">* This level is sector-conditional. Required for healthcare, financial services, and public-sector deployments. General-purpose deployments may stop at L4 for full technical coverage.</div>`:''}
+  `;
+}
+
+renderStaircase();
+renderDetail();
+
+// ── Posture view ──
+const flows=['Ingestion','Storage','Prompt','Inference','Response','Downstream'];
+const concerns=['Containment','Hygiene','Identity','Behaviour','Traceability','Attestation'];
+const cellLevels=[
+  [0,0,1,1,2,3],
+  [1,1,2,3,2,4],
+  [0,1,2,2,3,4],
+  [2,2,3,3,3,5],
+  [1,1,2,2,3,4],
+  [4,4,5,5,5,6],
+];
+const cellFn=[
+  ['Source boundary','Store isolation','Input surface restrict.','Execution air-gap','Output channel ctrl','Egress governance'],
+  ['PII detect & redact','Data minimisation','Prompt sanitisation','Input integrity check','Output PII scrub','Clean handoff'],
+  ['Source auth.','Artefact access ctrl','Session attribution','Role-based access','Response binding','Identity propagation'],
+  ['Schema & policy valid.','Integrity enforcement','Violation detection','Output scope constraint','Output classification','Post-response monitor'],
+  ['Provenance logging','Versioned lineage','Prompt audit record','Decision param log','Response context link','Output usage tracking'],
+  ['Source compliance','Storage ctrl evidence','Prompt gov. evidence','Model documentation','Output audit reconstruct','E2E compliance proof'],
+];
+const lc=[
+  {f:'rgba(106,170,216,0.72)',s:'rgba(106,170,216,0.9)', gf:'rgba(106,170,216,0.14)',gs:'rgba(106,170,216,0.42)'},
+  {f:'rgba(126,196,127,0.72)',s:'rgba(126,196,127,0.9)', gf:'rgba(126,196,127,0.14)',gs:'rgba(126,196,127,0.42)'},
+  {f:'rgba(95,171,98,0.65)', s:'rgba(95,171,98,0.85)',  gf:'rgba(95,171,98,0.12)', gs:'rgba(95,171,98,0.38)'},
+  {f:'rgba(232,169,74,0.72)',s:'rgba(232,169,74,0.9)',  gf:'rgba(232,169,74,0.14)',gs:'rgba(232,169,74,0.42)'},
+  {f:'rgba(196,139,42,0.65)',s:'rgba(196,139,42,0.85)', gf:'rgba(196,139,42,0.12)',gs:'rgba(196,139,42,0.38)'},
+  {f:'rgba(224,120,120,0.72)',s:'rgba(224,120,120,0.9)',gf:'rgba(224,120,120,0.14)',gs:'rgba(224,120,120,0.42)'},
+  {f:'rgba(184,85,85,0.65)', s:'rgba(184,85,85,0.85)', gf:'rgba(184,85,85,0.12)', gs:'rgba(184,85,85,0.38)'},
+];
+const ringR=[{i:42,o:78},{i:82,o:118},{i:122,o:158},{i:162,o:198},{i:202,o:238},{i:242,o:272}];
+const secAngles=[-90,-30,30,90,150,210];
+const pcx=300,pcy=300,sgap=2.5;
+let pCur=2,pTgt=4;
+
+function d2r(d){return d*Math.PI/180;}
+function arcP(ri,ro,sa,ea){
+  const s=d2r(sa+sgap),e=d2r(ea-sgap);
+  const x1=pcx+ri*Math.cos(s),y1=pcy+ri*Math.sin(s);
+  const x2=pcx+ro*Math.cos(s),y2=pcy+ro*Math.sin(s);
+  const x3=pcx+ro*Math.cos(e),y3=pcy+ro*Math.sin(e);
+  const x4=pcx+ri*Math.cos(e),y4=pcy+ri*Math.sin(e);
+  const la=(e-s)>Math.PI?1:0;
+  return `M${x1.toFixed(2)},${y1.toFixed(2)} L${x2.toFixed(2)},${y2.toFixed(2)} A${ro},${ro} 0 ${la},1 ${x3.toFixed(2)},${y3.toFixed(2)} L${x4.toFixed(2)},${y4.toFixed(2)} A${ri},${ri} 0 ${la},0 ${x1.toFixed(2)},${y1.toFixed(2)}Z`;
+}
+
+function renderPosture(){
+  // resolve theme-sensitive colours up front
+  const centerFill=cv('--posture-center');
+  const divFill=cv('--posture-div');
+  const emptyFill=cv('--posture-seg-empty');
+  const emptyBd=cv('--posture-seg-ebd');
+  const labelFill=cv('--text3');
+
+  // selectors
+  ['cur','tgt'].forEach(type=>{
+    document.getElementById(type+'-pills').innerHTML=lvls.map((l,i)=>{
+      const act=(type==='cur'&&i===pCur)||(type==='tgt'&&i===pTgt);
+      const dim=(type==='tgt'&&i<=pCur)||(type==='cur'&&i>=pTgt);
+      const col=type==='cur'?'var(--green)':'var(--amber)';
+      const colD=type==='cur'?'var(--green-d)':'var(--amber-d)';
+      const colB=type==='cur'?'var(--green-b)':'var(--amber-b)';
+      const st=act?`background:${colD};color:${col};border-color:${colB};`:`opacity:${dim?0.3:0.85};`;
+      return `<button style="font-family:'IBM Plex Mono',monospace;font-size:10px;padding:4px 10px;border-radius:5px;border:0.5px solid var(--bd);background:transparent;color:var(--text3);cursor:pointer;transition:all .12s;${st}" onclick="${type==='cur'?`pCur=${i};if(pTgt<=pCur)pTgt=Math.min(6,pCur+1);`:`pTgt=${i};if(pCur>=pTgt)pCur=Math.max(0,pTgt-1);`}renderPosture()">${l.n}</button>`;
+    }).join('');
+  });
+
+  // SVG segments
+  let h='';
+  for(let ci=0;ci<6;ci++){
+    const r=ringR[ci];
+    for(let fi=0;fi<6;fi++){
+      const lv=cellLevels[ci][fi];
+      const sa=secAngles[fi], ea=sa+60;
+      const p=arcP(r.i,r.o,sa,ea);
+      let fill,stroke,sw='0.75';
+      if(lv<=pCur){fill=lc[lv].f;stroke=lc[lv].s;}
+      else if(lv<=pTgt){fill=lc[lv].gf;stroke=lc[lv].gs;sw='1';}
+      else{fill=emptyFill;stroke=emptyBd;}
+      h+=`<path d="${p}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"><title>${concerns[ci]} × ${flows[fi]}: ${cellFn[ci][fi]} · activates L${lv}</title></path>`;
+    }
+  }
+
+  // stage labels outside ring
+  const lbR=300;
+  flows.forEach((f,fi)=>{
+    const ma=d2r(secAngles[fi]+30);
+    const lx=(pcx+lbR*Math.cos(ma)).toFixed(1);
+    const ly=(pcy+lbR*Math.sin(ma)).toFixed(1);
+    h+=`<text x="${lx}" y="${ly}" font-size="11" font-family="IBM Plex Mono" fill="${labelFill}" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.05em">${f.toUpperCase()}</text>`;
+  });
+
+  // divider lines between sectors
+  for(let fi=0;fi<6;fi++){
+    const a=d2r(secAngles[fi]);
+    const x1=(pcx+40*Math.cos(a)).toFixed(1),y1=(pcy+40*Math.sin(a)).toFixed(1);
+    const x2=(pcx+275*Math.cos(a)).toFixed(1),y2=(pcy+275*Math.sin(a)).toFixed(1);
+    h+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${divFill}" stroke-width="2"/>`;
+  }
+
+  // center readout
+  const achieved=cellLevels.flat().filter(l=>l<=pCur).length;
+  const gapCt=cellLevels.flat().filter(l=>l>pCur&&l<=pTgt).length;
+  h+=`<circle cx="${pcx}" cy="${pcy}" r="36" fill="${centerFill}"/>`;
+  h+=`<text x="${pcx}" y="${pcy-4}" font-size="22" font-weight="600" font-family="Syne,sans-serif" fill="${cv('--text')}" text-anchor="middle">${achieved}</text>`;
+  h+=`<text x="${pcx}" y="${pcy+13}" font-size="9" font-family="IBM Plex Mono,monospace" fill="${cv('--text3')}" text-anchor="middle" letter-spacing="0.06em">/ 36</text>`;
+  if(gapCt>0) h+=`<text x="${pcx}" y="${pcy+26}" font-size="8.5" font-family="IBM Plex Mono,monospace" fill="${cv('--amber')}" text-anchor="middle" letter-spacing="0.04em">+${gapCt} gap</text>`;
+
+  document.getElementById('posture-svg').innerHTML=h;
+
+  // ring legend
+  document.getElementById('ring-legend').innerHTML=ringR.map((_,i)=>`
+    <div style="display:flex;align-items:center;gap:6px;padding:3px 0">
+      <span style="width:11px;height:11px;border-radius:50%;flex-shrink:0;background:${lc[i].f};border:0.5px solid ${lc[i].s};display:inline-block"></span>
+      <span style="font-size:11px;color:var(--text2)">${concerns[i]}</span>
+    </div>`).join('');
+
+  // gap cell list
+  const gapCells=[];
+  for(let ci=0;ci<6;ci++)for(let fi=0;fi<6;fi++){
+    const lv=cellLevels[ci][fi];
+    if(lv>pCur&&lv<=pTgt) gapCells.push({ci,fi,lv});
+  }
+  gapCells.sort((a,b)=>a.lv-b.lv);
+
+  // frameworks newly unlocked
+  const newRegs=[];
+  lvls.forEach((l,i)=>{if(i>pCur&&i<=pTgt)l.regs.forEach(r=>{if(!newRegs.includes(r))newRegs.push(r);});});
+
+  document.getElementById('posture-panel').innerHTML=`
+    <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Posture gap analysis</div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:14px;padding-bottom:14px;border-bottom:0.5px solid var(--bd)">${lvls[pCur].n} → ${lvls[pTgt].n} &nbsp;·&nbsp; ${gapCells.length} control${gapCells.length!==1?'s':''} to activate</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+      <div style="background:var(--s2);border-radius:7px;padding:10px 12px;border:0.5px solid var(--green-b)">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:500;color:var(--green)">${achieved}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);margin-top:3px;letter-spacing:.05em">ACTIVE / 36</div>
+      </div>
+      <div style="background:var(--s2);border-radius:7px;padding:10px 12px;border:0.5px solid ${gapCt>0?'var(--amber-b)':'var(--bd)'}">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:500;color:${gapCt>0?'var(--amber)':'var(--text3)'}">${gapCt}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);margin-top:3px;letter-spacing:.05em">GAP CONTROLS</div>
+      </div>
+    </div>
+    ${gapCells.length?`
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px">Controls to activate</div>
+      <div style="max-height:170px;overflow-y:auto;margin-bottom:16px;border:0.5px solid var(--bd);border-radius:6px">
+        ${gapCells.map((c,idx)=>`
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;${idx<gapCells.length-1?'border-bottom:0.5px solid var(--bd)':''}">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:1px 6px;border-radius:3px;background:${lc[c.lv].gf};color:${lc[c.lv].s};border:0.5px solid ${lc[c.lv].gs};flex-shrink:0">L${c.lv}</span>
+            <span style="font-size:11px;color:var(--text2);flex:1">${cellFn[c.ci][c.fi]}</span>
+            <span style="font-size:10px;color:var(--text3);white-space:nowrap">${concerns[c.ci]}</span>
+          </div>`).join('')}
+      </div>`:
+      `<div style="font-size:11px;color:var(--green);padding:8px 11px;background:var(--green-d);border-radius:5px;border:0.5px solid var(--green-b);margin-bottom:16px">✓ Target posture matches current level.</div>`}
+    ${newRegs.length?`
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px">Frameworks unlocked by reaching ${lvls[pTgt].n}</div>
+      <div>${newRegs.map(r=>`<span style="display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;background:var(--blue-d);color:var(--blue);border:0.5px solid var(--blue-b);margin:2px 3px 2px 0">${r}</span>`).join('')}</div>`:''}
+  `;
+}
+
+function show(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('act'));
+  document.getElementById('v-'+id).classList.add('act');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));
+  event.target.classList.add('act');
+  if(id==='posture') renderPosture();
+  if(id==='pipe') renderPipeline();
+}
+
+// ── Theme helpers ──────────────────────────────────────────────────────────
+function isDark(){
+  const t=document.documentElement.getAttribute('data-theme');
+  if(t==='dark') return true;
+  if(t==='light') return false;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+function cv(name){
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function toggleTheme(){
+  const html=document.documentElement;
+  const cur=html.getAttribute('data-theme');
+  const sysDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  html.setAttribute('data-theme', cur ? (cur==='dark'?'light':'dark') : (sysDark?'light':'dark'));
+  updateThemeBtn();
+  renderPipeline();
+  renderPosture();
+}
+function updateThemeBtn(){
+  const btn=document.getElementById('theme-btn');
+  if(btn) btn.textContent=isDark()?'☀ Light':'☾ Dark';
+}
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{
+  if(!document.documentElement.getAttribute('data-theme')){
+    updateThemeBtn(); renderPipeline(); renderPosture();
+  }
+});
+
+// ── Pipeline SVG render ────────────────────────────────────────────────────
+function renderPipeline(){
+  const box=cv('--svg-box');
+  const txt=cv('--svg-text');
+  const dim=cv('--svg-dim');
+  const dimmer=cv('--svg-dimmer');
+  const faint=cv('--svg-faint');
+  const arr=cv('--svg-arr');
+  const leg=cv('--svg-leg');
+  const legbd=cv('--svg-legbd');
+  // accent colours directly from vars
+  const blue  ={f:'rgba(106,170,216,0.78)',s:'rgba(106,170,216,0.4)',d:'rgba(106,170,216,0.25)',t:'rgba(106,170,216,0.55)',lbl:'rgba(106,170,216,0.7)'};
+  const amber ={f:'rgba(232,169,74,0.06)', s:'rgba(232,169,74,0.25)',d:'rgba(232,169,74,0.35)',t:'rgba(232,169,74,0.80)',lbl:'rgba(232,169,74,0.65)',sp:'rgba(232,169,74,0.20)',spt:'rgba(232,169,74,0.40)',arr:'rgba(232,169,74,0.6)',ext:'rgba(232,169,74,0.40)',leg:'rgba(232,169,74,0.5)'};
+  const green ={sp:'rgba(126,196,127,0.30)',spt:'rgba(126,196,127,0.50)',leg:'rgba(126,196,127,0.40)'};
+
+  // adjust for light mode
+  const dark=isDark();
+  const bl=dark?blue:{f:'rgba(58,122,184,0.78)',s:'rgba(58,122,184,0.4)',d:'rgba(58,122,184,0.28)',t:'rgba(58,122,184,0.55)',lbl:'rgba(58,122,184,0.7)'};
+  const am=dark?amber:{f:'rgba(184,120,32,0.06)',s:'rgba(184,120,32,0.25)',d:'rgba(184,120,32,0.35)',t:'rgba(184,120,32,0.80)',lbl:'rgba(184,120,32,0.65)',sp:'rgba(184,120,32,0.20)',spt:'rgba(184,120,32,0.40)',arr:'rgba(184,120,32,0.55)',ext:'rgba(184,120,32,0.40)',leg:'rgba(184,120,32,0.5)'};
+  const gr=dark?green:{sp:'rgba(58,138,60,0.28)',spt:'rgba(58,138,60,0.48)',leg:'rgba(58,138,60,0.38)'};
+
+  const h=`
+  <defs>
+    <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="${arr}"/></marker>
+    <marker id="arr-amber" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="${am.arr}"/></marker>
+  </defs>
+  <rect x="4" y="8" width="726" height="130" rx="10" fill="none" stroke="${bl.d}" stroke-width="1" stroke-dasharray="5,4"/>
+  <text x="14" y="22" font-size="8" fill="${bl.t}" font-family="IBM Plex Mono" letter-spacing="0.08em">SOVEREIGN BOUNDARY</text>
+  <text x="6" y="64" font-size="8" fill="${dimmer}" font-family="IBM Plex Mono">DATA IN</text>
+  <line x1="50" y1="60" x2="68" y2="60" stroke="${dimmer}" stroke-width="1" marker-end="url(#arr)"/>
+  <rect x="70" y="36" width="104" height="48" rx="6" fill="${box}" stroke="${bl.s}" stroke-width="0.75"/>
+  <text x="122" y="57" font-size="10" font-weight="500" fill="${txt}" text-anchor="middle" font-family="IBM Plex Sans">Ingestion</text>
+  <text x="122" y="72" font-size="8" fill="${bl.lbl}" text-anchor="middle" font-family="IBM Plex Mono">auth · pii-gate</text>
+  <line x1="174" y1="60" x2="192" y2="60" stroke="${dimmer}" stroke-width="1" marker-end="url(#arr)"/>
+  <rect x="194" y="36" width="104" height="48" rx="6" fill="${box}" stroke="${faint}" stroke-width="0.75"/>
+  <text x="246" y="57" font-size="10" font-weight="500" fill="${txt}" text-anchor="middle" font-family="IBM Plex Sans">Storage</text>
+  <text x="246" y="72" font-size="8" fill="${dim}" text-anchor="middle" font-family="IBM Plex Mono">encrypt · rbac</text>
+  <line x1="298" y1="60" x2="316" y2="60" stroke="${dimmer}" stroke-width="1" marker-end="url(#arr)"/>
+  <rect x="318" y="36" width="104" height="48" rx="6" fill="${box}" stroke="${am.d}" stroke-width="0.75"/>
+  <text x="370" y="57" font-size="10" font-weight="500" fill="${txt}" text-anchor="middle" font-family="IBM Plex Sans">Prompt</text>
+  <text x="370" y="72" font-size="8" fill="${am.lbl}" text-anchor="middle" font-family="IBM Plex Mono">sanitise · guard</text>
+  <line x1="422" y1="60" x2="440" y2="60" stroke="${dimmer}" stroke-width="1" marker-end="url(#arr)"/>
+  <rect x="442" y="36" width="104" height="48" rx="6" fill="${box}" stroke="${faint}" stroke-width="0.75"/>
+  <text x="494" y="57" font-size="10" font-weight="500" fill="${txt}" text-anchor="middle" font-family="IBM Plex Sans">Inference</text>
+  <text x="494" y="72" font-size="8" fill="${dim}" text-anchor="middle" font-family="IBM Plex Mono">air-gap · scope</text>
+  <line x1="546" y1="60" x2="564" y2="60" stroke="${dimmer}" stroke-width="1" marker-end="url(#arr)"/>
+  <rect x="566" y="36" width="104" height="48" rx="6" fill="${box}" stroke="${am.d}" stroke-width="0.75"/>
+  <text x="618" y="57" font-size="10" font-weight="500" fill="${txt}" text-anchor="middle" font-family="IBM Plex Sans">Response</text>
+  <text x="618" y="72" font-size="8" fill="${am.lbl}" text-anchor="middle" font-family="IBM Plex Mono">classify · scrub</text>
+  <line x1="670" y1="60" x2="740" y2="60" stroke="${am.arr}" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-amber)"/>
+  <rect x="742" y="36" width="110" height="48" rx="6" fill="${am.f}" stroke="${am.s}" stroke-width="0.75" stroke-dasharray="4,3"/>
+  <text x="797" y="57" font-size="10" font-weight="500" fill="${am.t}" text-anchor="middle" font-family="IBM Plex Sans">Downstream</text>
+  <text x="797" y="72" font-size="8" fill="${am.lbl}" text-anchor="middle" font-family="IBM Plex Mono">egress · govern</text>
+  <text x="742" y="28" font-size="7.5" fill="${am.ext}" font-family="IBM Plex Mono" letter-spacing="0.06em">EXTERNAL</text>
+  <line x1="70" y1="118" x2="730" y2="118" stroke="${gr.sp}" stroke-width="0.75" stroke-dasharray="3,3"/>
+  <text x="70" y="113" font-size="7.5" fill="${gr.spt}" font-family="IBM Plex Mono" letter-spacing="0.07em">AUDIT LOG — all stages — immutable · tamper-evident</text>
+  <line x1="70" y1="132" x2="730" y2="132" stroke="${bl.d}" stroke-width="0.75" stroke-dasharray="3,3"/>
+  <text x="70" y="127" font-size="7.5" fill="${bl.t}" font-family="IBM Plex Mono" letter-spacing="0.07em">IDENTITY CONTEXT — session-bound · propagated downstream</text>
+  <line x1="318" y1="146" x2="670" y2="146" stroke="${am.sp}" stroke-width="0.75" stroke-dasharray="3,3"/>
+  <text x="318" y="141" font-size="7.5" fill="${am.spt}" font-family="IBM Plex Mono" letter-spacing="0.07em">BEHAVIOURAL POLICY — prompt to response</text>
+  <rect x="4" y="168" width="852" height="40" rx="5" fill="${leg}" stroke="${legbd}" stroke-width="0.5"/>
+  <text x="16" y="183" font-size="8.5" fill="${dim}" font-family="IBM Plex Sans">STAGE BORDER COLOUR:</text>
+  <rect x="115" y="174" width="10" height="10" rx="2" fill="none" stroke="${bl.leg||bl.s}" stroke-width="1"/>
+  <text x="129" y="183" font-size="8.5" fill="${dim}" font-family="IBM Plex Sans">Primary auth / trust anchor</text>
+  <rect x="268" y="174" width="10" height="10" rx="2" fill="none" stroke="${am.leg}" stroke-width="1"/>
+  <text x="282" y="183" font-size="8.5" fill="${dim}" font-family="IBM Plex Sans">Active guardrail layer</text>
+  <rect x="410" y="174" width="10" height="10" rx="2" fill="none" stroke="${dimmer}" stroke-width="1"/>
+  <text x="424" y="183" font-size="8.5" fill="${dim}" font-family="IBM Plex Sans">Controlled storage / compute</text>
+  <rect x="568" y="174" width="10" height="10" rx="2" fill="${am.f}" stroke="${am.s}" stroke-width="0.75" stroke-dasharray="3,2"/>
+  <text x="582" y="183" font-size="8.5" fill="${dim}" font-family="IBM Plex Sans">Egress-controlled external boundary</text>
+  <text x="16" y="200" font-size="8.5" fill="${dim}" font-family="IBM Plex Sans">SPINES:</text>
+  <line x1="58" y1="195" x2="78" y2="195" stroke="${gr.leg}" stroke-width="0.75" stroke-dasharray="3,2"/>
+  <text x="82" y="200" font-size="8.5" fill="${dim}" font-family="IBM Plex Sans">Audit &amp; traceability</text>
+  <line x1="178" y1="195" x2="198" y2="195" stroke="${bl.d}" stroke-width="0.75" stroke-dasharray="3,2"/>
+  <text x="202" y="200" font-size="8.5" fill="${dim}" font-family="IBM Plex Sans">Identity propagation</text>
+  <line x1="298" y1="195" x2="318" y2="195" stroke="${am.sp}" stroke-width="0.75" stroke-dasharray="3,2"/>
+  <text x="322" y="200" font-size="8.5" fill="${dim}" font-family="IBM Plex Sans">Behavioural policy enforcement</text>`;
+  document.getElementById('pipe-svg').innerHTML=h;
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+renderStaircase();
+renderDetail();
+renderPipeline();
+updateThemeBtn();
+</script>
+
+<!-- POSTURE VIEW -->
+<div id="v-posture" class="view">
+<p style="font-size:11px;color:var(--text3);margin-bottom:16px;line-height:1.6">Set current and target posture · rings = concern depth (Containment innermost → Attestation outermost) · sectors = data flow stage · <span style="color:var(--green)">solid</span> = active · <span style="color:var(--amber)">outlined</span> = gap to close</p>
+
+<div style="display:flex;gap:28px;margin-bottom:18px;flex-wrap:wrap;align-items:flex-start">
+  <div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">Current posture</div>
+    <div id="cur-pills" style="display:flex;gap:3px;flex-wrap:wrap"></div>
+  </div>
+  <div style="padding-top:19px;font-size:16px;color:var(--text3)">→</div>
+  <div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--amber);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">Target posture</div>
+    <div id="tgt-pills" style="display:flex;gap:3px;flex-wrap:wrap"></div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(340px,480px) 1fr;gap:20px;align-items:start">
+  <div>
+    <svg id="posture-svg" viewBox="-30 -30 660 660" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block"></svg>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;margin-top:10px;padding:10px 12px;background:var(--s1);border:0.5px solid var(--bd);border-radius:7px" id="ring-legend"></div>
+    <div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap">
+      <span style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text3)"><span style="width:14px;height:8px;border-radius:2px;background:rgba(106,170,216,0.72);display:inline-block"></span>Achieved (solid)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text3)"><span style="width:14px;height:8px;border-radius:2px;background:rgba(232,169,74,0.14);border:1px solid rgba(232,169,74,0.42);display:inline-block"></span>Gap (target not yet reached)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text3)"><span style="width:14px;height:8px;border-radius:2px;background:rgba(237,236,234,0.04);border:0.5px solid rgba(237,236,234,0.08);display:inline-block"></span>Out of scope</span>
+    </div>
+  </div>
+  <div id="posture-panel" style="background:var(--s1);border:0.5px solid var(--bd);border-radius:10px;padding:18px 20px"></div>
+</div>
+</div>
+
+</body>
+</html>

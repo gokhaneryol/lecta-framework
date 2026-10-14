@@ -1,0 +1,161 @@
+# Lecta Sovereign AI Control Framework — Identity layer
+# framework v1.0-draft · schema: ../schema.md · text fields bilingual {en, tr}
+# Session 3 (14 Oct 2026): L0–L1 key items for the Quick Scan cut (draft). Other IDE cells: pending.
+
+items:
+
+  - id: IDE-ING-01
+    block: matrix
+    layer: IDE
+    stage: ING
+    title:
+      en: Authenticated sources
+      tr: Kimliği doğrulanmış kaynaklar
+    objective:
+      en: >
+        Every system, connector or user that supplies data to the AI system authenticates
+        with an individual credential before data is accepted; unauthenticated submissions
+        are rejected.
+      tr: >
+        AI sistemine veri sağlayan her sistem, bağlayıcı ya da kullanıcı, veri kabul edilmeden
+        önce kendine ait bir kimlik bilgisiyle doğrulanır; kimliği doğrulanmamış gönderimler
+        reddedilir.
+    question:
+      en: How does each source prove its identity before its data is accepted?
+      tr: Her kaynak, verisi kabul edilmeden önce kimliğini nasıl kanıtlıyor?
+    level: {CE: L0, SOV: L0}
+    applicability:
+      en: Same as HYG-ING-01.
+      tr: HYG-ING-01 ile aynı.
+    evidence:
+      - type: CFG
+        en: Authentication configuration per ingestion path (service credentials, user sign-in for uploads)
+        tr: Giriş yolu başına kimlik doğrulama yapılandırması (servis kimlik bilgileri, yüklemeler için kullanıcı girişi)
+      - type: DOC
+        en: Credential list per source showing no shared or anonymous credentials
+        tr: Paylaşımlı ya da anonim kimlik bilgisi olmadığını gösteren kaynak başına kimlik bilgisi listesi
+      - type: TST
+        en: Dated test of an unauthenticated submission being rejected
+        tr: Kimliği doğrulanmamış bir gönderimin reddedildiğini gösteren tarihli test
+    rubric:
+      0:
+        en: One or more ingestion paths accept data without authentication.
+        tr: Bir ya da daha fazla giriş yolu kimlik doğrulaması olmadan veri kabul ediyor.
+      1:
+        en: >
+          All paths require authentication, but at least one of these is true: a credential is
+          shared by several sources or people; credentials do not expire or rotate; no test
+          record.
+        tr: >
+          Tüm yollar kimlik doğrulaması istiyor ama şunlardan en az biri geçerli: bir kimlik
+          bilgisi birden çok kaynak ya da kişi tarafından paylaşılıyor; kimlik bilgilerinin
+          süresi dolmuyor ya da yenilenmiyor; test kaydı yok.
+      2:
+        en: >
+          Every path requires authentication with individual credentials, credentials expire
+          or rotate on a defined period, and a dated test shows rejection of an unauthenticated
+          submission.
+        tr: >
+          Her yol kendine ait kimlik bilgileriyle doğrulama istiyor, kimlik bilgileri tanımlı
+          bir sürede doluyor ya da yenileniyor ve tarihli bir test kimliksiz gönderimin
+          reddedildiğini gösteriyor.
+      3:
+        en: >
+          Meets 2, and source credentials were reviewed within review_interval; unused
+          credentials are revoked, with a record.
+        tr: >
+          2'yi karşılıyor; kaynak kimlik bilgileri review_interval içinde gözden geçirilmiş ve
+          kullanılmayanlar iptal edilmiş, kaydı var.
+    review_interval: 6
+    quick_scan: false
+    mappings:
+      - {framework: ISO/IEC 27001:2022, ref: "A.5.16, A.5.17, A.8.5"}
+      - {framework: KVKK, ref: "md. 12(1)"}
+      - {framework: SOC 2, ref: "CC6.1 [CHECK]"}
+    services: [AS-02, AS-03]
+    legacy: "Identity x Ingestion — Source authentication"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      v0'daki "provenance is logged" TRA-ING-01'e taşındı. QS'de yok: CON-ING-01 aynı riski
+      beyan düzeyinde yeterince yakalıyor.
+
+  - id: IDE-STO-01
+    block: matrix
+    layer: IDE
+    stage: STO
+    title:
+      en: Role-based access to AI data and artefacts
+      tr: AI verisine ve artefaktlarına rol bazlı erişim
+    objective:
+      en: >
+        Access to AI data stores and artefacts (document corpora, indexes, model files,
+        prompt and response logs) is granted by role to named identities; there is no
+        anonymous or shared access, and access is reviewed.
+      tr: >
+        AI veri depolarına ve artefaktlarına (belge korpusları, indeksler, model dosyaları,
+        prompt ve yanıt kayıtları) erişim, adı belli kimliklere rol bazında verilir; anonim ya
+        da paylaşımlı erişim yoktur ve erişimler gözden geçirilir.
+    question:
+      en: Who can read or change the documents, indexes, model files and logs of this AI system, and how is that decided?
+      tr: Bu AI sisteminin belgelerini, indekslerini, model dosyalarını ve kayıtlarını kim okuyabilir ya da değiştirebilir, buna nasıl karar veriliyor?
+    level: {CE: L1, SOV: L1}
+    applicability:
+      en: Always applicable. For provider-operated stores, assess the organisation-side access (admin consoles, workspace roles).
+      tr: Her zaman uygulanır. Sağlayıcının işlettiği depolarda kurum tarafındaki erişim (yönetim konsolları, çalışma alanı rolleri) değerlendirilir.
+    evidence:
+      - type: DOC
+        en: Role definitions and the list of identities per role for each store
+        tr: Her depo için rol tanımları ve rol başına kimlik listesi
+      - type: CFG
+        en: Access control configuration (or export of permissions) for each store
+        tr: Her depo için erişim kontrol yapılandırması (ya da yetki dökümü)
+      - type: DOC
+        en: Access review record with date, reviewer and removals
+        tr: Tarih, gözden geçiren ve kaldırılan erişimleri içeren erişim gözden geçirme kaydı
+    rubric:
+      0:
+        en: One or more AI stores allow anonymous access or are accessible to all staff by default.
+        tr: Bir ya da daha fazla AI deposu anonim erişime izin veriyor ya da varsayılan olarak tüm çalışanlara açık.
+      1:
+        en: >
+          At least one of these is true: shared or generic accounts have access; permissions
+          do not match the role definitions; roles are not defined for prompt and response
+          logs; no access review has been done.
+        tr: >
+          Şunlardan en az biri geçerli: paylaşımlı ya da genel hesapların erişimi var; yetkiler
+          rol tanımlarıyla örtüşmüyor; prompt ve yanıt kayıtları için rol tanımlı değil; hiç
+          erişim gözden geçirmesi yapılmamış.
+      2:
+        en: >
+          Every store, including prompt and response logs, has defined roles, only named
+          identities hold access, permissions match the role definitions, and an access review
+          was done in the last 12 months.
+        tr: >
+          Prompt ve yanıt kayıtları dahil her depo için roller tanımlı, erişim yalnız adı belli
+          kimliklerde, yetkiler rol tanımlarıyla örtüşüyor ve son 12 ayda erişim gözden
+          geçirmesi yapılmış.
+      3:
+        en: >
+          Meets 2, and access reviews are done within review_interval, and leavers lose access
+          within 2 working days, shown by records.
+        tr: >
+          2'yi karşılıyor; erişim gözden geçirmeleri review_interval içinde yapılıyor ve
+          ayrılan çalışanların erişiminin 2 iş günü içinde kaldırıldığı kayıtlarla gösteriliyor.
+    review_interval: 6
+    quick_scan: true
+    qs_question:
+      en: Is access to the documents and logs of your AI systems limited by role to named people?
+      tr: AI sistemlerinizin belgelerine ve kayıtlarına erişim, rol bazında ve adı belli kişilerle sınırlı mı?
+    mappings:
+      - {framework: KVKK, ref: "md. 12(1)"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.5.15, A.5.18, A.8.3"}
+      - {framework: GDPR, ref: "Art. 32(1)(b)"}
+    services: [AS-01, AS-02, AS-03]
+    legacy: "Identity x Storage — Artefact access ctrl"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      Prompt/yanıt kayıtları açıkça sayıldı: çoğu kurumda en hassas ve en az korunan depo.
+      Secret yönetimi (v0 seviye metni) ayrı madde olarak IDE-STO-02'de yazılacak (oturum 4+).
+      Model üzerinden belge yetkisi (RAG) IDE-INF'te.
