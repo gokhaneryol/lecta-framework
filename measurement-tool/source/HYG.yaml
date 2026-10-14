@@ -1,0 +1,476 @@
+# Lecta Sovereign AI Control Framework — Hygiene layer
+# framework v1.0-draft · schema: ../schema.md
+# Text fields are bilingual {en, tr}. notes: internal, single language allowed.
+# Status: HYG-ING approved (worked example, Session 1–2). HYG-PRM-01 draft (Session 3). Other HYG cells: pending.
+
+items:
+
+  - id: HYG-ING-01
+    block: matrix
+    layer: HYG
+    stage: ING
+    title:
+      en: Personal data scope and treatment defined
+      tr: Kişisel veri kapsamı ve muamelesi tanımlı
+    objective:
+      en: >
+        For every data source feeding the AI system, the personal data categories to be
+        detected are documented, including special categories and locale-specific
+        identifiers, and a treatment is defined for each category.
+      tr: >
+        Yapay zekâ sistemini besleyen her veri kaynağı için tespit edilecek kişisel veri
+        kategorileri, özel nitelikli veriler ve yerel tanımlayıcılar dahil yazılıdır ve her
+        kategori için bir muamele tanımlanmıştır.
+    question:
+      en: >
+        Which personal data categories must be detected in data entering this AI system,
+        and what happens to each category?
+      tr: >
+        Bu yapay zekâ sistemine giren verilerde hangi kişisel veri türleri tespit edilmeli
+        ve her biri için ne yapılıyor (engelleme, maskeleme, takma adlandırma, izinli)?
+    level: {CE: L1, SOV: L1}
+    applicability:
+      en: >
+        Applicable when the organisation operates at least one ingestion path into the
+        system (document upload, RAG indexing, dataset import, connector sync). If the only
+        data entry is users typing prompts, mark NA and assess HYG-PRM instead.
+      tr: >
+        Kurumun sisteme en az bir veri giriş yolu işlettiği durumda uygulanır (belge
+        yükleme, RAG indeksleme, veri seti aktarımı, bağlayıcı senkronizasyonu). Tek veri
+        girişi kullanıcının yazdığı prompt ise NA işaretlenir, HYG-PRM değerlendirilir.
+    evidence:
+      - type: DOC
+        en: Category list per data source (e.g. national ID, IBAN, card number, phone, address, health data)
+        tr: Veri kaynağı başına kategori listesi (ör. TCKN, IBAN, kart numarası, telefon, adres, sağlık verisi)
+      - type: DOC
+        en: "Treatment table: category -> block / mask / pseudonymise / allow, with the basis for 'allow'"
+        tr: "Muamele tablosu: kategori -> engelle / maskele / takma adlandır / izin ver; 'izin ver' için dayanak"
+      - type: DOC
+        en: Approval record naming the owner
+        tr: Sahibini adıyla gösteren onay kaydı
+    rubric:
+      0:
+        en: No documented list of personal data categories for the system.
+        tr: Sistem için yazılı bir kişisel veri kategori listesi yok.
+      1:
+        en: >
+          A list exists but at least one of these is true: it does not cover every in-scope
+          data source; it omits special categories; it omits locale-specific identifiers
+          relevant to the data (e.g. Turkish national ID, IBAN); no treatment is defined per
+          category; no named owner has approved it.
+        tr: >
+          Liste var ama şunlardan en az biri geçerli: kapsamdaki her veri kaynağını
+          kapsamıyor; özel nitelikli verileri içermiyor; veriyle ilgili yerel tanımlayıcıları
+          (ör. TCKN, IBAN) içermiyor; kategori başına muamele tanımlı değil; adı belli bir
+          sahip tarafından onaylanmamış.
+      2:
+        en: >
+          The list covers every in-scope data source, includes special categories and the
+          relevant locale-specific identifiers, defines a treatment per category, and is
+          approved by a named owner.
+        tr: >
+          Liste kapsamdaki her veri kaynağını kapsıyor, özel nitelikli verileri ve ilgili
+          yerel tanımlayıcıları içeriyor, kategori başına muamele tanımlıyor ve adı belli bir
+          sahip tarafından onaylanmış.
+      3:
+        en: >
+          Meets 2, and the list was reviewed within review_interval or after the last
+          addition of a data source, whichever is earlier, with a dated review record.
+        tr: >
+          2'yi karşılıyor ve liste review_interval içinde ya da son veri kaynağı
+          eklendikten sonra (hangisi önce gelirse) gözden geçirilmiş; tarihli gözden geçirme
+          kaydı var.
+    review_interval: 12
+    quick_scan: true
+    qs_question:
+      en: >
+        Is it documented which personal data must be looked for in content entering your AI
+        systems, and what is done with it?
+      tr: >
+        Yapay zekâ sistemlerine giren belgelerde hangi kişisel verilerin aranacağı ve
+        bunlara ne yapılacağı yazılı olarak belirlenmiş mi?
+    mappings:
+      - {framework: KVKK, ref: "md. 4(2)(ç)"}
+      - {framework: KVKK, ref: "md. 6"}
+      - {framework: GDPR, ref: "Art. 5(1)(c)"}
+      - {framework: GDPR, ref: "Art. 25(1)"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.7 [CHECK sub-control]"}
+    services: [AS-01, AS-02, AS-07]
+    legacy: "Hygiene x Ingestion — PII detect & redact"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      HYG-ING-02..04 ve HYG-RES için ön koşul: hedef tanımlanmadan tespit ölçülemez.
+      AS-07 veri haritasına da girdi.
+
+  - id: HYG-ING-02
+    block: matrix
+    layer: HYG
+    stage: ING
+    title:
+      en: Automated detection and treatment before persistence
+      tr: Saklamadan önce otomatik tespit ve muamele
+    objective:
+      en: >
+        Every in-scope ingestion path applies automated detection and the defined
+        treatment before data is stored, indexed or used for training.
+      tr: >
+        Kapsamdaki her veri giriş yolu, veri saklanmadan, indekslenmeden ya da eğitimde
+        kullanılmadan önce otomatik tespit ve tanımlı muameleyi uygular.
+    question:
+      en: >
+        On which ingestion paths is personal data detected and treated automatically,
+        and does this happen before the data is stored or indexed?
+      tr: >
+        Kişisel veriler hangi giriş noktalarında otomatik olarak tespit edilip
+        maskeleniyor? Bu işlem veri saklanmadan ya da indekslenmeden önce mi yapılıyor?
+    level: {CE: L1, SOV: L1}
+    applicability:
+      en: Same as HYG-ING-01.
+      tr: HYG-ING-01 ile aynı.
+    evidence:
+      - type: DOC
+        en: Inventory of ingestion paths (architecture or data-flow diagram)
+        tr: Veri giriş yolları envanteri (mimari ya da veri akış şeması)
+      - type: CFG
+        en: Configuration showing the control on each path and its position before storage/indexing
+        tr: Kontrolün her yoldaki varlığını ve saklama/indeksleme öncesindeki yerini gösteren yapılandırma
+      - type: LOG
+        en: Detection/treatment events from each path, from the last 30 days
+        tr: Son 30 güne ait, her yoldan tespit/muamele kayıtları
+    rubric:
+      0:
+        en: No automated detection on any ingestion path.
+        tr: Hiçbir giriş yolunda otomatik tespit yok.
+      1:
+        en: >
+          At least one of these is true: the control covers only some paths; it detects and
+          logs but does not apply the treatment; it runs after data is stored or indexed;
+          treatment is manual; no log evidence can be produced.
+        tr: >
+          Şunlardan en az biri geçerli: kontrol yolların yalnız bir kısmında; tespit edip
+          kaydediyor ama muameleyi uygulamıyor; veri saklandıktan ya da indekslendikten sonra
+          çalışıyor; muamele elle yapılıyor; kayıt kanıtı sunulamıyor.
+      2:
+        en: >
+          Every path in the inventory has the control before storage/indexing, the treatment
+          from HYG-ING-01 is applied, and log events from the last 30 days exist for every
+          path that received data in that period.
+        tr: >
+          Envanterdeki her yolda kontrol saklama/indeksleme öncesinde var, HYG-ING-01'deki
+          muamele uygulanıyor ve son 30 günde veri alan her yol için o döneme ait kayıt var.
+      3:
+        en: >
+          Meets 2, and a change-control check ensures no new ingestion path goes live
+          without the control; the path inventory was reconciled against the running
+          system within review_interval, with a dated record.
+        tr: >
+          2'yi karşılıyor; değişiklik yönetiminde hiçbir yeni giriş yolunun kontrol olmadan
+          canlıya alınmadığını güvenceye alan bir kontrol adımı var; yol envanteri
+          review_interval içinde çalışan sistemle karşılaştırılmış, tarihli kaydı var.
+    review_interval: 6
+    quick_scan: true
+    qs_question:
+      en: >
+        Is personal data (national ID, IBAN, health data, etc.) in content uploaded or
+        connected to your AI systems masked automatically?
+      tr: >
+        Yapay zekâ sistemlerine yüklenen veya bağlanan verilerdeki kişisel veriler
+        (TCKN, IBAN, sağlık verisi vb.) otomatik olarak maskeleniyor mu?
+    validation_tests:
+      - id: VT-HYG-ING-02-a
+        precondition:
+          en: Synthetic test document with one valid-checksum synthetic national ID, one TR IBAN, one phone number, one address. No real personal data.
+          tr: Bir adet geçerli kontrol haneli sentetik TCKN, bir TR IBAN, bir telefon numarası ve bir adres içeren sentetik test belgesi. Gerçek kişisel veri yok.
+        steps:
+          en: Submit the document through each ingestion path in the inventory; inspect the stored/indexed form.
+          tr: Belgeyi envanterdeki her giriş yolundan gönder; saklanan/indekslenen hâlini incele.
+        expected:
+          en: Every category is treated as defined in HYG-ING-01 in the stored/indexed form; one event per item in the log.
+          tr: Saklanan/indekslenen hâlde her kategori HYG-ING-01'deki tanıma göre işlenmiş; kayıtta her öğe için bir olay var.
+        supports_score: 2
+    mappings:
+      - {framework: KVKK, ref: "md. 12(1)"}
+      - {framework: GDPR, ref: "Art. 25(1)"}
+      - {framework: GDPR, ref: "Art. 32(1)(a)"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.8.11"}
+    services: [AS-01, AS-02, AS-03]
+    legacy: "Hygiene x Ingestion — PII detect & redact"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      v0'daki "every ingested data item" yerine "every in-scope path": yol gözlemlenebilir,
+      tek tek öğe gözlemlenemez. Araç seçenekleri: tool reference (HYG-ING).
+
+  - id: HYG-ING-03
+    block: matrix
+    layer: HYG
+    stage: ING
+    title:
+      en: Detection fails closed
+      tr: Tespit hata durumunda kapalı kalır (fail-closed)
+    objective:
+      en: >
+        When the detection control is unavailable, returns an error, or receives a language,
+        format or category it does not support, the data is blocked or quarantined rather
+        than passed through.
+      tr: >
+        Tespit kontrolü erişilemez olduğunda, hata döndürdüğünde ya da desteklemediği bir
+        dil, format veya kategoriyle karşılaştığında veri geçirilmez; engellenir ya da
+        karantinaya alınır.
+    question:
+      en: What happens to incoming data when the personal data detection control is down or cannot process the input?
+      tr: >
+        Kişisel veri tespit bileşeni çalışmadığında ya da bir belgeyi işleyemediğinde
+        (desteklenmeyen dil/format) veri ne oluyor: duruyor mu, geçiyor mu?
+    level: {CE: L1, SOV: L1}
+    applicability:
+      en: Same as HYG-ING-01.
+      tr: HYG-ING-01 ile aynı.
+    evidence:
+      - type: CFG
+        en: Error/timeout handling configuration on each path
+        tr: Her yolda hata/zaman aşımı davranışını gösteren yapılandırma
+      - type: TST
+        en: "Dated test record: control stopped, unsupported input submitted, result observed"
+        tr: "Tarihli test kaydı: kontrol durduruldu, desteklenmeyen girdi gönderildi, sonuç gözlendi"
+      - type: LOG
+        en: Quarantine/rejection events
+        tr: Karantina/ret kayıtları
+    rubric:
+      0:
+        en: Fails open (data passes untreated), or behaviour is unknown.
+        tr: Hata durumunda açık kalıyor (veri işlenmeden geçiyor) ya da davranış bilinmiyor.
+      1:
+        en: >
+          Fail-closed is configured but has never been tested, or covers only some failure
+          classes (e.g. unavailability but not unsupported language/format), or only some paths.
+        tr: >
+          Fail-closed yapılandırılmış ama hiç test edilmemiş; ya da yalnız bazı hata
+          sınıflarını (ör. erişilemezlik var, desteklenmeyen dil/format yok) veya yalnız bazı
+          yolları kapsıyor.
+      2:
+        en: >
+          Fail-closed is configured on every path for unavailability, error/timeout and
+          unsupported language/format, and a dated test record shows data blocked or
+          quarantined in each class.
+        tr: >
+          Fail-closed her yolda erişilemezlik, hata/zaman aşımı ve desteklenmeyen dil/format
+          için yapılandırılmış; tarihli test kaydı her sınıfta verinin engellendiğini ya da
+          karantinaya alındığını gösteriyor.
+      3:
+        en: >
+          Meets 2, and the test is repeated at every change of the detection component and
+          at least within review_interval; quarantine events raise an alert that is handled,
+          with records.
+        tr: >
+          2'yi karşılıyor; test, tespit bileşeninin her değişikliğinde ve en geç
+          review_interval içinde tekrarlanıyor; karantina olayları alarm üretiyor ve
+          alarmın ele alındığına dair kayıt var.
+    review_interval: 6
+    quick_scan: false
+    validation_tests:
+      - id: VT-HYG-ING-03-a
+        precondition:
+          en: Detection component stopped in a test environment; synthetic document as in VT-HYG-ING-02-a.
+          tr: Test ortamında tespit bileşeni durdurulmuş; VT-HYG-ING-02-a'daki sentetik belge.
+        steps:
+          en: Submit the document through one ingestion path.
+          tr: Belgeyi bir giriş yolundan gönder.
+        expected:
+          en: Document rejected or quarantined; nothing stored or indexed; event logged.
+          tr: Belge reddediliyor ya da karantinaya alınıyor; hiçbir şey saklanmıyor/indekslenmiyor; olay kaydediliyor.
+        supports_score: 2
+      - id: VT-HYG-ING-03-b
+        precondition:
+          en: Detection running; synthetic document in a language or format outside the supported list.
+          tr: Tespit çalışıyor; desteklenen listenin dışındaki bir dil ya da formatta sentetik belge.
+        steps:
+          en: Submit the document.
+          tr: Belgeyi gönder.
+        expected:
+          en: Rejected or quarantined, not passed through untreated.
+          tr: Reddediliyor ya da karantinaya alınıyor; işlenmeden geçmiyor.
+        supports_score: 2
+    mappings:
+      - {framework: KVKK, ref: "md. 12(1)"}
+      - {framework: GDPR, ref: "Art. 32(1)(b)"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.8.11"}
+    services: [AS-02, AS-03]
+    legacy: "Hygiene x Ingestion — stack guide L1 fail-open note"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      v0'da yalnız stack guide'da araç notuydu. Fail-open bir tespit bileşeni HYG-ING-02'yi
+      anlamsız kıldığı için maddeye yükseltildi. Quick Scan'de yok: müşteri test etmeden
+      cevabı nadiren bilir.
+
+  - id: HYG-ING-04
+    block: matrix
+    layer: HYG
+    stage: ING
+    title:
+      en: Detection effectiveness measured
+      tr: Tespit etkinliği ölçülmüş
+    objective:
+      en: >
+        Detection quality is measured against a known-answer test set covering every
+        category in HYG-ING-01, and results are compared with an owner-defined threshold.
+      tr: >
+        Tespit kalitesi, HYG-ING-01'deki her kategoriyi kapsayan bilinen-cevaplı bir test
+        setiyle ölçülür ve sonuçlar sahibin belirlediği eşikle karşılaştırılır.
+    question:
+      en: How do you know what share of personal data the detection actually catches?
+      tr: Tespit bileşeninin kişisel verilerin ne kadarını yakaladığını ölçtünüz mü? Sonuç ve kabul eşiği nedir?
+    level: {CE: L3, SOV: L3}
+    applicability:
+      en: Same as HYG-ING-01.
+      tr: HYG-ING-01 ile aynı.
+    evidence:
+      - type: DOC
+        en: Known-answer test set description (synthetic), categories and counts
+        tr: Bilinen-cevaplı test setinin tanımı (sentetik), kategoriler ve adetler
+      - type: TST
+        en: Per-category detection rate (recall) result, dated
+        tr: Kategori başına tespit oranı (recall) sonucu, tarihli
+      - type: DOC
+        en: Threshold per category set by the owner; action record for categories below threshold
+        tr: Sahibin belirlediği kategori başına eşik; eşiğin altındaki kategoriler için aksiyon kaydı
+    rubric:
+      0:
+        en: Never measured.
+        tr: Hiç ölçülmemiş.
+      1:
+        en: >
+          Measured ad hoc, or without a known-answer set, or not per category, or no result
+          record retained.
+        tr: >
+          Gelişigüzel ölçülmüş; ya da bilinen-cevaplı set kullanılmamış, kategori bazında
+          ölçülmemiş veya sonuç kaydı saklanmamış.
+      2:
+        en: >
+          Measured with a known-answer set covering every category in HYG-ING-01; per-category
+          recall recorded; each category meets its threshold or has an open action with owner
+          and date.
+        tr: >
+          HYG-ING-01'deki her kategoriyi kapsayan bilinen-cevaplı setle ölçülmüş; kategori
+          başına recall kaydedilmiş; her kategori eşiğini karşılıyor ya da sahibi ve tarihi
+          belli açık bir aksiyonu var.
+      3:
+        en: >
+          Meets 2, and the measurement is repeated at every change of detection configuration
+          or model and at least within review_interval; results are kept as a time series.
+        tr: >
+          2'yi karşılıyor; ölçüm tespit yapılandırmasının ya da modelinin her değişikliğinde
+          ve en geç review_interval içinde tekrarlanıyor; sonuçlar zaman serisi olarak
+          saklanıyor.
+    review_interval: 6
+    quick_scan: false
+    mappings:
+      - {framework: GDPR, ref: "Art. 32(1)(d)"}
+      - {framework: NIST AI RMF, ref: "MEASURE 2.10 [CHECK]"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.7 [CHECK sub-control]"}
+    services: [AS-02, AS-03]
+    legacy: "Hygiene x Ingestion — v0 note on recogniser coverage"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      L1 değil L3: L1 kontrolün var olmasını ve fail-closed çalışmasını ister; L3 kalitesinin
+      bilinmesini. Tipik açık Türkçe kapsamı.
+
+  - id: HYG-PRM-01
+    block: matrix
+    layer: HYG
+    stage: PRM
+    title:
+      en: Personal data in prompts treated before the model
+      tr: Prompt'taki kişisel verinin modele ulaşmadan işlenmesi
+    objective:
+      en: >
+        Text and attachments that users or systems submit as prompts are checked for the
+        personal data categories defined for the system, and the defined treatment is applied
+        before the content reaches the model; for external models, before it leaves the
+        organisation.
+      tr: >
+        Kullanıcıların ya da sistemlerin prompt olarak gönderdiği metin ve ekler, sistem için
+        tanımlı kişisel veri kategorilerine göre kontrol edilir ve içerik modele ulaşmadan
+        (dış modellerde kurumdan çıkmadan) önce tanımlı muamele uygulanır.
+    question:
+      en: If a user pastes a customer's national ID or health data into a prompt, what happens before it reaches the model?
+      tr: Bir kullanıcı prompt'a müşterinin TCKN'sini ya da sağlık verisini yapıştırırsa, bu veri modele ulaşmadan ne oluyor?
+    level: {CE: L1, SOV: L2}
+    applicability:
+      en: Always applicable to systems with a prompt interface.
+      tr: Prompt arayüzü olan her sisteme uygulanır.
+    evidence:
+      - type: DOC
+        en: >
+          Category and treatment list for prompts (may reuse HYG-ING-01; must cover free text
+          and attachments)
+        tr: >
+          Prompt'lar için kategori ve muamele listesi (HYG-ING-01 kullanılabilir; serbest metin
+          ve ekleri kapsamalı)
+      - type: CFG
+        en: Configuration showing the control on every prompt channel (UI, API, plug-ins) before the model call
+        tr: Kontrolün her prompt kanalında (arayüz, API, eklentiler) model çağrısından önce bulunduğunu gösteren yapılandırma
+      - type: LOG
+        en: Detection/treatment events from the last 30 days per channel
+        tr: Kanal başına son 30 güne ait tespit/muamele kayıtları
+    rubric:
+      0:
+        en: Prompt content reaches the model with no automated check for personal data.
+        tr: Prompt içeriği kişisel veri için otomatik kontrol olmadan modele ulaşıyor.
+      1:
+        en: >
+          At least one of these is true: only some channels are covered; attachments are not
+          checked; the control detects and warns but does not apply the treatment; the user
+          can override it without a logged reason; no log evidence.
+        tr: >
+          Şunlardan en az biri geçerli: kanalların yalnız bir kısmı kapsanıyor; ekler kontrol
+          edilmiyor; kontrol tespit edip uyarıyor ama muameleyi uygulamıyor; kullanıcı kayıtlı
+          gerekçe olmadan atlatabiliyor; kayıt kanıtı yok.
+      2:
+        en: >
+          Every prompt channel, including attachments, applies the defined treatment before the
+          model call; any user override requires a logged reason; events from the last 30 days
+          exist for every channel used in that period.
+        tr: >
+          Ekler dahil her prompt kanalı model çağrısından önce tanımlı muameleyi uyguluyor;
+          kullanıcının her atlatması kayıtlı gerekçe gerektiriyor; o dönemde kullanılan her
+          kanal için son 30 güne ait kayıt var.
+      3:
+        en: >
+          Meets 2, and overrides and detections are reviewed within review_interval, with
+          actions recorded.
+        tr: >
+          2'yi karşılıyor; atlatmalar ve tespitler review_interval içinde gözden geçiriliyor,
+          aksiyonlar kayıtlı.
+    review_interval: 3
+    quick_scan: true
+    qs_question:
+      en: Is personal data typed or pasted into AI tools masked automatically before it reaches the model?
+      tr: AI araçlarına yazılan ya da yapıştırılan kişisel veriler modele ulaşmadan otomatik olarak maskeleniyor mu?
+    validation_tests:
+      - id: VT-HYG-PRM-01-a
+        precondition:
+          en: Synthetic prompt and synthetic attachment, each with a valid-checksum synthetic national ID and a TR IBAN.
+          tr: Her biri geçerli kontrol haneli sentetik TCKN ve TR IBAN içeren sentetik prompt ve sentetik ek.
+        steps:
+          en: Submit through each prompt channel; inspect the payload received at the model side (gateway or provider log).
+          tr: Her prompt kanalından gönder; model tarafına ulaşan içeriği incele (gateway ya da sağlayıcı kaydı).
+        expected:
+          en: Both identifiers treated as defined in the payload; events logged.
+          tr: Her iki tanımlayıcı içerikte tanıma göre işlenmiş; olaylar kaydedilmiş.
+        supports_score: 2
+    mappings:
+      - {framework: KVKK, ref: "md. 9, md. 12(1)"}
+      - {framework: GDPR, ref: "Art. 25(1), Art. 32(1)(a)"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.8.11, A.8.12"}
+    services: [AS-01, AS-02, AS-03, AS-07]
+    legacy: "Hygiene x Prompt — Prompt sanitisation (PII part)"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      v0 HYG-PRM'nin PII yarısı; injection yarısı BEH-PRM'e gidiyor (01-hucre-analizi).
+      CE'de L1: verinin kurumdan çıktığı nokta. Fail-closed ve etkinlik maddeleri (HYG-PRM-02/03)
+      HYG-ING-03/04 kalıbıyla matris oturumlarında yazılacak.

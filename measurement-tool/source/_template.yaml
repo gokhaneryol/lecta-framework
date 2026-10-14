@@ -1,0 +1,39 @@
+# Empty item template — copy into the layer file (or G.yaml) and fill.
+# Rules: ../schema.md · text fields bilingual {en, tr} · no tool names outside notes
+# Forbidden in rubric text unless quantified: sufficient/yeterli, appropriate/uygun,
+# reasonable/makul, effective/etkin, as needed/gerektiği gibi, regular/düzenli
+
+  - id:                       # CON-ING-01 | G-POL-01  (never reused or renumbered)
+    block:                    # matrix | governance
+    layer:                    # matrix: CON HYG IDE BEH TRA ATT
+    stage:                    # matrix: ING STO PRM INF RES DWN
+    domain:                   # governance: POL INV ROL RSK SUP LIT INC OVS
+    title:        {en: , tr: }
+    objective:    {en: , tr: }   # one requirement, technology-neutral
+    question:     {en: , tr: }
+    level: {CE: , SOV: }      # L0..L6 or null (not applicable to that profile)
+    applicability: {en: , tr: }  # when the item is NA, as a testable condition
+    evidence:
+      - {type: , en: , tr: }  # DOC CFG LOG TST INT OBS — INT alone never supports 2
+    rubric:
+      0: {en: , tr: }
+      1: {en: , tr: }
+      2: {en: , tr: }
+      3: {en: , tr: }
+    review_interval:          # months; quantifies "reviewed" in score 3
+    quick_scan: false
+    qs_question: {en: , tr: } # only if quick_scan: true
+    validation_tests:         # optional, AS-03
+      - id:                   # VT-<item id>-a
+        precondition: {en: , tr: }   # synthetic data only
+        steps:        {en: , tr: }
+        expected:     {en: , tr: }
+        supports_score: 2
+    mappings:
+      - {framework: , ref: }  # article/clause level; unsure -> [CHECK]
+    services: []              # AS-01 AS-02 AS-03 AS-04 AS-07 DS-02 DS-04 AU-01 SU-01
+    legacy:                   # v0 cell function name (matrix)
+    status: draft             # draft | approved | deprecated
+    since: v1.0-draft
+    replaced_by:              # only when deprecated
+    notes:                    # internal; single language allowed

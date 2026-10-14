@@ -1,0 +1,503 @@
+# Lecta Sovereign AI Control Framework — Containment layer
+# framework v1.0-draft · schema: ../schema.md · text fields bilingual {en, tr}
+# Session 3 (14 Oct 2026): L0–L1 key items for the Quick Scan cut (draft). Other CON cells: pending.
+
+items:
+
+  - id: CON-ING-01
+    block: matrix
+    layer: CON
+    stage: ING
+    title:
+      en: Approved data sources only
+      tr: Yalnız onaylı veri kaynakları
+    objective:
+      en: >
+        A register of approved data sources for the AI system is maintained, and every
+        ingestion path accepts data only from sources in the register; other inputs are
+        rejected before processing.
+      tr: >
+        AI sistemi için onaylı veri kaynakları kaydı tutulur ve her veri giriş yolu yalnız
+        kayıttaki kaynaklardan veri kabul eder; diğer girdiler işlenmeden reddedilir.
+    question:
+      en: Which sources may feed data into this AI system, and what happens to data from any other source?
+      tr: Bu AI sistemine hangi kaynaklar veri besleyebilir ve başka bir kaynaktan gelen veriye ne oluyor?
+    level: {CE: L0, SOV: L0}
+    applicability:
+      en: Same as HYG-ING-01 (at least one organisation-operated ingestion path).
+      tr: HYG-ING-01 ile aynı (kurumun işlettiği en az bir veri giriş yolu).
+    evidence:
+      - type: DOC
+        en: Approved source register (source, owner, data categories, path, approval date)
+        tr: Onaylı kaynak kaydı (kaynak, sahip, veri kategorileri, giriş yolu, onay tarihi)
+      - type: CFG
+        en: Configuration on each ingestion path restricting accepted sources (allow-list, connector scope, upload permissions)
+        tr: Her giriş yolunda kabul edilen kaynakları sınırlayan yapılandırma (izin listesi, bağlayıcı kapsamı, yükleme yetkileri)
+      - type: LOG
+        en: Rejection events for unapproved sources, or a test record if none occurred in the last 90 days
+        tr: Onaysız kaynak ret kayıtları; son 90 günde olmadıysa test kaydı
+    rubric:
+      0:
+        en: No source register and no restriction on ingestion paths.
+        tr: Kaynak kaydı yok ve giriş yollarında kısıt yok.
+      1:
+        en: >
+          At least one of these is true: the register exists but one or more paths accept
+          data from sources outside it; restriction is configured but no register exists;
+          neither rejection logs nor a test record can be produced.
+        tr: >
+          Şunlardan en az biri geçerli: kayıt var ama bir ya da daha fazla yol kayıt dışı
+          kaynaklardan veri kabul ediyor; kısıt yapılandırılmış ama kayıt yok; ne ret kaydı ne
+          test kaydı sunulabiliyor.
+      2:
+        en: >
+          Every source in use is in the register, every path accepts only registered sources,
+          and rejection logs or a dated test record show an unapproved source being rejected.
+        tr: >
+          Kullanılan her kaynak kayıtta, her yol yalnız kayıtlı kaynakları kabul ediyor ve ret
+          kayıtları ya da tarihli bir test kaydı onaysız bir kaynağın reddedildiğini gösteriyor.
+      3:
+        en: >
+          Meets 2, and the register was reconciled against the running configuration within
+          review_interval; adding a source requires a recorded approval.
+        tr: >
+          2'yi karşılıyor; kayıt review_interval içinde çalışan yapılandırmayla
+          karşılaştırılmış ve kaynak eklemek kayıtlı bir onay gerektiriyor.
+    review_interval: 6
+    quick_scan: true
+    qs_question:
+      en: Is it defined which systems or sources may feed data into your AI systems, and is anything else blocked?
+      tr: AI sistemlerinize hangi sistem ya da kaynakların veri besleyebileceği tanımlı mı, diğerleri engelleniyor mu?
+    validation_tests:
+      - id: VT-CON-ING-01-a
+        precondition:
+          en: A test source not in the register; synthetic content only.
+          tr: Kayıtta olmayan bir test kaynağı; yalnız sentetik içerik.
+        steps:
+          en: Attempt to ingest from the test source through each path that supports external sources.
+          tr: Dış kaynak destekleyen her yoldan test kaynağıyla veri almayı dene.
+        expected:
+          en: Rejected before processing; nothing stored or indexed; event logged.
+          tr: İşlenmeden reddediliyor; hiçbir şey saklanmıyor ya da indekslenmiyor; olay kaydediliyor.
+        supports_score: 2
+    mappings:
+      - {framework: ISO/IEC 27001:2022, ref: "A.8.20, A.5.14"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.7.3 [CHECK]"}
+      - {framework: KVKK, ref: "md. 12(1)"}
+      - {framework: NIS2, ref: "Art. 21(2)"}
+    services: [AS-01, AS-02, AS-03]
+    legacy: "Containment x Ingestion — Source boundary"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      v0 "approved sources, formats and protocols" üç gereksinimi tek cümlede topluyordu;
+      format/protokol doğrulaması BEH-ING'e (şema) gider. Kaynak kimlik doğrulaması IDE-ING-01.
+
+  - id: CON-ING-02
+    block: matrix
+    layer: CON
+    stage: ING
+    title:
+      en: Encryption in transit
+      tr: Aktarımda şifreleme
+    objective:
+      en: >
+        All data flows into, within and out of the AI system, including calls to external
+        model providers, are encrypted in transit with current protocol versions; unencrypted
+        endpoints are not reachable.
+      tr: >
+        Dış model sağlayıcılarına yapılan çağrılar dahil AI sistemine giren, içinde dolaşan ve
+        çıkan tüm veri akışları güncel protokol sürümleriyle aktarımda şifrelenir;
+        şifresiz uç noktalara erişilemez.
+    question:
+      en: Are all connections to, within and from the AI system encrypted, and how is that verified?
+      tr: AI sistemine giden, içinde dolaşan ve ondan çıkan tüm bağlantılar şifreli mi, bu nasıl doğrulanıyor?
+    level: {CE: L0, SOV: L0}
+    applicability:
+      en: Always applicable.
+      tr: Her zaman uygulanır.
+    evidence:
+      - type: DOC
+        en: List of data flows (from the data-flow diagram) with protocol per flow
+        tr: Akış başına protokolü gösteren veri akışları listesi (veri akış şemasından)
+      - type: CFG
+        en: Protocol and minimum-version configuration on endpoints and service-to-service links
+        tr: Uç noktalarda ve servisler arası bağlantılarda protokol ve asgari sürüm yapılandırması
+      - type: TST
+        en: Scan or test result showing no plaintext or deprecated-protocol endpoint, dated within 6 months
+        tr: Son 6 ay içinde tarihli, şifresiz ya da eskimiş protokollü uç nokta olmadığını gösteren tarama/test sonucu
+    rubric:
+      0:
+        en: One or more external-facing flows are unencrypted, or the state is unknown.
+        tr: Dışa açık bir ya da daha fazla akış şifresiz ya da durum bilinmiyor.
+      1:
+        en: >
+          External-facing flows are encrypted, but at least one of these is true: internal
+          service-to-service flows are unencrypted; deprecated protocol versions are accepted;
+          no flow list exists; no test result can be produced.
+        tr: >
+          Dışa açık akışlar şifreli ama şunlardan en az biri geçerli: servisler arası iç akışlar
+          şifresiz; eskimiş protokol sürümleri kabul ediliyor; akış listesi yok; test sonucu
+          sunulamıyor.
+      2:
+        en: >
+          Every flow in the list, internal and external, is encrypted, deprecated versions are
+          refused, and a test result from the last 6 months confirms it.
+        tr: >
+          Listedeki iç ve dış her akış şifreli, eskimiş sürümler reddediliyor ve son 6 aya ait
+          bir test sonucu bunu doğruluyor.
+      3:
+        en: >
+          Meets 2, and certificate expiry and protocol configuration are monitored with
+          alerts, and the test is repeated within review_interval.
+        tr: >
+          2'yi karşılıyor; sertifika süreleri ve protokol yapılandırması alarmla izleniyor ve
+          test review_interval içinde tekrarlanıyor.
+    review_interval: 6
+    quick_scan: false
+    mappings:
+      - {framework: KVKK, ref: "md. 12(1)"}
+      - {framework: GDPR, ref: "Art. 32(1)(a)"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.8.24"}
+      - {framework: NIS2, ref: "Art. 21(2)(h)"}
+    services: [AS-02, AS-03]
+    legacy: "L0 level text — TLS throughout (no v0 cell)"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      v0 seviye metninde L0 şartıydı ama hücresi yoktu (01-hucre-analizi bulgu 2). CON-ING
+      altında açıldı çünkü sınır kontrolü; tüm aşamaları kapsar. QS'de yok: beyanla cevap
+      neredeyse her zaman "evet", bilgi değeri düşük.
+
+  - id: CON-STO-01
+    block: matrix
+    layer: CON
+    stage: STO
+    title:
+      en: Segmentation of AI data stores
+      tr: AI veri depolarının ayrıştırılması
+    objective:
+      en: >
+        Data stores used by the AI system (document corpora, vector indexes, model files,
+        logs) are network-segmented so that only the components that need them can reach
+        them; default network policy denies all other access.
+      tr: >
+        AI sisteminin kullandığı veri depoları (belge korpusları, vektör indeksleri, model
+        dosyaları, kayıtlar) ağ düzeyinde ayrıştırılmıştır; yalnız ihtiyaç duyan bileşenler
+        erişebilir ve varsayılan ağ politikası diğer tüm erişimi reddeder.
+    question:
+      en: Which components can reach the AI system's data stores over the network, and is everything else denied by default?
+      tr: AI sisteminin veri depolarına ağ üzerinden hangi bileşenler erişebiliyor, diğer her şey varsayılan olarak engelli mi?
+    level: {CE: L0, SOV: L0}
+    applicability:
+      en: >
+        Applicable to stores operated by the organisation. For stores operated by an external
+        provider, mark NA and assess G-SUP-01 and G-SUP-02.
+      tr: >
+        Kurumun işlettiği depolara uygulanır. Dış sağlayıcının işlettiği depolar için NA
+        işaretlenir; G-SUP-01 ve G-SUP-02 değerlendirilir.
+    evidence:
+      - type: DOC
+        en: Store inventory with the components allowed to reach each store
+        tr: Her depoya erişebilen bileşenleri gösteren depo envanteri
+      - type: CFG
+        en: Network policy or firewall rules showing default deny and the allowed flows
+        tr: Varsayılan reddi ve izinli akışları gösteren ağ politikası ya da firewall kuralları
+      - type: TST
+        en: Connection test from a non-allowed component, dated
+        tr: İzinsiz bir bileşenden yapılmış, tarihli bağlantı testi
+    rubric:
+      0:
+        en: AI data stores are reachable from the general network with no segmentation.
+        tr: AI veri depolarına genel ağdan erişilebiliyor, ayrıştırma yok.
+      1:
+        en: >
+          At least one of these is true: some stores are segmented and others are not; rules
+          allow broader access than the inventory states; the default is allow; no test record.
+        tr: >
+          Şunlardan en az biri geçerli: bazı depolar ayrıştırılmış, diğerleri değil; kurallar
+          envanterde belirtilenden geniş erişime izin veriyor; varsayılan izin; test kaydı yok.
+      2:
+        en: >
+          Every store in the inventory is segmented with default deny, allowed flows match the
+          inventory, and a dated test shows a non-allowed component is refused.
+        tr: >
+          Envanterdeki her depo varsayılan red ile ayrıştırılmış, izinli akışlar envanterle
+          örtüşüyor ve tarihli bir test izinsiz bir bileşenin reddedildiğini gösteriyor.
+      3:
+        en: >
+          Meets 2, and rules were reconciled against the inventory within review_interval,
+          and rule changes require recorded approval.
+        tr: >
+          2'yi karşılıyor; kurallar review_interval içinde envanterle karşılaştırılmış ve kural
+          değişiklikleri kayıtlı onay gerektiriyor.
+    review_interval: 6
+    quick_scan: false
+    mappings:
+      - {framework: ISO/IEC 27001:2022, ref: "A.8.22"}
+      - {framework: KVKK, ref: "md. 12(1)"}
+      - {framework: NIS2, ref: "Art. 21(2)"}
+    services: [AS-02, AS-03]
+    legacy: "Containment x Storage — Store isolation"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      Belge düzeyinde yetki (A kullanıcısı B'nin belgesi) burada değil, IDE-STO / IDE-INF'te.
+      Bu madde ağ düzeyi.
+
+  - id: CON-STO-02
+    block: matrix
+    layer: CON
+    stage: STO
+    title:
+      en: Encryption at rest with controlled keys
+      tr: Kontrollü anahtarlarla depolamada şifreleme
+    objective:
+      en: >
+        Every store holding AI data (corpora, indexes, model files, prompt and response logs,
+        backups) is encrypted at rest, and the organisation knows who controls the keys.
+      tr: >
+        AI verisi tutan her depo (korpuslar, indeksler, model dosyaları, prompt ve yanıt
+        kayıtları, yedekler) depolamada şifrelidir ve anahtarları kimin kontrol ettiği bilinir.
+    question:
+      en: Is every store holding AI data encrypted at rest, including logs and backups, and who holds the keys?
+      tr: Kayıtlar ve yedekler dahil AI verisi tutan her depo depolamada şifreli mi, anahtarlar kimde?
+    level: {CE: L1, SOV: L1}
+    applicability:
+      en: Always applicable. For provider-operated stores, evidence is the provider's documented encryption and key arrangement.
+      tr: Her zaman uygulanır. Sağlayıcının işlettiği depolarda kanıt, sağlayıcının belgelenmiş şifreleme ve anahtar düzenidir.
+    evidence:
+      - type: DOC
+        en: Store inventory (as CON-STO-01, plus provider-operated stores and backups) with encryption status and key holder per store
+        tr: Depo başına şifreleme durumu ve anahtar sahibini gösteren depo envanteri (CON-STO-01 + sağlayıcı depoları ve yedekler)
+      - type: CFG
+        en: Encryption configuration for organisation-operated stores
+        tr: Kurumun işlettiği depolar için şifreleme yapılandırması
+      - type: DOC
+        en: Provider documentation for provider-operated stores
+        tr: Sağlayıcının işlettiği depolar için sağlayıcı belgeleri
+    rubric:
+      0:
+        en: One or more stores holding personal or confidential data are not encrypted, or status is unknown.
+        tr: Kişisel ya da gizli veri tutan bir ya da daha fazla depo şifresiz ya da durum bilinmiyor.
+      1:
+        en: >
+          Primary stores are encrypted, but at least one of these is true: logs, indexes or
+          backups are not; the key holder is not identified for every store; no configuration
+          or provider evidence can be produced.
+        tr: >
+          Ana depolar şifreli ama şunlardan en az biri geçerli: kayıtlar, indeksler ya da
+          yedekler şifresiz; her depo için anahtar sahibi belirlenmemiş; yapılandırma ya da
+          sağlayıcı kanıtı sunulamıyor.
+      2:
+        en: >
+          Every store in the inventory, including logs, indexes and backups, is encrypted at
+          rest with configuration or provider evidence, and the key holder is recorded for each.
+        tr: >
+          Kayıtlar, indeksler ve yedekler dahil envanterdeki her depo depolamada şifreli,
+          yapılandırma ya da sağlayıcı kanıtı var ve her biri için anahtar sahibi kayıtlı.
+      3:
+        en: >
+          Meets 2, and key rotation or access to keys was reviewed within review_interval, with
+          a record.
+        tr: >
+          2'yi karşılıyor ve anahtar rotasyonu ya da anahtarlara erişim review_interval içinde
+          gözden geçirilmiş, kaydı var.
+    review_interval: 12
+    quick_scan: true
+    qs_question:
+      en: Are the documents, indexes and logs used by your AI systems encrypted where they are stored?
+      tr: AI sistemlerinizin kullandığı belgeler, indeksler ve kayıtlar saklandıkları yerde şifreli mi?
+    mappings:
+      - {framework: KVKK, ref: "md. 12(1)"}
+      - {framework: GDPR, ref: "Art. 32(1)(a)"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.8.24"}
+    services: [AS-01, AS-02]
+    legacy: "L1 level text — encryption at rest (no v0 cell)"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      v0'da hücresi olmayan L1 şartı. Anahtar sahibi bilgisi SOV iddiası için G-SUP-02'ye
+      girdi. Kayıt ve yedeklerin açıkça sayılması bilinçli: tipik açık orada.
+
+  - id: CON-INF-01
+    block: matrix
+    layer: CON
+    stage: INF
+    title:
+      en: Inference inside the governed boundary
+      tr: Çıkarımın yönetilen sınır içinde kalması
+    objective:
+      en: >
+        Model execution runs inside the organisation's governed boundary, and the inference
+        environment has no outbound network access except to explicitly listed internal
+        destinations.
+      tr: >
+        Model çalıştırma kurumun yönetilen sınırı içinde gerçekleşir ve çıkarım ortamının açıkça
+        listelenmiş iç hedefler dışında dışarıya ağ erişimi yoktur.
+    question:
+      en: Where do the models run, and can the inference environment reach anything outside the boundary?
+      tr: Modeller nerede çalışıyor ve çıkarım ortamı sınırın dışındaki bir yere erişebiliyor mu?
+    level: {CE: null, SOV: L1}
+    applicability:
+      en: Sovereign profile only. For Controlled External systems assess CON-INF-02.
+      tr: Yalnız Sovereign profil. Controlled External sistemlerde CON-INF-02 değerlendirilir.
+    evidence:
+      - type: DOC
+        en: Architecture showing where each model runs and the boundary
+        tr: Her modelin nerede çalıştığını ve sınırı gösteren mimari
+      - type: CFG
+        en: Egress policy for the inference environment (default deny, listed internal destinations)
+        tr: Çıkarım ortamı için çıkış politikası (varsayılan red, listelenmiş iç hedefler)
+      - type: LOG
+        en: Egress or drop logs from the inference environment for at least 7 days of operation, or a dated egress test
+        tr: Çıkarım ortamından en az 7 günlük çalışmaya ait çıkış/düşürme kayıtları ya da tarihli çıkış testi
+    rubric:
+      0:
+        en: Inference environment has unrestricted outbound access, or models are called on an external service.
+        tr: Çıkarım ortamının dışarıya kısıtsız erişimi var ya da modeller dış bir servis üzerinden çağrılıyor.
+      1:
+        en: >
+          Models run inside the boundary, but at least one of these is true: egress is not
+          default deny; outbound destinations exist beyond the listed ones (e.g. telemetry,
+          model or package downloads at runtime); no log or test evidence.
+        tr: >
+          Modeller sınır içinde çalışıyor ama şunlardan en az biri geçerli: çıkış varsayılan
+          red değil; listelenenler dışında dış hedefler var (ör. telemetri, çalışma anında
+          model ya da paket indirme); kayıt ya da test kanıtı yok.
+      2:
+        en: >
+          All models run inside the boundary, egress is default deny with only listed internal
+          destinations, and logs or a dated test show no other outbound connection.
+        tr: >
+          Tüm modeller sınır içinde çalışıyor, çıkış yalnız listelenmiş iç hedeflerle varsayılan
+          red ve kayıtlar ya da tarihli bir test başka bir dış bağlantı olmadığını gösteriyor.
+      3:
+        en: >
+          Meets 2, and outbound attempts from the inference environment raise alerts that are
+          handled, and the egress test is repeated within review_interval.
+        tr: >
+          2'yi karşılıyor; çıkarım ortamından dışarıya bağlantı denemeleri alarm üretiyor ve
+          ele alınıyor; çıkış testi review_interval içinde tekrarlanıyor.
+    review_interval: 6
+    quick_scan: true
+    qs_question:
+      en: Do your AI models run on your own infrastructure, with no outbound internet access?
+      tr: AI modelleriniz kendi altyapınızda, dışarıya internet erişimi olmadan mı çalışıyor?
+    validation_tests:
+      - id: VT-CON-INF-01-a
+        precondition:
+          en: Shell or job execution available inside the inference environment (test system).
+          tr: Çıkarım ortamında kabuk ya da iş çalıştırma imkânı (test sistemi).
+        steps:
+          en: Attempt outbound connections to an external address and to an unlisted internal address.
+          tr: Dış bir adrese ve listelenmemiş bir iç adrese bağlantı dene.
+        expected:
+          en: Both refused; attempt logged.
+          tr: İkisi de reddediliyor; deneme kaydediliyor.
+        supports_score: 2
+    mappings:
+      - {framework: KVKK, ref: "md. 9, md. 12(1)"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.8.20, A.8.22"}
+      - {framework: BDDK, ref: "Bilgi Sistemleri Yönetmeliği — lokalizasyon [CHECK]"}
+    services: [AS-01, AS-02, AS-03]
+    legacy: "Containment x Inference — Execution air-gap"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      v0 "air-gap / activations cannot be exfiltrated" → gözlemlenebilir olan çıkış reddine
+      indirgendi. Y-6: v0 L1 tanımı ("dış API yok") artık yalnız SOV profilinin kapısı.
+
+  - id: CON-INF-02
+    block: matrix
+    layer: CON
+    stage: INF
+    title:
+      en: External inference only through sanctioned endpoints
+      tr: Dış çıkarımın yalnız onaylı uç noktalardan yapılması
+    objective:
+      en: >
+        Calls to external model providers pass through a controlled point that allows only
+        sanctioned providers, endpoints and accounts (organisation-contracted, not personal),
+        and the calls are logged.
+      tr: >
+        Dış model sağlayıcılarına yapılan çağrılar yalnız onaylı sağlayıcılara, uç noktalara ve
+        hesaplara (kişisel değil, kurumun sözleşmeli hesapları) izin veren kontrollü bir
+        noktadan geçer ve kayıt altına alınır.
+    question:
+      en: Through which point do your systems call external AI models, and can they reach a provider or account that is not sanctioned?
+      tr: Sistemleriniz dış AI modellerini hangi noktadan çağırıyor; onaylı olmayan bir sağlayıcıya ya da hesaba erişebilirler mi?
+    level: {CE: L1, SOV: null}
+    applicability:
+      en: Controlled External profile only. For Sovereign systems assess CON-INF-01.
+      tr: Yalnız Controlled External profil. Sovereign sistemlerde CON-INF-01 değerlendirilir.
+    evidence:
+      - type: DOC
+        en: List of sanctioned providers, endpoints and organisation accounts (consistent with G-SUP-01)
+        tr: Onaylı sağlayıcılar, uç noktalar ve kurum hesapları listesi (G-SUP-01 ile tutarlı)
+      - type: CFG
+        en: Controlled point configuration (gateway, proxy or egress rules) allowing only listed destinations
+        tr: Yalnız listelenmiş hedeflere izin veren kontrollü nokta yapılandırması (gateway, proxy ya da çıkış kuralları)
+      - type: LOG
+        en: Call logs with provider, endpoint, calling system and time for the last 30 days
+        tr: Son 30 güne ait sağlayıcı, uç nokta, çağıran sistem ve zaman içeren çağrı kayıtları
+    rubric:
+      0:
+        en: Systems call external models directly with no controlled point, or with personal accounts or keys.
+        tr: Sistemler dış modelleri kontrollü nokta olmadan ya da kişisel hesap/anahtarla doğrudan çağırıyor.
+      1:
+        en: >
+          A controlled point exists but at least one of these is true: some systems bypass it;
+          it does not restrict destinations to the sanctioned list; personal accounts or keys
+          are in use; calls are not logged.
+        tr: >
+          Kontrollü nokta var ama şunlardan en az biri geçerli: bazı sistemler onu atlıyor;
+          hedefleri onaylı listeyle sınırlamıyor; kişisel hesap ya da anahtar kullanılıyor;
+          çağrılar kaydedilmiyor.
+      2:
+        en: >
+          Every system calls external models only through the controlled point, only sanctioned
+          destinations and organisation accounts are reachable, direct egress to providers is
+          blocked, and calls from the last 30 days are logged.
+        tr: >
+          Her sistem dış modelleri yalnız kontrollü noktadan çağırıyor, yalnız onaylı hedeflere
+          ve kurum hesaplarına erişilebiliyor, sağlayıcılara doğrudan çıkış engelli ve son 30
+          günün çağrıları kayıtlı.
+      3:
+        en: >
+          Meets 2, and call logs are reviewed within review_interval against G-SUP-01; a
+          provider removed from the sanctioned list is blocked within 5 working days, shown by
+          a record.
+        tr: >
+          2'yi karşılıyor; çağrı kayıtları review_interval içinde G-SUP-01 ile karşılaştırılarak
+          gözden geçiriliyor ve onaylı listeden çıkarılan bir sağlayıcının 5 iş günü içinde
+          engellendiği kayıtla gösteriliyor.
+    review_interval: 3
+    quick_scan: true
+    qs_question:
+      en: Do your systems call external AI services only through a central, controlled point using organisation accounts?
+      tr: Sistemleriniz dış AI servislerini yalnız merkezi, kontrollü bir noktadan ve kurum hesaplarıyla mı çağırıyor?
+    validation_tests:
+      - id: VT-CON-INF-02-a
+        precondition:
+          en: Test host in the same network zone as an AI-consuming system.
+          tr: AI kullanan bir sistemle aynı ağ bölgesinde test sunucusu.
+        steps:
+          en: Attempt a direct call to a sanctioned provider bypassing the controlled point, and a call to an unsanctioned provider through it.
+          tr: Onaylı bir sağlayıcıya kontrollü noktayı atlayarak doğrudan, onaysız bir sağlayıcıya ise kontrollü noktadan çağrı yapmayı dene.
+        expected:
+          en: Both refused; attempts logged.
+          tr: İkisi de reddediliyor; denemeler kaydediliyor.
+        supports_score: 2
+    mappings:
+      - {framework: KVKK, ref: "md. 9, md. 12(1)"}
+      - {framework: ISO/IEC 27001:2022, ref: "A.5.23, A.8.20"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.10.3 [CHECK]"}
+    services: [AS-01, AS-02, AS-03, AS-04]
+    legacy: "Containment x Inference — Controlled External counterpart (new, Y-6)"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      Y-6'nın CE tarafı: SOV'un "dış çağrı yok" kapısının CE karşılığı "dış çağrı yalnız
+      kontrollü noktadan". Kontrollü nokta tipik olarak AI gateway (Y-9 ile ilişkili); madde
+      teknolojiden bağımsız yazıldı.

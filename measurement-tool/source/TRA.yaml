@@ -1,0 +1,84 @@
+# Lecta Sovereign AI Control Framework — Traceability layer
+# framework v1.0-draft · schema: ../schema.md · text fields bilingual {en, tr}
+# Session 3 (14 Oct 2026): L1 key item for the Quick Scan cut (draft). Other TRA cells: pending.
+
+items:
+
+  - id: TRA-ING-01
+    block: matrix
+    layer: TRA
+    stage: ING
+    title:
+      en: Tamper-evident provenance log
+      tr: Kurcalamaya dayanıklı kaynak kaydı
+    objective:
+      en: >
+        Every data item entering the AI system is logged with source, time, data categories
+        and treatment applied, in a log that ordinary system administrators cannot alter or
+        delete without detection.
+      tr: >
+        AI sistemine giren her veri öğesi kaynak, zaman, veri kategorileri ve uygulanan
+        muameleyle, olağan sistem yöneticilerinin fark edilmeden değiştiremeyeceği ya da
+        silemeyeceği bir kayda yazılır.
+    question:
+      en: For a given document in the AI system, can you show where it came from, when, and what was done to it — and who could change that record?
+      tr: AI sistemindeki herhangi bir belge için nereden, ne zaman geldiğini ve ona ne yapıldığını gösterebilir misiniz; bu kaydı kim değiştirebilir?
+    level: {CE: L1, SOV: L1}
+    applicability:
+      en: Same as HYG-ING-01.
+      tr: HYG-ING-01 ile aynı.
+    evidence:
+      - type: CFG
+        en: Logging configuration on each ingestion path with the four fields (source, time, categories, treatment)
+        tr: Her giriş yolunda dört alanı (kaynak, zaman, kategoriler, muamele) içeren kayıt yapılandırması
+      - type: CFG
+        en: Log store protection (append-only or write-once setting, separate permissions from system administrators, or integrity verification)
+        tr: Kayıt deposu koruması (yalnız ekleme ya da tek yazım ayarı, sistem yöneticilerinden ayrı yetki ya da bütünlük doğrulaması)
+      - type: TST
+        en: Trace of three sampled stored items back to their log entries
+        tr: Saklanan üç örnek öğenin kayıt girdilerine kadar izlenmesi
+    rubric:
+      0:
+        en: Ingestion is not logged.
+        tr: Veri girişi kaydedilmiyor.
+      1:
+        en: >
+          Ingestion is logged, but at least one of these is true: one of the four fields is
+          missing; some paths are not logged; system administrators can alter or delete
+          entries without detection; a sampled item cannot be traced.
+        tr: >
+          Veri girişi kaydediliyor ama şunlardan en az biri geçerli: dört alandan biri eksik;
+          bazı yollar kaydedilmiyor; sistem yöneticileri girdileri fark edilmeden değiştirip
+          silebiliyor; örnek bir öğe izlenemiyor.
+      2:
+        en: >
+          Every path logs the four fields, the log store is protected by at least one of the
+          listed mechanisms, and all three sampled items are traced to their entries.
+        tr: >
+          Her yol dört alanı kaydediyor, kayıt deposu listelenen mekanizmalardan en az biriyle
+          korunuyor ve üç örnek öğenin üçü de girdilerine kadar izleniyor.
+      3:
+        en: >
+          Meets 2, and log integrity is verified within review_interval (e.g. hash check or
+          gap detection) with a record, and log retention matches the defined retention period.
+        tr: >
+          2'yi karşılıyor; kayıt bütünlüğü review_interval içinde doğrulanıyor (ör. özet
+          kontrolü ya da boşluk tespiti) ve kaydı var; kayıt saklama süresi tanımlı süreyle
+          örtüşüyor.
+    review_interval: 3
+    quick_scan: true
+    qs_question:
+      en: Can you show where each document in your AI systems came from and when, from a log that cannot be edited?
+      tr: AI sistemlerinizdeki her belgenin nereden ve ne zaman geldiğini, değiştirilemeyen bir kayıttan gösterebilir misiniz?
+    mappings:
+      - {framework: ISO/IEC 27001:2022, ref: "A.8.15"}
+      - {framework: ISO/IEC 42001, ref: "Annex A.7.5"}
+      - {framework: GDPR, ref: "Art. 30 [CHECK — records link]"}
+      - {framework: KVKK, ref: "md. 12(1)"}
+    services: [AS-01, AS-02, AU-01]
+    legacy: "Traceability x Ingestion — Provenance logging"
+    status: approved
+    since: v1.0-draft
+    notes: >
+      v0 "immutable and tamper-evident" ölçütsüzdü; üç mekanizmadan biri şartı ölçülebilir
+      kıldı. Tek başına "log tutuluyor" 1 puan.

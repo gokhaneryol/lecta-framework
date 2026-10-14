@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sovereign AI Guardrails — Maturity Matrix</title>
+<style>
+  :root {
+    --color-background-primary:#ffffff;--color-background-secondary:#f1efe8;--color-background-tertiary:#e8e6de;
+    --color-background-info:#e6f1fb;--color-background-success:#eaf3de;--color-background-warning:#faeeda;--color-background-danger:#fcebeb;
+    --color-text-primary:#2c2c2a;--color-text-secondary:#5f5e5a;--color-text-tertiary:#888780;
+    --color-text-info:#185fa5;--color-text-success:#3b6d11;--color-text-warning:#854f0b;--color-text-danger:#a32d2d;
+    --color-border-tertiary:rgba(44,44,42,0.15);--color-border-secondary:rgba(44,44,42,0.3);--color-border-primary:rgba(44,44,42,0.4);
+    --color-border-info:rgba(24,95,165,0.35);--color-border-success:rgba(59,109,17,0.35);--color-border-warning:rgba(133,79,11,0.35);--color-border-danger:rgba(163,45,45,0.35);
+    --font-sans:system-ui,-apple-system,sans-serif;
+  }
+  @media(prefers-color-scheme:dark){:root{
+    --color-background-primary:#1a1a18;--color-background-secondary:#232320;--color-background-tertiary:#2c2c2a;
+    --color-background-info:#042c53;--color-background-success:#173404;--color-background-warning:#412402;--color-background-danger:#501313;
+    --color-text-primary:#eeecea;--color-text-secondary:#b4b2a9;--color-text-tertiary:#888780;
+    --color-text-info:#85b7eb;--color-text-success:#97c459;--color-text-warning:#fac775;--color-text-danger:#f09595;
+    --color-border-tertiary:rgba(238,236,234,0.15);--color-border-secondary:rgba(238,236,234,0.3);--color-border-primary:rgba(238,236,234,0.4);
+    --color-border-info:rgba(133,183,235,0.35);--color-border-success:rgba(151,196,89,0.35);--color-border-warning:rgba(250,199,117,0.35);--color-border-danger:rgba(240,149,149,0.35);
+  }}
+  html[data-theme="light"]{
+    --color-background-primary:#ffffff;--color-background-secondary:#f1efe8;--color-background-tertiary:#e8e6de;
+    --color-background-info:#e6f1fb;--color-background-success:#eaf3de;--color-background-warning:#faeeda;--color-background-danger:#fcebeb;
+    --color-text-primary:#2c2c2a;--color-text-secondary:#5f5e5a;--color-text-tertiary:#888780;
+    --color-text-info:#185fa5;--color-text-success:#3b6d11;--color-text-warning:#854f0b;--color-text-danger:#a32d2d;
+    --color-border-tertiary:rgba(44,44,42,0.15);--color-border-secondary:rgba(44,44,42,0.3);--color-border-primary:rgba(44,44,42,0.4);
+    --color-border-info:rgba(24,95,165,0.35);--color-border-success:rgba(59,109,17,0.35);--color-border-warning:rgba(133,79,11,0.35);--color-border-danger:rgba(163,45,45,0.35);
+  }
+  html[data-theme="dark"]{
+    --color-background-primary:#1a1a18;--color-background-secondary:#232320;--color-background-tertiary:#2c2c2a;
+    --color-background-info:#042c53;--color-background-success:#173404;--color-background-warning:#412402;--color-background-danger:#501313;
+    --color-text-primary:#eeecea;--color-text-secondary:#b4b2a9;--color-text-tertiary:#888780;
+    --color-text-info:#85b7eb;--color-text-success:#97c459;--color-text-warning:#fac775;--color-text-danger:#f09595;
+    --color-border-tertiary:rgba(238,236,234,0.15);--color-border-secondary:rgba(238,236,234,0.3);--color-border-primary:rgba(238,236,234,0.4);
+    --color-border-info:rgba(133,183,235,0.35);--color-border-success:rgba(151,196,89,0.35);--color-border-warning:rgba(250,199,117,0.35);--color-border-danger:rgba(240,149,149,0.35);
+  }
+  .theme-btn{font-family:var(--font-sans);font-size:11px;padding:4px 10px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-tertiary);cursor:pointer;transition:all .15s;margin-left:auto}
+  .theme-btn:hover{color:var(--color-text-primary);border-color:var(--color-border-primary)}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font-sans);background:var(--color-background-primary);color:var(--color-text-primary);padding:24px;font-size:14px;line-height:1.5}
+  h1{font-size:17px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+  .sub{font-size:12px;color:var(--color-text-tertiary);margin-bottom:14px}
+  .tab-bar{display:flex;gap:4px;margin-bottom:14px}
+  .tb{padding:6px 14px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-sans);transition:all .15s}
+  .tb.act{background:var(--color-background-warning);color:var(--color-text-warning);border-color:var(--color-border-warning)}
+  .lpill{padding:5px 10px;border-radius:20px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);font-size:11px;font-weight:500;transition:all .15s;white-space:nowrap;margin:0 3px 4px 0;font-family:var(--font-sans)}
+  .lpill.act{background:var(--color-background-warning);color:var(--color-text-warning);border-color:var(--color-border-warning)}
+  .mc{border-radius:4px;padding:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:54px;transition:all .15s;border:0.5px solid transparent;cursor:pointer;text-align:center;font-family:var(--font-sans)}
+  .mc:hover{opacity:.8}
+  .mc.unc{background:var(--color-background-secondary);color:var(--color-text-tertiary);border-color:var(--color-border-tertiary)}
+  .mc.cov{background:var(--color-background-success);color:var(--color-text-success);border-color:var(--color-border-success)}
+  .mc.nw{background:var(--color-background-warning);color:var(--color-text-warning);border-color:var(--color-border-warning)}
+  .mc.sel{outline:2px solid var(--color-border-primary);outline-offset:1px}
+  .mc .lv{font-size:9px;opacity:.6;margin-bottom:1px}
+  .mc .fn{font-size:9.5px;line-height:1.25;padding:0 2px}
+  .chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:3px;font-size:11px;margin:2px 3px 2px 0;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary)}
+  .chip.warn{border-color:var(--color-border-warning);background:var(--color-background-warning)}
+  .cn{font-weight:500;color:var(--color-text-primary)}
+  .chip.warn .cn{color:var(--color-text-warning)}
+  .cl{font-size:10px;color:var(--color-text-tertiary)}
+  .chip.warn .cl{color:var(--color-text-warning)}
+  .wl{font-size:10px;font-weight:500;color:var(--color-text-success)}
+  .wm{font-size:10px;font-weight:500;color:var(--color-text-warning)}
+  .wh{font-size:10px;font-weight:500;color:var(--color-text-danger)}
+  .bcomp{display:inline-block;font-size:10px;padding:2px 8px;border-radius:3px;background:var(--color-background-info);color:var(--color-text-info);border:0.5px solid var(--color-border-info);margin-right:4px}
+  .bemrg{display:inline-block;font-size:10px;padding:2px 8px;border-radius:3px;background:var(--color-background-danger);color:var(--color-text-danger);border:0.5px solid var(--color-border-danger);margin-right:4px}
+  .rpill{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;background:var(--color-background-info);color:var(--color-text-info);border:0.5px solid var(--color-border-info);margin:2px 2px 2px 0}
+  .rfb{padding:4px 10px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);font-size:11px;cursor:pointer;font-family:var(--font-sans);transition:all .15s;margin:0 3px 4px 0}
+  .rfb.act{background:var(--color-background-info);color:var(--color-text-info);border-color:var(--color-border-info)}
+  .rcard{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:12px 14px}
+  .rcard.flagged{border-color:var(--color-border-warning)}
+  .rcard-name{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+  .lic-ok{display:inline-block;font-size:10px;padding:1px 7px;border-radius:3px;background:var(--color-background-success);color:var(--color-text-success);border:0.5px solid var(--color-border-success)}
+  .lic-w{display:inline-block;font-size:10px;padding:1px 7px;border-radius:3px;background:var(--color-background-warning);color:var(--color-text-warning);border:0.5px solid var(--color-border-warning)}
+  .wt-b{display:inline-block;font-size:10px;padding:1px 7px;border-radius:3px;background:var(--color-background-tertiary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary)}
+  .rcard-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.5;margin:6px 0 8px}
+  .rcard-licw{font-size:10px;color:var(--color-text-warning);line-height:1.4;padding:5px 8px;background:var(--color-background-warning);border-radius:4px;border:0.5px solid var(--color-border-warning);margin-bottom:8px}
+  .ctag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;margin:2px 2px 2px 0;background:var(--color-background-success);color:var(--color-text-success);border:0.5px solid var(--color-border-success)}
+  .ctag.alt{background:var(--color-background-secondary);color:var(--color-text-secondary);border-color:var(--color-border-secondary)}
+  button{font-family:var(--font-sans)}
+  input[type=text]{font-family:var(--font-sans);font-size:12px;padding:6px 10px;border:0.5px solid var(--color-border-secondary);border-radius:6px;background:var(--color-background-primary);color:var(--color-text-primary);width:180px}
+  input[type=text]::placeholder{color:var(--color-text-tertiary)}
+</style>
+</head>
+<body>
+
+<h1>Sovereign AI Guardrails — Maturity Matrix</h1>
+<p class="sub">Privacy-preserving sovereign AI framework · Axis A → data flow stages · Axis B ↕ concern depth</p>
+
+<div class="tab-bar" style="display:flex;align-items:center">
+  <button class="tb act" id="tb-mx" onclick="switchTab('mx')">Matrix view</button>
+  <button class="tb" id="tb-reg" onclick="switchTab('reg')">Tool registry <span id="treg-ct" style="opacity:.55"></span></button>
+  <button class="tb" id="tb-guide" onclick="switchTab('guide')">Stack guide</button>
+  <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">☀ Light</button>
+</div>
+
+<!-- MATRIX VIEW -->
+<div id="view-mx">
+  <p style="font-size:11px;color:var(--color-text-tertiary);margin:0 0 10px;line-height:1.5">Click any cell for function detail · tooling · regulatory drivers</p>
+  <div id="pills" style="display:flex;flex-wrap:wrap;margin-bottom:12px"></div>
+  <div id="matrix" style="display:grid;grid-template-columns:14px 96px repeat(6,1fr);gap:3px"></div>
+  <div id="info" style="margin-top:10px;padding:11px 13px;background:var(--color-background-secondary);border-radius:8px;border:0.5px solid var(--color-border-tertiary);min-height:80px"></div>
+  <div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap">
+    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)"><span style="width:12px;height:12px;border-radius:3px;background:var(--color-background-warning);border:0.5px solid var(--color-border-warning);flex-shrink:0;display:inline-block"></span>Newly activated</span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)"><span style="width:12px;height:12px;border-radius:3px;background:var(--color-background-success);border:0.5px solid var(--color-border-success);flex-shrink:0;display:inline-block"></span>Already active</span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)"><span style="width:12px;height:12px;border-radius:3px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);flex-shrink:0;display:inline-block"></span>Not yet active</span>
+  </div>
+  <button onclick="toggleRegs()" id="acc-btn" style="width:100%;text-align:left;padding:9px 12px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:7px;cursor:pointer;font-size:12px;color:var(--color-text-secondary);margin-top:12px;display:flex;justify-content:space-between;align-items:center">
+    <span>Regulatory frameworks reference — 24 frameworks across 4 groups</span><span id="acc-arr" style="font-size:11px">▸</span>
+  </button>
+  <div id="regs-panel" style="display:none;margin-top:6px"></div>
+</div>
+
+<!-- REGISTRY VIEW -->
+<div id="view-reg" style="display:none">
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+    <input type="text" id="reg-search" placeholder="Search tools…" oninput="renderRegistry()">
+    <span style="font-size:11px;color:var(--color-text-tertiary);margin-left:4px">Weight badge: <span style="color:var(--color-text-success)">L = Light</span> · <span style="color:var(--color-text-warning)">M = Moderate</span> · <span style="color:var(--color-text-danger)">H = Heavy</span></span>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;align-items:center;margin-bottom:4px">
+    <span style="font-size:11px;color:var(--color-text-tertiary);margin-right:8px;padding:4px 0">Weight:</span>
+    <button class="rfb act" id="fw-all" onclick="setF('w','all')">All</button>
+    <button class="rfb" id="fw-L" onclick="setF('w','L')">Light</button>
+    <button class="rfb" id="fw-M" onclick="setF('w','M')">Moderate</button>
+    <button class="rfb" id="fw-H" onclick="setF('w','H')">Heavy</button>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+    <span style="font-size:11px;color:var(--color-text-tertiary);margin-right:8px;padding:4px 0">Licence:</span>
+    <button class="rfb act" id="fl-all" onclick="setF('l','all')">All</button>
+    <button class="rfb" id="fl-ok" onclick="setF('l','ok')">Approved</button>
+    <button class="rfb" id="fl-warn" onclick="setF('l','warn')">⚠ Flagged</button>
+  </div>
+  <div id="reg-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px"></div>
+</div>
+
+<script>
+const flows=['Ingestion','Storage','Prompt','Inference','Response','Downstream'];
+const concerns=['Containment','Hygiene','Identity','Behaviour','Traceability','Attestation'];
+
+/* ── Tool registry ── */
+const T={
+  envoy:   {n:'Envoy Proxy',        lic:'Apache 2.0', ok:1, wt:'L', d:'L7 proxy and API gateway — traffic control, rate limiting, mTLS, egress enforcement'},
+  traefik: {n:'Traefik',            lic:'MIT',        ok:1, wt:'L', d:'Edge router and reverse proxy — simpler ingress control alternative to Envoy'},
+  cilium:  {n:'Cilium',             lic:'Apache 2.0', ok:1, wt:'M', d:'eBPF-based network security — L3/L4/L7 policy enforcement between containers'},
+  istio:   {n:'Istio',              lic:'Apache 2.0', ok:1, wt:'H', d:'Service mesh — mutual TLS between all services, traffic policy, full observability'},
+  opa:     {n:'Open Policy Agent',  lic:'Apache 2.0', ok:1, wt:'L', d:'Policy-as-code engine — authorisation and policy enforcement at any pipeline layer'},
+  falco:   {n:'Falco',              lic:'Apache 2.0', ok:1, wt:'L', d:'Runtime security — detects unexpected container behaviour, file access, network egress'},
+  vault:   {n:'HashiCorp Vault',    lic:'BSL 1.1',    ok:0, wt:'M', d:'Secrets management — dynamic credentials, encryption-as-a-service, PKI',
+            lw:'BSL 1.1 — commercial production deployment requires a HashiCorp licence. Evaluate Infisical (MIT) as an open alternative.'},
+  infisical:{n:'Infisical',         lic:'MIT',        ok:1, wt:'M', d:'Open-source secrets management — self-hostable, MIT-licensed alternative to Vault'},
+  kong:    {n:'Kong OSS',           lic:'Apache 2.0', ok:1, wt:'M', d:'API gateway with plugin ecosystem — request validation, rate limiting, authentication'},
+  pydantic:{n:'Pydantic',           lic:'MIT',        ok:1, wt:'L', d:'Python data validation — schema and type enforcement at API and pipeline boundaries'},
+  presidio:{n:'MS Presidio',        lic:'MIT',        ok:1, wt:'L', d:'PII detection and anonymisation — identifies and redacts personal identifiers in text'},
+  spacy:   {n:'spaCy',              lic:'MIT',        ok:1, wt:'L', d:'NLP library — custom NER pipelines for domain-specific PII detection and classification'},
+  llmguard:{n:'LLM Guard',          lic:'MIT',        ok:1, wt:'L', d:'Input and output scanning — PII, toxicity, prompt injection and data leakage detection'},
+  rebuff:  {n:'Rebuff',             lic:'MIT',        ok:1, wt:'L', d:'Prompt injection detection via heuristics, vector similarity and canary token signals'},
+  atlas:   {n:'Apache Atlas',       lic:'Apache 2.0', ok:1, wt:'H', d:'Data governance platform — lineage tracking, classification and data lifecycle management'},
+  keycloak:{n:'Keycloak',           lic:'Apache 2.0', ok:1, wt:'M', d:'Identity and access management — OIDC, SAML, RBAC, session tokens, MFA'},
+  authelia:{n:'Authelia',           lic:'Apache 2.0', ok:1, wt:'L', d:'Lightweight SSO and MFA — simpler self-hosted alternative to Keycloak'},
+  greatexp:{n:'Great Expectations', lic:'Apache 2.0', ok:1, wt:'M', d:'Data quality validation — schema, type, value range and statistical expectation testing'},
+  deequ:   {n:'Apache Deequ',       lic:'Apache 2.0', ok:1, wt:'M', d:'Spark-based data quality constraints — integrity checking for large-scale datasets'},
+  nemo:    {n:'NeMo Guardrails',    lic:'Apache 2.0', ok:1, wt:'M', d:'Programmable LLM guardrails — topic restrictions, safety rails, dialogue flow control'},
+  detoxify:{n:'Detoxify',           lic:'MIT',        ok:1, wt:'L', d:'ML-based toxicity classifier for output screening and content policy enforcement'},
+  evidently:{n:'Evidently AI',      lic:'Apache 2.0', ok:1, wt:'M', d:'ML monitoring — data drift detection, model quality tracking, output distribution analysis'},
+  prometheus:{n:'Prometheus',       lic:'Apache 2.0', ok:1, wt:'L', d:'Metrics collection and alerting — standard observability backend for infrastructure and apps'},
+  otel:    {n:'OpenTelemetry',      lic:'Apache 2.0', ok:1, wt:'L', d:'Vendor-neutral observability SDK — distributed traces, metrics and structured logs across the stack'},
+  loki:    {n:'Grafana Loki',       lic:'AGPL 3.0',   ok:0, wt:'M', d:'Log aggregation and query engine — structured log storage with LogQL query language',
+            lw:'AGPL 3.0 — requires source disclosure for all networked service deployments. Use OpenSearch as the primary log sink to avoid this obligation.'},
+  opensearch:{n:'OpenSearch',       lic:'Apache 2.0', ok:1, wt:'H', d:'Apache 2.0 log and search store — community fork of Elasticsearch; full API compatibility retained'},
+  dvc:     {n:'DVC',                lic:'Apache 2.0', ok:1, wt:'L', d:'Data version control — dataset and ML pipeline versioning with pluggable storage backends'},
+  mlflow:  {n:'MLflow',             lic:'Apache 2.0', ok:1, wt:'M', d:'ML lifecycle management — experiment tracking, model registry, lineage, parameter logging'},
+  langfuse:{n:'Langfuse',           lic:'MIT',        ok:1, wt:'M', d:'LLM observability — prompt and response logging, session tracing, evaluation and cost tracking'},
+  trivy:   {n:'Trivy',              lic:'Apache 2.0', ok:1, wt:'L', d:'Container and filesystem scanner — CVEs, misconfigurations, licence compliance across images'},
+  openscap:{n:'OpenSCAP',           lic:'LGPL 2.1',   ok:0, wt:'L', d:'Infrastructure compliance scanning against CIS benchmarks, NIST and STIG profiles',
+            lw:'LGPL 2.1 — dynamic linking restrictions apply; review terms carefully before packaging in a commercial product.'},
+};
+
+/* ── Cells: fn, desc, level, t:{p,a,c,e,n?} ── */
+const cells=[
+ /* Containment */[
+  {fn:'Source\nboundary',        level:0, t:{p:['envoy','cilium'],a:['traefik'],c:1,e:0},
+   desc:'Enforce strict perimeter at data entry. Only approved sources, formats, and protocols may supply data. Unapproved inputs are rejected before any processing occurs.'},
+  {fn:'Store\nisolation',        level:0, t:{p:['cilium','opa'],a:[],c:1,e:0},
+   desc:'Prevent cross-tenant and cross-context access in storage. Network segmentation between data stores ensures no component can reach beyond its authorised scope.'},
+  {fn:'Input surface\nrestrict.',level:1, t:{p:['envoy','pydantic'],a:['kong'],c:1,e:0},
+   desc:'Constrain the prompt interface to validated templates only. No arbitrary code execution paths. Injection surface is minimised by design — not configuration.'},
+  {fn:'Execution\nair-gap',      level:1, t:{p:['istio','cilium'],a:[],c:1,e:0},
+   desc:'Model execution environment is isolated from external networks. Model weights, intermediate activations, and outputs cannot be exfiltrated during inference.'},
+  {fn:'Output channel\ncontrol', level:2, t:{p:['envoy','opa'],a:[],c:1,e:0},
+   desc:'Only sanctioned output channels are available. No unsolicited writes to external APIs, file systems, or communication channels are physically possible.'},
+  {fn:'Egress\ngovernance',      level:3, t:{p:['opa','falco'],a:[],c:1,e:0},
+   desc:'All data leaving the system post-response is logged, classified, and controlled. Downstream re-transmission to any external party requires explicit authorisation.'},
+ ],
+ /* Hygiene */[
+  {fn:'PII detect\n& redact',    level:1, t:{p:['presidio'],a:['spacy'],c:0,e:0},
+   desc:'Scan every ingested data item for personal identifiers and sensitive categories. Redact, mask, or synthesise before data enters the pipeline. No raw PII proceeds further.'},
+  {fn:'Data\nminimisation',      level:1, t:{p:[],a:['atlas'],c:0,e:1,n:'No dedicated OSS tool covers automated data minimisation end-to-end. Implement via K8s CronJob retention policies and storage-level TTL rules. Apache Atlas provides data lifecycle governance at significant operational cost.'},
+   desc:'Retain only what is necessary and proportionate for the stated task. Enforce automated purge schedules. Restrict storage of raw personal data beyond immediate need.'},
+  {fn:'Prompt\nsanitisation',    level:2, t:{p:['llmguard'],a:['presidio','rebuff'],c:1,e:0},
+   desc:'Strip injected instructions, sensitive content patterns, and disallowed constructs from user-supplied prompt text before it reaches the model context window.'},
+  {fn:'Input\nintegrity check',  level:3, t:{p:['pydantic','llmguard'],a:['rebuff'],c:1,e:0},
+   desc:'Validate that model inputs conform to expected shape, type, and value ranges. Detect adversarial perturbations or malformed inputs that could compromise inference integrity.'},
+  {fn:'Output PII\nscrubbing',   level:2, t:{p:['presidio','llmguard'],a:[],c:1,e:0},
+   desc:'Detect and remove personal data the model may have reproduced or hallucinated in its response. Applied as a post-generation filter before delivery to the user.'},
+  {fn:'Clean\nhandoff',          level:4, t:{p:['presidio','opa'],a:[],c:1,e:0},
+   desc:'Verify that data passed to downstream consumers contains no residual sensitive content beyond what is explicitly authorised for that consumer and context.'},
+ ],
+ /* Identity */[
+  {fn:'Source\nauthentication',  level:0, t:{p:['keycloak'],a:['authelia'],c:0,e:0},
+   desc:'Every data source must present verifiable credentials at ingestion. Unauthenticated or unrecognised sources are rejected without processing. Provenance is logged.'},
+  {fn:'Artefact\naccess ctrl',   level:1, t:{p:['keycloak','infisical'],a:['vault'],c:1,e:0},
+   desc:'Datasets, model weights, checkpoints, and pipeline artefacts are access-controlled by role. No unauthenticated reads, writes, or copies are permitted.'},
+  {fn:'Session\nattribution',    level:2, t:{p:['keycloak'],a:['authelia'],c:1,e:0},
+   desc:'Every prompt is bound to an authenticated user or service identity with a verifiable session token. Anonymous prompts are not permitted in regulated contexts.'},
+  {fn:'Role-based\nmodel access',level:2, t:{p:['opa','keycloak'],a:[],c:1,e:0},
+   desc:'Model capabilities and data scope are constrained to what the requesting identity\'s role authorises during inference. No capability escalation is possible at runtime.'},
+  {fn:'Response\nbinding',       level:3, t:{p:['keycloak'],a:[],c:1,e:1,n:'Cryptographic response binding — no standard OSS solution exists. Requires a custom signing service that anchors each response to Keycloak-issued identity tokens. Tooling in this space is emerging.'},
+   desc:'Each generated response is logically or cryptographically bound to the requesting identity, enabling non-repudiation and accountability in case of dispute.'},
+  {fn:'Identity\npropagation',   level:4, t:{p:['keycloak','istio'],a:[],c:1,e:0},
+   desc:'Downstream consuming systems receive the identity context of the originating request, preserving accountability across integration boundaries and third-party handoffs.'},
+ ],
+ /* Behaviour */[
+  {fn:'Schema &\npolicy valid.',  level:2, t:{p:['greatexp'],a:['pydantic'],c:0,e:0},
+   desc:'Ingested data must conform to defined schemas and pass content policy checks at the gate. Violations are rejected before entering the pipeline and logged for review.'},
+  {fn:'Integrity\nenforcement',   level:2, t:{p:['greatexp'],a:['deequ'],c:1,e:0},
+   desc:'Data quality rules are enforced in storage: corrupt, inconsistent, or policy-violating records trigger alerts and quarantine. No bad data silently persists.'},
+  {fn:'Violation\ndetection',     level:3, t:{p:['nemo','llmguard'],a:['rebuff'],c:1,e:0},
+   desc:'Prompts are evaluated against a rule set covering disallowed topics, harmful instructions, and policy-violating patterns. Violations are blocked and flagged before inference.'},
+  {fn:'Output scope\nconstraint', level:3, t:{p:['nemo'],a:['llmguard'],c:0,e:0},
+   desc:'Model inference is constrained to the permitted topic, content, and format scope defined for this deployment. Out-of-scope generation is intercepted before completion.'},
+  {fn:'Output\nclassification',   level:3, t:{p:['llmguard'],a:['detoxify'],c:1,e:0},
+   desc:'Generated responses are classified against the behavioural policy. Outputs that fail — toxic, disallowed, or out-of-scope — are filtered or escalated before delivery.'},
+  {fn:'Post-response\nmonitoring',level:5, t:{p:['evidently','prometheus'],a:[],c:1,e:0},
+   desc:'Downstream use of model outputs is monitored for policy compliance. Anomalous patterns, abuse signals, or unexpected downstream effects trigger automated review.'},
+ ],
+ /* Traceability */[
+  {fn:'Provenance\nlogging',      level:1, t:{p:['otel','opensearch'],a:['loki'],c:1,e:0,n:'Grafana Loki is AGPL 3.0. It is listed as an alternative but its licence must be reviewed before use. OpenSearch (Apache 2.0) is the recommended primary log sink.'},
+   desc:'Every data item entering the pipeline is logged with source, timestamp, format, classification, and transformations applied. The log is immutable and tamper-evident.'},
+  {fn:'Versioned\nlineage',       level:1, t:{p:['dvc','mlflow'],a:[],c:1,e:0},
+   desc:'Datasets and model artefacts are version-controlled with full lineage. The complete chain from raw data source to trained model checkpoint is reconstructible at any point.'},
+  {fn:'Prompt\naudit record',     level:2, t:{p:['langfuse'],a:[],c:1,e:0},
+   desc:'All prompts are stored with user identity, session ID, timestamp, system prompt version, and provided context. Records are immutable and retained per data policy.'},
+  {fn:'Decision\nparameter log',  level:2, t:{p:['mlflow','otel'],a:[],c:1,e:0},
+   desc:'Model version, inference config, sampling parameters, and retrieval context are logged for every call — sufficient to reproduce the exact conditions of any decision.'},
+  {fn:'Response\ncontext link',   level:3, t:{p:['langfuse','mlflow'],a:[],c:1,e:0},
+   desc:'Each stored response is linked to its prompt, model version, user identity, and inference parameters, enabling full reconstruction of any individual decision post-hoc.'},
+  {fn:'Output usage\ntracking',   level:4, t:{p:['otel'],a:[],c:1,e:1,n:'Tracking downstream consumption beyond the system boundary is architecturally complex. OpenTelemetry instruments events within the boundary; external tracking requires custom capture at each consumer integration point. No dedicated OSS solution covers this fully.'},
+   desc:'How, when, and by whom model outputs are accessed, forwarded, or acted upon downstream is recorded, extending accountability beyond the system boundary.'},
+ ],
+ /* Attestation */[
+  {fn:'Source\ncompliance',       level:4, t:{p:['trivy'],a:['openscap'],c:1,e:1,n:'Container and infrastructure compliance is covered by Trivy and OpenSCAP. Supplier DPA verification and transfer legitimacy assessment remain largely manual — no OSS tool automates this reliably yet.'},
+   desc:'Data sources are assessed for compliance before onboarding. Supplier compliance status, DPAs, and transfer legitimacy are verified and re-assessed periodically.'},
+  {fn:'Storage ctrl\nevidence',   level:4, t:{p:['trivy','openscap'],a:[],c:1,e:0},
+   desc:'Auditable, documented evidence that all storage security controls are implemented, tested, and operating as specified — suitable for presentation to external auditors.'},
+  {fn:'Prompt gov.\nevidence',    level:5, t:{p:['langfuse'],a:[],c:1,e:1,n:'Langfuse provides the audit export foundation. Auditor-ready evidence packaging and exception tracking require a custom collection pipeline — no OSS standard for this evidence format exists yet.'},
+   desc:'Auditable records demonstrating that prompt governance controls exist, are actively tested, exceptions are investigated, and remediation is tracked to closure.'},
+  {fn:'Model\ndocumentation',     level:5, t:{p:['mlflow'],a:[],c:1,e:1,n:'MLflow Model Registry provides versioned metadata. Model cards, risk classification, and ISO/IEC 42001-compliant FactSheet documentation require custom templates — tooling in this area is still emerging.'},
+   desc:'Model cards, system cards, risk classification assessments, and intended use documentation are produced, maintained, and accessible to regulators and auditors.'},
+  {fn:'Output audit\nreconstruct',level:5, t:{p:['langfuse','mlflow'],a:[],c:1,e:1},
+   desc:'Any past model output can be fully reconstructed from stored records — with full context, identity, model state, and parameters — enabling post-hoc audit of decisions.'},
+  {fn:'E2E compliance\nproof',    level:6, t:{p:[],a:[],c:1,e:1,n:'Function defined, tooling emerging. No single OSS solution covers full pipeline attestation. Requires a custom evidence aggregator across Langfuse, MLflow, Trivy and OpenSCAP outputs, formatted for third-party audit consumption.'},
+   desc:'Third-party verifiable evidence covering the full pipeline from ingestion to downstream — sufficient for formal certification, regulatory inspection, and conformity assessment.'},
+ ],
+];
+
+const cumul=[0,0,0,0,0,0,0];
+cells.forEach(row=>row.forEach(c=>{for(let l=c.level;l<=6;l++)cumul[l]++;}));
+
+const lvls=[
+  {n:'L0',name:'Infrastructure baseline',
+   desc:'Container perimeter defined and enforced. TLS throughout. Source authentication at all entry points. Network segmentation in place. Nothing runs or communicates outside the container boundary.',
+   regs:['ISO 27001 A.8 (network controls)','HIPAA §164.312 (technical safeguards baseline)','NIS2 Art.21 (security baseline)','SOC 2 CC6.6 (logical access)','GDPR Art.32 (appropriate measures)']},
+  {n:'L1',name:'Privacy foundation',
+   desc:'All model serving is local — no data sent to external APIs. Encryption at rest and in transit. PII detected and redacted at ingestion. Basic immutable audit log active. Sovereign data boundary enforced.',
+   regs:['GDPR Art.32 (encryption, pseudonymisation)','UK GDPR Art.32','KVKK Art.12 (technical measures)','HIPAA §164.312(a)(2)(iv) (encryption)','CCPA/CPRA (data security, minimisation)','LGPD Art.46 (security measures)','PIPL Art.51 (personal data security)','DPDP Act 2023 Art.8 (data fiduciary obligations)','Privacy Act APP 11 (Australia)']},
+  {n:'L2',name:'Access & audit',
+   desc:'RBAC enforced at every pipeline stage. Immutable, searchable audit trail active. Model and dataset versioning enforced. Data lineage tracked. Session attribution for all prompts. Schema validation at ingestion.',
+   regs:['GDPR Art.30 (records of processing)','SOC 2 CC6–CC7 (access & change management)','HIPAA §164.312 (access control, audit controls)','ISO 27001 A.9 (access control)','NIS2 Art.21 (access management)','DORA Art.9 (ICT security)','PCI DSS Req.7/8/10 (access & logging)','PIPEDA Principle 7 (safeguards)','KVKK Art.12 (access controls)']},
+  {n:'L3',name:'Behavioural controls',
+   desc:'Input and output guardrails active — policy violation detection, output classification and filtering. Model drift and quality monitoring running. Human-review escalation paths defined and tested.',
+   regs:['EU AI Act Art.52 (limited risk transparency)','HIPAA §164.308 (administrative safeguards)','SOC 2 CC8 (change management)','NIST AI RMF (GOVERN, MAP functions)','ISO/IEC 42001 (AI management baseline)','FDA 21 CFR Part 11 (audit trails, where applicable)','FFIEC IT examination guidance','HITRUST CSF (partial coverage)']},
+  {n:'L4',name:'Compliance operationalisation',
+   desc:'Consent management and DSAR workflows operational. Model cards and FactSheets in place. Bias and fairness audits conducted. CVE scanning on containers. Data residency enforced. Attestation evidence collection begins.',
+   regs:['GDPR Art.15–22 (data subject rights + DSAR)','GDPR Art.22 (automated decision-making)','SOC 2 Type II (evidence collection)','EU AI Act limited risk (full)','KVKK Art.11 (data subject rights)','CCPA/CPRA (consumer rights)','LGPD Art.18 (data subject rights)','PDPA Singapore','APPI Japan','ISO 27001 (operational controls complete)']},
+  {n:'L5',name:'Sector & geo compliance',
+   desc:'Formal AI risk classification assigned. Sector-specific controls activated (healthcare, finance, public sector). Cross-border transfer safeguards in place. Human oversight mechanisms documented and tested.',
+   regs:['EU AI Act Art.9–15 (high-risk requirements)','HIPAA full safeguards + BAAs','DORA Art.30 (third-party ICT risk)','NIS2 (essential entity full compliance)','APRA CPS 234 (Australia financial)','PIPL full + cross-border controls (China)','DPDP Act 2023 full (India)','FedRAMP Moderate','ISO 27001 certification track','HITRUST r2 (partial assessment)']},
+  {n:'L6',name:'Certification & attestation',
+   desc:'Complete third-party audit evidence across all pipeline stages. Conformity assessment documentation produced. Continuous compliance posture with automated evidence collection. Ready for formal certification.',
+   regs:['SOC 2 Type II audit report','ISO/IEC 27001 certification','ISO/IEC 42001 (AI Management) certification','EU AI Act Art.43 (conformity assessment)','FedRAMP High authorization','HITRUST r2 certification','PCI DSS QSA assessment']},
+];
+
+const regsRef=[
+  {group:'European',items:[
+    {n:'GDPR',full:'General Data Protection Regulation',geo:'EU / EEA',lmin:1,lfull:4,note:'Data subject rights, security measures Art.32, automated decisions Art.22'},
+    {n:'UK GDPR / DPA 2018',full:'UK General Data Protection Regulation',geo:'United Kingdom',lmin:1,lfull:4,note:'Post-Brexit equivalent; same technical safeguard requirements'},
+    {n:'EU AI Act',full:'EU Artificial Intelligence Act',geo:'EU',lmin:3,lfull:6,note:'Risk-tiered: limited risk L3–4, high risk L5–6, GPAI additional obligations'},
+    {n:'NIS2',full:'Network & Information Security Directive 2',geo:'EU',lmin:2,lfull:5,note:'Cybersecurity for essential/important entities; incident reporting, supply chain'},
+    {n:'DORA',full:'Digital Operational Resilience Act',geo:'EU — Financial',lmin:2,lfull:5,note:'ICT risk management, resilience testing, third-party provider oversight'},
+    {n:'KVKK',full:'Kişisel Verileri Koruma Kanunu',geo:'Turkey',lmin:1,lfull:4,note:'Turkish personal data law; mirrors GDPR structure with local obligations'},
+  ]},
+  {group:'North American',items:[
+    {n:'HIPAA',full:'Health Insurance Portability and Accountability Act',geo:'USA — Healthcare',lmin:1,lfull:5,note:'PHI protection; technical, physical and admin safeguards; BAAs required'},
+    {n:'CCPA / CPRA',full:'California Consumer Privacy Act / Privacy Rights Act',geo:'USA — California',lmin:1,lfull:4,note:'Consumer data rights; opt-out of sale; sensitive data category restrictions'},
+    {n:'PIPEDA / Law 25',full:'Personal Information Protection and Electronic Documents Act',geo:'Canada',lmin:1,lfull:4,note:'Federal privacy law; Québec Law 25 significantly strengthens requirements'},
+    {n:'FedRAMP',full:'Federal Risk and Authorization Management Program',geo:'USA — Federal',lmin:2,lfull:6,note:'Cloud services for US federal agencies; Moderate and High authorization tiers'},
+    {n:'FFIEC',full:'Federal Financial Institutions Examination Council',geo:'USA — Banking',lmin:2,lfull:5,note:'IT examination guidelines for financial institutions; AI/ML guidance emerging'},
+    {n:'PCI DSS',full:'Payment Card Industry Data Security Standard',geo:'Global — Payments',lmin:2,lfull:5,note:'Cardholder data protection; access ctrl, audit logging, encryption, vuln. mgmt'},
+  ]},
+  {group:'Asia-Pacific',items:[
+    {n:'PIPL',full:'Personal Information Protection Law',geo:'China',lmin:1,lfull:5,note:'Strict cross-border transfer restrictions; consent and purpose limitation'},
+    {n:'DPDP Act 2023',full:'Digital Personal Data Protection Act',geo:'India',lmin:1,lfull:5,note:"India's first comprehensive data protection law; significant fiduciary obligations"},
+    {n:'PDPA',full:'Personal Data Protection Act',geo:'Singapore / Thailand',lmin:1,lfull:4,note:'Both countries have PDPAs with overlapping but distinct requirements'},
+    {n:'APPI',full:'Act on the Protection of Personal Information',geo:'Japan',lmin:1,lfull:4,note:'Third-party transfer restrictions; anonymisation and pseudonymisation provisions'},
+    {n:'Privacy Act / APPs',full:'Privacy Act 1988 + Australian Privacy Principles',geo:'Australia',lmin:1,lfull:4,note:'Federal privacy law; review underway to strengthen AI-related provisions'},
+    {n:'APRA CPS 234',full:'Prudential Standard CPS 234',geo:'Australia — Financial',lmin:2,lfull:5,note:'Information security requirements for APRA-regulated financial entities'},
+  ]},
+  {group:'Global Standards & Sector',items:[
+    {n:'ISO/IEC 27001',full:'Information Security Management System',geo:'Global standard',lmin:2,lfull:6,note:'Risk-based ISMS; certification via accredited third-party auditor'},
+    {n:'ISO/IEC 42001',full:'AI Management System Standard',geo:'Global standard',lmin:3,lfull:6,note:'2023 standard for responsible AI governance; designed to complement ISO 27001'},
+    {n:'SOC 2 Type II',full:'System and Organisation Controls 2',geo:'Global (US origin)',lmin:2,lfull:6,note:'Trust services criteria: security, availability, confidentiality; annual audit'},
+    {n:'NIST AI RMF',full:'AI Risk Management Framework',geo:'USA (voluntary / reference)',lmin:3,lfull:5,note:'Govern/Map/Measure/Manage structure; reference for US sector regulation'},
+    {n:'HITRUST CSF',full:'Health Information Trust Alliance CSF',geo:'Healthcare — global',lmin:3,lfull:6,note:'Harmonises HIPAA, ISO 27001, NIST; widely adopted in US and global healthcare'},
+    {n:'FDA 21 CFR Part 11',full:'Electronic Records and Electronic Signatures',geo:'USA — Pharma / Medical',lmin:3,lfull:5,note:'Required for AI/ML in FDA-regulated clinical or manufacturing contexts'},
+  ]},
+];
+
+/* ── State ── */
+let selLvl=2, selCell=null, regsOpen=false, fW='all', fL='all';
+
+/* ── Helpers ── */
+function cls(l){return l===selLvl?'nw':l<selLvl?'cov':'unc';}
+
+function chip(id){
+  const t=T[id]; if(!t) return '';
+  const wc={L:'wl',M:'wm',H:'wh'}[t.wt];
+  const wl={L:'·L',M:'·M',H:'·H'}[t.wt];
+  const warn=!t.ok;
+  return `<span class="chip${warn?' warn':''}" title="${t.d}${warn?'\n\n⚠ '+t.lw:''}"><span class="cn">${t.n}</span><span class="cl">${t.lic}${warn?' ⚠':''}</span><span class="${wc}">${wl}</span></span>`;
+}
+
+function toolSection(t){
+  let h=`<div style="padding-top:9px;border-top:0.5px solid var(--color-border-tertiary);margin-bottom:9px">`;
+  h+=`<div style="font-size:10px;color:var(--color-text-tertiary);margin-bottom:7px;font-weight:500;letter-spacing:.05em">TOOLING</div>`;
+  if(t.p.length){
+    h+=`<div style="font-size:10px;color:var(--color-text-secondary);margin-bottom:3px">Primary</div><div style="margin-bottom:7px">${t.p.map(chip).join('')}</div>`;
+  }
+  if(t.a.length){
+    h+=`<div style="font-size:10px;color:var(--color-text-secondary);margin-bottom:3px">Alternative</div><div style="margin-bottom:7px">${t.a.map(chip).join('')}</div>`;
+  }
+  if(!t.p.length){
+    h+=`<div style="font-size:11px;padding:5px 8px;background:var(--color-background-warning);color:var(--color-text-warning);border-radius:4px;border:0.5px solid var(--color-border-warning);margin-bottom:7px">No primary OSS tool — custom implementation required</div>`;
+  }
+  const bd=[];
+  if(t.c) bd.push(`<span class="bcomp">⟳ Composed function</span>`);
+  if(t.e) bd.push(`<span class="bemrg">⚠ Tooling emerging</span>`);
+  if(bd.length) h+=`<div style="margin-bottom:7px">${bd.join('')}</div>`;
+  [...t.p,...t.a].filter(id=>T[id]&&!T[id].ok).forEach(id=>{
+    h+=`<div style="font-size:10px;padding:4px 8px;background:var(--color-background-warning);color:var(--color-text-warning);border-radius:4px;border:0.5px solid var(--color-border-warning);margin-bottom:4px">⚠ <strong>${T[id].n}</strong>: ${T[id].lw}</div>`;
+  });
+  if(t.n) h+=`<div style="font-size:10px;color:var(--color-text-tertiary);line-height:1.55;font-style:italic;margin-top:4px">${t.n}</div>`;
+  h+=`</div>`;
+  return h;
+}
+
+/* ── Matrix render ── */
+function render(){
+  document.getElementById('pills').innerHTML=lvls.map((l,i)=>
+    `<button class="lpill${i===selLvl?' act':''}" onclick="selLvl=${i};selCell=null;render()">${l.n} <span style="opacity:.55">· ${cumul[i]}/36</span></button>`
+  ).join('');
+
+  let h='<div></div><div></div>';
+  flows.forEach(f=>h+=`<div style="background:var(--color-background-secondary);border-radius:4px;padding:5px 3px;text-align:center;font-size:10px;color:var(--color-text-secondary);font-weight:500;display:flex;align-items:center;justify-content:center;min-height:30px;line-height:1.2">${f}</div>`);
+  concerns.forEach((c,ci)=>{
+    if(ci===0) h+=`<div style="grid-row:span 6;display:flex;align-items:center;justify-content:center"><span style="writing-mode:vertical-lr;transform:rotate(180deg);font-size:9px;color:var(--color-text-tertiary);white-space:nowrap">Concern depth ↑</span></div>`;
+    h+=`<div style="background:var(--color-background-secondary);border-radius:4px;padding:5px 7px;font-size:11px;color:var(--color-text-secondary);font-weight:500;display:flex;align-items:center">${c}</div>`;
+    flows.forEach((_,fi)=>{
+      const cell=cells[ci][fi];
+      const isSel=selCell&&selCell.ci===ci&&selCell.fi===fi;
+      const lines=cell.fn.split('\n');
+      h+=`<div class="mc ${cls(cell.level)}${isSel?' sel':''}" onclick="selCell={ci:${ci},fi:${fi}};render()"><div class="lv">L${cell.level}</div><div class="fn">${lines[0]}${lines[1]?'<br>'+lines[1]:''}</div></div>`;
+    });
+  });
+  document.getElementById('matrix').innerHTML=h;
+
+  let info='';
+  if(selCell){
+    const cell=cells[selCell.ci][selCell.fi];
+    const l=lvls[cell.level];
+    info=`<div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <span style="font-weight:500">${concerns[selCell.ci]}</span><span style="opacity:.5">×</span><span style="font-weight:500">${flows[selCell.fi]}</span>
+      <span style="font-size:10px;padding:1px 7px;border-radius:3px;background:var(--color-background-warning);color:var(--color-text-warning);border:0.5px solid var(--color-border-warning)">activates at ${l.n}</span>
+    </div>
+    <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:5px">${cell.fn.replace('\n',' ')}</div>
+    <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.55;margin-bottom:9px">${cell.desc}</div>
+    ${toolSection(cell.t)}
+    <div style="font-size:10px;color:var(--color-text-tertiary);margin-bottom:5px">Regulatory drivers at ${l.n}:</div>
+    <div>${l.regs.map(r=>`<span class="rpill">${r}</span>`).join('')}</div>`;
+  } else {
+    const l=lvls[selLvl];
+    const newc=[];
+    concerns.forEach((c,ci)=>flows.forEach((_,fi)=>{if(cells[ci][fi].level===selLvl)newc.push(`<span style="white-space:nowrap">${concerns[ci]} × ${flows[fi]}</span>`);}));
+    info=`<div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">${l.n} — ${l.name} <span style="font-size:11px;font-weight:400;color:var(--color-text-tertiary)">(${cumul[selLvl]} of 36 controls active)</span></div>
+    <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.55;margin-bottom:8px">${l.desc}</div>
+    ${newc.length?`<div style="font-size:10px;color:var(--color-text-tertiary);margin-bottom:5px">Newly activated:</div><div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:8px;line-height:1.8;display:flex;flex-wrap:wrap;gap:4px">${newc.join(' ')}</div>`:''}
+    <div style="font-size:10px;color:var(--color-text-tertiary);margin-bottom:5px">Regulatory frameworks addressed:</div>
+    <div>${l.regs.map(r=>`<span class="rpill">${r}</span>`).join('')}</div>`;
+  }
+  document.getElementById('info').innerHTML=info;
+}
+
+/* ── Registry render ── */
+function setF(type,val){
+  if(type==='w'){fW=val;['all','L','M','H'].forEach(v=>{const e=document.getElementById('fw-'+v);if(e)e.classList.toggle('act',v===val);});}
+  if(type==='l'){fL=val;['all','ok','warn'].forEach(v=>{const e=document.getElementById('fl-'+v);if(e)e.classList.toggle('act',v===val);});}
+  renderRegistry();
+}
+
+function renderRegistry(){
+  const q=(document.getElementById('reg-search')?.value||'').toLowerCase();
+  const entries=Object.entries(T).filter(([id,t])=>{
+    if(q&&!t.n.toLowerCase().includes(q)&&!t.d.toLowerCase().includes(q))return false;
+    if(fW!=='all'&&t.wt!==fW)return false;
+    if(fL==='ok'&&!t.ok)return false;
+    if(fL==='warn'&&t.ok)return false;
+    return true;
+  });
+  document.getElementById('treg-ct').textContent=`· ${Object.keys(T).length}`;
+
+  const html=entries.map(([id,t])=>{
+    const cov=[];
+    cells.forEach((row,ci)=>row.forEach((cell,fi)=>{
+      if(cell.t.p.includes(id))cov.push({ci,fi,type:'primary'});
+      else if(cell.t.a.includes(id))cov.push({ci,fi,type:'alt'});
+    }));
+
+    const miniGrid=Array.from({length:36},(_,i)=>{
+      const ci=Math.floor(i/6),fi=i%6;
+      const c=cov.find(x=>x.ci===ci&&x.fi===fi);
+      let bg='var(--color-background-tertiary)',bc='var(--color-border-tertiary)';
+      if(c?.type==='primary'){bg='var(--color-background-success)';bc='var(--color-border-success)';}
+      else if(c?.type==='alt'){bg='var(--color-background-warning)';bc='var(--color-border-warning)';}
+      return `<div title="${concerns[ci]} × ${flows[fi]}" style="width:7px;height:7px;border-radius:1px;background:${bg};border:0.5px solid ${bc}"></div>`;
+    }).join('');
+
+    const tags=cov.slice(0,5).map(c=>`<span class="ctag${c.type==='alt'?' alt':''}">${concerns[c.ci].split(' ')[0]} × ${flows[c.fi]}</span>`).join('');
+    const more=cov.length>5?`<span style="font-size:10px;color:var(--color-text-tertiary);margin-left:3px">+${cov.length-5}</span>`:'';
+    const wtLabel={L:'Light',M:'Moderate',H:'Heavy'}[t.wt];
+
+    return `<div class="rcard${t.ok?'':' flagged'}">
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin-bottom:6px">
+        <span class="rcard-name">${t.n}</span>
+        <span class="${t.ok?'lic-ok':'lic-w'}">${t.lic}${t.ok?'':' ⚠'}</span>
+        <span class="wt-b">${wtLabel}</span>
+      </div>
+      <div class="rcard-desc">${t.d}</div>
+      ${!t.ok?`<div class="rcard-licw">⚠ ${t.lw}</div>`:''}
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div>
+          <div style="font-size:9px;color:var(--color-text-tertiary);margin-bottom:4px;letter-spacing:.06em">COVERAGE</div>
+          <div style="display:grid;grid-template-columns:repeat(6,7px);gap:2px">${miniGrid}</div>
+          <div style="display:flex;gap:8px;margin-top:5px">
+            <span style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--color-text-tertiary)"><span style="width:7px;height:7px;border-radius:1px;background:var(--color-background-success);border:0.5px solid var(--color-border-success);display:inline-block"></span>Primary</span>
+            <span style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--color-text-tertiary)"><span style="width:7px;height:7px;border-radius:1px;background:var(--color-background-warning);border:0.5px solid var(--color-border-warning);display:inline-block"></span>Alt</span>
+          </div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:9px;color:var(--color-text-tertiary);margin-bottom:4px;letter-spacing:.06em">CELLS (${cov.length})</div>
+          <div>${cov.length?tags+more:'<span style="font-size:10px;color:var(--color-text-tertiary)">None mapped</span>'}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('reg-grid').innerHTML=html||`<div style="font-size:13px;color:var(--color-text-tertiary);padding:20px 0">No tools match the current filters.</div>`;
+}
+
+/* ── Tab switch ── */
+function switchTab(t){
+  document.getElementById('view-mx').style.display=t==='mx'?'':'none';
+  document.getElementById('view-reg').style.display=t==='reg'?'':'none';
+  document.getElementById('view-guide').style.display=t==='guide'?'':'none';
+  document.getElementById('tb-mx').classList.toggle('act',t==='mx');
+  document.getElementById('tb-reg').classList.toggle('act',t==='reg');
+  document.getElementById('tb-guide').classList.toggle('act',t==='guide');
+  if(t==='reg') renderRegistry();
+}
+function toggleGuide(id){
+  const body=document.getElementById('gb-'+id);
+  const arr=document.getElementById('ga-'+id);
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  arr.textContent=open?'▸':'▾';
+}
+
+/* ── Regulatory accordion ── */
+function toggleRegs(){
+  regsOpen=!regsOpen;
+  document.getElementById('acc-arr').textContent=regsOpen?'▾':'▸';
+  const panel=document.getElementById('regs-panel');
+  if(regsOpen){
+    panel.style.display='block';
+    panel.innerHTML=regsRef.map(g=>`
+      <div style="margin-bottom:12px">
+        <div style="font-size:10px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">${g.group}</div>
+        <div style="border:0.5px solid var(--color-border-tertiary);border-radius:8px;overflow:hidden">
+          ${g.items.map((f,i)=>`<div style="display:grid;grid-template-columns:120px 95px 72px 1fr;gap:8px;padding:8px 10px;background:var(--color-background-primary);${i>0?'border-top:0.5px solid var(--color-border-tertiary)':''}">
+            <div><div style="font-size:12px;font-weight:500;color:var(--color-text-primary)">${f.n}</div><div style="font-size:9.5px;color:var(--color-text-tertiary);line-height:1.35;margin-top:1px">${f.full}</div></div>
+            <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.4;padding-top:1px">${f.geo}</div>
+            <div style="font-size:10px;padding-top:2px;display:flex;flex-direction:column;gap:3px">
+              <span style="display:inline-block;padding:1px 6px;border-radius:3px;background:var(--color-background-success);color:var(--color-text-success);border:0.5px solid var(--color-border-success)">from L${f.lmin}</span>
+              <span style="display:inline-block;padding:1px 6px;border-radius:3px;background:var(--color-background-info);color:var(--color-text-info);border:0.5px solid var(--color-border-info)">full L${f.lfull}</span>
+            </div>
+            <div style="font-size:10px;color:var(--color-text-tertiary);line-height:1.45;padding-top:1px">${f.note}</div>
+          </div>`).join('')}
+        </div>
+      </div>`).join('');
+  } else { panel.style.display='none'; }
+}
+
+</script>
+
+<!-- GUIDE VIEW -->
+<div id="view-guide" style="display:none">
+<p style="font-size:11px;color:var(--color-text-tertiary);margin:0 0 14px;line-height:1.6">Ordered deployment reference per maturity level · architectural and development register · <span style="color:var(--color-text-danger)">open↑</span> marks controls that fail open by default and require explicit override</p>
+<style>
+.ga-btn{width:100%;text-align:left;padding:10px 13px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:7px;cursor:pointer;font-size:12px;color:var(--color-text-secondary);display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;font-family:var(--font-sans)}
+.ga-btn:hover{background:var(--color-background-tertiary)}
+.ga-body{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:7px;padding:14px 15px;margin-bottom:10px}
+.gtable{width:100%;border-collapse:collapse;font-size:11px;margin:10px 0}
+.gtable th{text-align:left;font-size:10px;font-weight:500;color:var(--color-text-tertiary);padding:4px 8px;border-bottom:0.5px solid var(--color-border-tertiary);letter-spacing:.05em}
+.gtable td{padding:7px 8px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;color:var(--color-text-secondary);line-height:1.45}
+.gtable tr:last-child td{border-bottom:none}
+.gtable td:first-child{font-weight:500;color:var(--color-text-primary);white-space:nowrap;width:130px}
+.gtable td.role{color:var(--color-text-secondary)}
+.gtable td.note{color:var(--color-text-tertiary);font-style:italic;font-size:10.5px}
+.open-flag{color:var(--color-text-danger);font-weight:600;font-size:10px}
+.comp-note{font-size:11px;color:var(--color-text-secondary);line-height:1.6;padding:9px 11px;background:var(--color-background-info);border:0.5px solid var(--color-border-info);border-radius:5px;margin:10px 0}
+.gate-ok{font-size:11px;color:var(--color-text-success);line-height:1.55;padding:8px 11px;background:var(--color-background-success);border:0.5px solid var(--color-border-success);border-radius:5px;margin:5px 0}
+.gate-open{font-size:11px;color:var(--color-text-tertiary);line-height:1.55;padding:8px 11px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:5px;margin:5px 0}
+.gdelta{font-size:12px;color:var(--color-text-secondary);line-height:1.65;margin-bottom:12px;padding-bottom:12px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.sec-label{font-size:10px;font-weight:500;color:var(--color-text-tertiary);letter-spacing:.06em;margin:12px 0 6px}
+.evi-item{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:11px;color:var(--color-text-secondary);line-height:1.5}
+.evi-item:last-child{border-bottom:none}
+.evi-item input{margin-top:2px;flex-shrink:0;accent-color:var(--color-text-success)}
+.tname{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;background:var(--color-background-tertiary);color:var(--color-text-primary);border:0.5px solid var(--color-border-secondary);font-weight:500;margin-right:3px}
+.tname.warn{background:var(--color-background-warning);color:var(--color-text-warning);border-color:var(--color-border-warning)}
+</style>
+
+<!-- L0 -->
+<button class="ga-btn" onclick="toggleGuide('l0')"><span><strong>L0</strong> — Infrastructure baseline <span style="font-size:10px;opacity:.55;margin-left:8px">3 tools · 4 controls activated</span></span><span id="ga-l0">▸</span></button>
+<div id="gb-l0" style="display:none" class="ga-body">
+<div class="gdelta">Establishes the container perimeter: network segmentation between all pods, TLS at every ingress and service boundary, and source authentication at all entry points. Nothing communicates outside the boundary by default. No data processing begins before this level is complete.</div>
+<div class="sec-label">DEPLOY SEQUENCE</div>
+<table class="gtable">
+<tr><th>#</th><th>Tool</th><th>Role at this level</th><th>Validation / failure note</th></tr>
+<tr><td>1</td><td><span class="tname">Cilium</span></td><td class="role">eBPF network policy — default-deny between all namespaces. Covers L3/L4/L7 enforcement between pods.</td><td class="note"><span class="open-flag">open↑</span> Without an explicit NetworkPolicy, Cilium defaults to allow-all. A cluster-wide default-deny policy must be deployed before any workload starts.</td></tr>
+<tr><td>2</td><td><span class="tname">Envoy</span><br><span style="font-size:9.5px;color:var(--color-text-tertiary)">alt: Traefik</span></td><td class="role">L7 ingress perimeter — mTLS termination, rate limiting, protocol enforcement at the cluster boundary.</td><td class="note"><span class="open-flag">open↑</span> Envoy's default behavior on upstream failure is to return a 503 and pass the connection through. Configure <code>x-envoy-upstream-rq-timeout-ms</code> with an explicit deny action on timeout to fail closed.</td></tr>
+<tr><td>3</td><td><span class="tname">Keycloak</span><br><span style="font-size:9.5px;color:var(--color-text-tertiary)">alt: Authelia</span></td><td class="role">Source authentication — every data source must present a verifiable credential at ingestion. Unauthenticated requests are rejected at the gateway layer.</td><td class="note">Fails closed by default when the Keycloak backend is unavailable. Confirm the Envoy ext_authz filter is configured to deny on unreachable auth service.</td></tr>
+<tr><td>4</td><td><span class="tname">cert-manager</span></td><td class="role">Automated TLS certificate provisioning and rotation for all internal and external service endpoints.</td><td class="note">Verify certificate rotation does not cause downtime — configure a renewal buffer of at least 30% of certificate lifetime.</td></tr>
+</table>
+<div class="comp-note">⟳ <strong>Source boundary</strong> (Containment × Ingestion) is a composed function: Cilium enforces pod-level network policy; Envoy enforces L7 protocol and authentication at the perimeter. A correctly configured Envoy with a misconfigured Cilium policy still permits lateral movement between internal services.</div>
+<div class="sec-label">COMPLIANCE GATE</div>
+<div class="gate-ok">✓ Now claimable: ISO 27001 A.8 network controls · HIPAA §164.312 technical safeguards baseline · SOC 2 CC6.6 logical access · GDPR Art.32 appropriate technical measures (encryption in transit) · NIS2 Art.21 security baseline</div>
+<div class="gate-open">→ Still open: PII protection, encryption at rest, audit logging, RBAC — addressed at L1 and L2</div>
+</div>
+
+<!-- L1 -->
+<button class="ga-btn" onclick="toggleGuide('l1')"><span><strong>L1</strong> — Privacy foundation <span style="font-size:10px;opacity:.55;margin-left:8px">7 tools · 16 controls activated</span></span><span id="ga-l1">▸</span></button>
+<div id="gb-l1" style="display:none" class="ga-body">
+<div class="gdelta">Activates the sovereign data boundary: all model inference runs locally with no external API calls. Encryption at rest is enforced on all storage. PII is detected and redacted at ingestion before any data enters the pipeline. An immutable audit log and dataset versioning are initialised. Raw personal data does not persist beyond the ingestion stage.</div>
+<div class="sec-label">DEPLOY SEQUENCE</div>
+<table class="gtable">
+<tr><th>#</th><th>Tool</th><th>Role at this level</th><th>Validation / failure note</th></tr>
+<tr><td>1</td><td><span class="tname">Ollama / vLLM</span></td><td class="role">Local model serving — all inference stays within the container boundary. No data leaves the cluster for model calls.</td><td class="note">Verify no outbound connections from the serving pod: <code>cilium monitor --type drop</code> should show no egress to external CIDRs during inference.</td></tr>
+<tr><td>2</td><td><span class="tname">MinIO</span></td><td class="role">Encrypted object storage for model weights, datasets, and pipeline artefacts. Encryption at rest enforced via server-side encryption with locally managed keys.</td><td class="note">Enable SSE-S3 or SSE-KMS at bucket creation — it cannot be applied retroactively to existing objects.</td></tr>
+<tr><td>3</td><td><span class="tname">Infisical</span><br><span style="font-size:9.5px;color:var(--color-text-tertiary)">alt: Vault (BSL ⚠)</span></td><td class="role">Secrets management — all credentials, API keys, and encryption keys are stored and injected via Infisical. No secrets in environment variables or config maps.</td><td class="note">—</td></tr>
+<tr><td>4</td><td><span class="tname">MS Presidio</span><br><span style="font-size:9.5px;color:var(--color-text-tertiary)">alt: spaCy NER</span></td><td class="role">PII detection and redaction at ingestion — scans every data item for personal identifiers before it enters the pipeline. Raw PII is blocked from proceeding.</td><td class="note"><span class="open-flag">open↑</span> Presidio returns the original text unchanged for entity types not covered by the configured recogniser set. Explicitly enumerate supported languages and entity categories; anything outside that set must be blocked, not passed through.</td></tr>
+<tr><td>5</td><td><span class="tname">OpenTelemetry</span></td><td class="role">Structured log and trace collection — instruments every pipeline stage with source, timestamp, classification, and transformation events.</td><td class="note">Deploy the OTel Collector as a DaemonSet, not a sidecar, to ensure no gaps during pod restart.</td></tr>
+<tr><td>6</td><td><span class="tname">OpenSearch</span></td><td class="role">Immutable log sink — append-only index configuration. Provides tamper-evident provenance logging satisfying the audit baseline.</td><td class="note">Configure index lifecycle policy with a read-only phase and disable the delete action on audit indices.</td></tr>
+<tr><td>7</td><td><span class="tname">DVC</span></td><td class="role">Dataset version control — all datasets entering the pipeline are versioned with content hashes. Full lineage from raw source begins here.</td><td class="note">—</td></tr>
+</table>
+<div class="comp-note">⟳ <strong>Provenance logging</strong> (Traceability × Ingestion) requires OTel + OpenSearch together — OTel captures and structures the events; OpenSearch provides the immutable, queryable store. Either alone does not satisfy the tamper-evident requirement.<br><br>⟳ <strong>PII detect &amp; redact</strong> (Hygiene × Ingestion): single primary tool, but coverage is only as wide as the configured recogniser set. spaCy is recommended as a complementary deployment for domain-specific entity types not covered by Presidio's default models.</div>
+<div class="sec-label">COMPLIANCE GATE</div>
+<div class="gate-ok">✓ Now claimable: GDPR Art.32 (encryption, pseudonymisation) · UK GDPR Art.32 · KVKK Art.12 technical measures · HIPAA §164.312(a)(2)(iv) encryption · CCPA/CPRA data security baseline · PIPL Art.51 · DPDP Act 2023 Art.8 · Privacy Act APP 11</div>
+<div class="gate-open">→ Still open: RBAC, session attribution, schema validation, model versioning — addressed at L2</div>
+</div>
+
+<!-- L2 -->
+<button class="ga-btn" onclick="toggleGuide('l2')"><span><strong>L2</strong> — Access &amp; audit <span style="font-size:10px;opacity:.55;margin-left:8px">5 tools · 27 controls activated</span></span><span id="ga-l2">▸</span></button>
+<div id="gb-l2" style="display:none" class="ga-body">
+<div class="gdelta">Extends Keycloak to enforce RBAC at every pipeline stage and activates policy-as-code enforcement via OPA. Immutable prompt and response logging begins via Langfuse, bound to authenticated session identity. Schema validation gates ingestion. Model and dataset lineage is fully tracked. No pipeline stage is accessible without a validated identity token.</div>
+<div class="sec-label">DEPLOY SEQUENCE</div>
+<table class="gtable">
+<tr><th>#</th><th>Tool</th><th>Role at this level</th><th>Validation / failure note</th></tr>
+<tr><td>1</td><td><span class="tname">Keycloak</span></td><td class="role">Extend existing deployment: configure realm-per-pipeline-stage, define roles for each service identity, enforce RBAC on all internal service endpoints. Session tokens issued per prompt.</td><td class="note">Fails closed when Keycloak is unavailable — confirm all downstream services return 401 (not 500) during a Keycloak restart.</td></tr>
+<tr><td>2</td><td><span class="tname">Open Policy Agent</span></td><td class="role">Policy-as-code enforcement — evaluates authorisation decisions at every pipeline boundary. Decouples policy from application code.</td><td class="note"><span class="open-flag">open↑</span> OPA's default decision when no policy matches is <code>undefined</code> (not deny). All policies must include an explicit default deny: <code>default allow = false</code>. Verify with a request that matches no rule — it must be rejected.</td></tr>
+<tr><td>3</td><td><span class="tname">MLflow</span></td><td class="role">Model registry and experiment tracking — all model versions are registered with provenance, training parameters, and lineage. Completes the chain from DVC-versioned data to deployed checkpoint.</td><td class="note">—</td></tr>
+<tr><td>4</td><td><span class="tname">Langfuse</span></td><td class="role">Prompt and response logging — every prompt is stored with session ID, user identity (from Keycloak token), timestamp, and system prompt version. Records are append-only.</td><td class="note">Bind Keycloak-issued JWT to each Langfuse trace at capture time — do not rely on post-hoc correlation. Without this binding, traceability requirements at L3+ cannot be satisfied.</td></tr>
+<tr><td>5</td><td><span class="tname">Great Expectations</span><br><span style="font-size:9.5px;color:var(--color-text-tertiary)">alt: Apache Deequ</span></td><td class="role">Schema and data quality validation at ingestion — type, range, and constraint checks gate data entry. Violations are logged and rejected.</td><td class="note"><span class="open-flag">open↑</span> Great Expectations logs validation failures but does not block pipeline execution by default. Configure <code>action_list</code> with a <code>StoreValidationResultAction</code> and an explicit pipeline halt on critical expectation failure.</td></tr>
+</table>
+<div class="comp-note">⟳ <strong>Role-based model access</strong> (Identity × Inference) requires OPA + Keycloak — Keycloak issues the identity token encoding the user's roles; OPA evaluates the policy against that token to determine permitted model capabilities and data scope. OPA alone has no identity; Keycloak alone has no policy engine.<br><br>⟳ <strong>Session attribution</strong> (Identity × Prompt) requires Keycloak + Langfuse — the session token from Keycloak must be injected into every Langfuse trace at capture time. These are two separate services with no native integration; the binding must be implemented in the prompt handling layer.</div>
+<div class="sec-label">COMPLIANCE GATE</div>
+<div class="gate-ok">✓ Now claimable: GDPR Art.30 records of processing · SOC 2 CC6–CC7 access &amp; change management · HIPAA §164.312 access control and audit controls · ISO 27001 A.9 access control · NIS2 Art.21 access management · DORA Art.9 ICT security · PCI DSS Req.7/8/10 · PIPEDA Principle 7 · KVKK Art.12 access controls</div>
+<div class="gate-open">→ Still open: behavioural guardrails, output filtering, drift monitoring — addressed at L3</div>
+</div>
+
+<!-- L3 -->
+<button class="ga-btn" onclick="toggleGuide('l3')"><span><strong>L3</strong> — Behavioural controls <span style="font-size:10px;opacity:.55;margin-left:8px">5 tools · 33 controls activated</span></span><span id="ga-l3">▸</span></button>
+<div id="gb-l3" style="display:none" class="ga-body">
+<div class="gdelta">Activates the guardrail layer on both sides of the model. Input scanning detects prompt injection, policy violations, and disallowed content before inference. Output scanning classifies responses against the behavioural policy before delivery. Model drift and output distribution monitoring begins. Human-escalation paths must be defined and tested at this level — this is an architectural decision, not a tooling one.</div>
+<div class="sec-label">DEPLOY SEQUENCE</div>
+<table class="gtable">
+<tr><th>#</th><th>Tool</th><th>Role at this level</th><th>Validation / failure note</th></tr>
+<tr><td>1</td><td><span class="tname">NeMo Guardrails</span></td><td class="role">Programmable topic and dialogue guardrails — enforces allowed topic scope, safety rails, and dialogue flow restrictions at the prompt layer before inference.</td><td class="note"><span class="open-flag">open↑</span> NeMo Guardrails fails open if the rail configuration file is malformed or missing — the model call proceeds without guardrails. Validate rail activation explicitly with a known-violation prompt in each deployment environment; do not infer from absence of errors.</td></tr>
+<tr><td>2</td><td><span class="tname">LLM Guard</span></td><td class="role">Input and output content scanning — PII detection, toxicity classification, prompt injection detection, and data leakage scanning applied at both pipeline boundaries.</td><td class="note"><span class="open-flag">open↑</span> LLM Guard's default behavior on scanner timeout is to return the original input/output unchanged. Set <code>raise_error_on_scanner_exception=True</code> and configure the serving layer to treat scanner exceptions as blocks, not warnings.</td></tr>
+<tr><td>3</td><td><span class="tname">Rebuff</span></td><td class="role">Prompt injection detection — heuristic, vector similarity, and canary token signals complement LLM Guard's injection scanner with a different detection surface.</td><td class="note">Deploy as a secondary scanner, not a replacement for LLM Guard's injection module. Overlap is intentional — the two tools have different false-negative profiles.</td></tr>
+<tr><td>4</td><td><span class="tname">Detoxify</span></td><td class="role">Output toxicity classification — ML-based classifier applied as a post-generation filter before response delivery. Catches content that passes LLM Guard's rule-based output scanner.</td><td class="note">—</td></tr>
+<tr><td>5</td><td><span class="tname">Evidently AI</span></td><td class="role">Model drift and output distribution monitoring — tracks output quality metrics and data drift over time. Feeds alerts into Prometheus.</td><td class="note">—</td></tr>
+</table>
+<div class="comp-note">⟳ <strong>Violation detection</strong> (Behaviour × Prompt) requires NeMo + LLM Guard — NeMo enforces topic and dialogue policy at the semantic level; LLM Guard scans content at the token and pattern level. They detect different violation classes; neither alone covers the full behavioural policy surface.<br><br>⟳ <strong>Output classification</strong> (Behaviour × Response) requires LLM Guard + Detoxify — LLM Guard applies rule-based and heuristic filters; Detoxify provides a model-based toxicity score. A response can pass LLM Guard's filters while still scoring above the toxicity threshold.<br><br>⟳ <strong>Egress governance</strong> (Containment × Downstream) requires OPA + Falco — OPA enforces the downstream transmission policy; Falco provides runtime detection of policy violations at the system call level. OPA prevents; Falco detects what prevention missed.<br><br>⚠ <strong>Human escalation path</strong> — no OSS tool covers this. The escalation trigger (which output classes require human review), the review queue, the reviewer role, the SLA, and the disposition action must be defined as an architectural decision before L3 is considered complete. This is a process gap, not a tooling gap.</div>
+<div class="sec-label">COMPLIANCE GATE</div>
+<div class="gate-ok">✓ Now claimable: EU AI Act Art.52 limited risk transparency · HIPAA §164.308 administrative safeguards baseline · SOC 2 CC8 change management · NIST AI RMF GOVERN and MAP functions · ISO/IEC 42001 AI management baseline · FFIEC IT examination guidance</div>
+<div class="gate-open">→ Still open: CVE scanning, model documentation, DSAR workflows, attestation evidence collection — addressed at L4</div>
+</div>
+
+<!-- L4 -->
+<button class="ga-btn" onclick="toggleGuide('l4')"><span><strong>L4</strong> — Compliance operationalisation <span style="font-size:10px;opacity:.55;margin-left:8px">4 tools · 36 controls activated</span></span><span id="ga-l4">▸</span></button>
+<div id="gb-l4" style="display:none" class="ga-body">
+<div class="gdelta">All 36 matrix controls are active at L4. This level adds the compliance operations layer: CVE scanning gates every container deployment, infrastructure compliance is benchmarked, clean data handoff to downstream consumers is enforced, and identity context propagates across integration boundaries. Attestation evidence collection begins — this is the earliest level at which a SOC 2 Type II evidence period can meaningfully start.</div>
+<div class="sec-label">DEPLOY SEQUENCE</div>
+<table class="gtable">
+<tr><th>#</th><th>Tool</th><th>Role at this level</th><th>Validation / failure note</th></tr>
+<tr><td>1</td><td><span class="tname">Trivy</span></td><td class="role">Container and filesystem CVE scanning — integrated as a pre-deploy gate in the CI/CD pipeline. No image with critical or high CVEs is deployed without explicit sign-off.</td><td class="note">Configure as a pipeline blocking step, not a reporting step. A scan that produces output but does not block deployment provides no security guarantee.</td></tr>
+<tr><td>2</td><td><span class="tname">OpenSCAP</span> <span style="font-size:9.5px;color:var(--color-text-warning)">LGPL ⚠</span></td><td class="role">Infrastructure compliance scanning — benchmarks host and node configuration against CIS profiles. Produces auditable evidence of control implementation.</td><td class="note">LGPL 2.1 — review dynamic linking terms before packaging in a commercial product. Run as an out-of-band scheduled job, not an inline request-path component, to avoid any linking ambiguity.</td></tr>
+<tr><td>3</td><td><span class="tname">Presidio + OPA</span></td><td class="role">Clean handoff enforcement — Presidio scans outbound data for residual PII; OPA enforces the policy gate, blocking transmission if the scan fails or returns findings above threshold.</td><td class="note"><span class="open-flag">open↑</span> This is a composed function: if OPA policy is not explicitly configured to deny on Presidio scan failure (not just on findings), a Presidio service outage silently bypasses the clean handoff check. The OPA policy must treat an unreachable Presidio scanner as a denial condition.</td></tr>
+<tr><td>4</td><td><span class="tname">Keycloak + Istio</span></td><td class="role">Identity propagation — Istio carries the Keycloak-issued identity context in service-to-service headers across all downstream integrations, preserving accountability at every boundary.</td><td class="note">Verify that downstream consumer services receive and log the propagated identity header — propagation without consumption provides no accountability.</td></tr>
+</table>
+<div class="comp-note">⟳ <strong>Source compliance</strong> (Attestation × Ingestion) requires Trivy + OpenSCAP — Trivy covers the container image layer; OpenSCAP covers the host and node configuration layer. Supplier DPA verification and transfer legitimacy assessment have no OSS tool equivalent and remain manual processes at this level.<br><br>⟳ <strong>Clean handoff</strong> (Hygiene × Downstream) requires Presidio + OPA — see failure posture note above. The composition failure mode here is particularly consequential as it operates at the system boundary.</div>
+<div class="sec-label">COMPLIANCE GATE</div>
+<div class="gate-ok">✓ Now claimable: GDPR Art.15–22 technical foundation for DSAR (process layer still required) · GDPR Art.22 automated decision-making controls · SOC 2 Type II evidence collection period can begin · EU AI Act limited risk full · KVKK Art.11 data subject rights technical controls · CCPA/CPRA consumer rights infrastructure · ISO 27001 operational controls complete · PDPA Singapore · APPI Japan</div>
+<div class="gate-open">→ Still open: formal AI risk classification, sector-specific controls, cross-border transfer mechanisms, human oversight documentation — addressed at L5</div>
+</div>
+
+<!-- L5 -->
+<button class="ga-btn" onclick="toggleGuide('l5')"><span><strong>L5</strong> — Sector &amp; geo compliance <span style="font-size:10px;opacity:.55;margin-left:8px">evidence artefacts · no new tool deployments</span></span><span id="ga-l5">▸</span></button>
+<div id="gb-l5" style="display:none" class="ga-body">
+<div class="gdelta">No new tools are deployed at L5. The full 36-control technical stack is already active. This level is satisfied by producing, testing, and maintaining a specific set of organisational and technical evidence artefacts. Sector-specific obligations (healthcare, finance, public sector) and cross-border transfer safeguards are formalised here. The items below are the L5 completion criteria.</div>
+<div class="sec-label">EVIDENCE ARTEFACTS — check off as completed and verified</div>
+<div style="border:0.5px solid var(--color-border-tertiary);border-radius:6px;padding:4px 12px;margin-top:4px">
+  <div class="evi-item"><input type="checkbox"><div><strong>AI risk classification document</strong> — system formally classified against EU AI Act Annex III criteria. Classification rationale documented and signed off by a named responsible person.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>Model card per deployed model</strong> — covers intended use, known limitations, training data provenance, performance characteristics, and out-of-scope use cases. Stored in MLflow Model Registry and accessible to reviewers.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>Human oversight procedure</strong> — documents which output classes trigger human review, the review queue mechanism, the responsible role, the SLA for disposition, and what happens to the output while pending. Must have been exercised end-to-end at least once.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>Sector-specific agreement in place</strong> — healthcare: BAA signed with all relevant parties; financial: DORA third-party ICT risk register entry; public sector: applicable national procurement/security classification applied.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>Cross-border transfer mechanism documented</strong> — for each jurisdiction where data originates or is processed: adequacy decision, SCCs, BCRs, or equivalent mechanism is identified, documented, and current.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>Post-response monitoring active and tested</strong> — Evidently AI drift alerts configured with defined thresholds, Prometheus alert rules firing correctly, and at least one test alert handled end-to-end through the escalation path.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>Bias and fairness assessment conducted</strong> — outputs evaluated for systematic bias across protected characteristic proxies relevant to the deployment context. Findings documented; any remediation tracked to closure.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>Data residency enforcement verified</strong> — all personal data confirmed to remain within the designated jurisdiction boundary. Verified by network egress audit (Cilium/Falco logs), not self-declaration.</div></div>
+</div>
+<div class="sec-label" style="margin-top:14px">COMPLIANCE GATE</div>
+<div class="gate-ok">✓ Now claimable: EU AI Act Art.9–15 high-risk system requirements · HIPAA full safeguards + BAAs · DORA Art.30 third-party ICT risk · NIS2 essential entity full compliance · APRA CPS 234 · PIPL full + cross-border controls · DPDP Act 2023 full · FedRAMP Moderate (with additional controls)</div>
+<div class="gate-open">→ Still open: third-party audit evidence package, conformity assessment documentation, continuous evidence collection pipeline — addressed at L6</div>
+</div>
+
+<!-- L6 -->
+<button class="ga-btn" onclick="toggleGuide('l6')"><span><strong>L6</strong> — Certification &amp; attestation <span style="font-size:10px;opacity:.55;margin-left:8px">evidence artefacts · audit readiness</span></span><span id="ga-l6">▸</span></button>
+<div id="gb-l6" style="display:none" class="ga-body">
+<div class="gdelta">No new tools are deployed at L6. This level requires building an evidence aggregation pipeline across the existing tools — Langfuse, MLflow, Trivy, and OpenSCAP — and producing the documentation package sufficient for third-party audit and formal certification. The items below are the L6 completion criteria. Some require external parties; they cannot be self-certified.</div>
+<div class="sec-label">EVIDENCE ARTEFACTS — check off as completed and verified</div>
+<div style="border:0.5px solid var(--color-border-tertiary);border-radius:6px;padding:4px 12px;margin-top:4px">
+  <div class="evi-item"><input type="checkbox"><div><strong>Continuous evidence collection pipeline</strong> — automated aggregation of audit-relevant outputs from Langfuse (prompt/response records), MLflow (model lineage), Trivy (CVE scan results), and OpenSCAP (compliance scan results) into a single queryable evidence store. Pipeline must run on a defined schedule and alert on gaps.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>Audit trail completeness test</strong> — sampled reconstruction of at least 10 past decisions from stored records, verifying that each can be fully reconstructed from Langfuse trace + MLflow model version + Keycloak identity + inference parameters alone. Reconstruction log retained as evidence.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>SOC 2 Type II scope document</strong> — trust services criteria mapped to specific technical controls in the stack. Evidence collection period of at least 6 months completed. Prepared for presentation to an accredited auditor.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>ISO/IEC 27001 ISMS documentation package</strong> — risk register, statement of applicability, risk treatment plan, and internal audit results. Covers the full system boundary including the AI pipeline.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>ISO/IEC 42001 AI management documentation</strong> — AI policy, AI risk assessment, AI impact assessment, and intended use documentation. Aligned with the model cards produced at L5.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>EU AI Act technical documentation file</strong> — Art.43 conformity assessment documentation: system description, risk classification justification, training data governance evidence, accuracy and robustness testing results, human oversight procedure, and post-market monitoring plan.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>Independent penetration test report</strong> — conducted by a party independent of the development team, covering the full system boundary. All critical and high findings remediated and re-tested. Report retained as audit evidence.</div></div>
+  <div class="evi-item"><input type="checkbox"><div><strong>Evidence retention policy active</strong> — retention periods defined per regulation (GDPR: duration of processing + 3 years; HIPAA: 6 years; SOC 2: audit period + 1 year). Automated enforcement verified — evidence is not manually deleted.</div></div>
+</div>
+<div class="sec-label" style="margin-top:14px">COMPLIANCE GATE</div>
+<div class="gate-ok">✓ Now claimable: SOC 2 Type II audit report · ISO/IEC 27001 certification · ISO/IEC 42001 certification · EU AI Act Art.43 conformity assessment · FedRAMP High authorization (with additional controls) · HITRUST r2 certification · PCI DSS QSA assessment</div>
+<div class="gate-open">→ Maintenance: annual re-assessment required for SOC 2, ISO 27001, and HITRUST. EU AI Act post-market monitoring is continuous. Evidence collection pipeline must remain active.</div>
+</div>
+
+</div><!-- /view-guide -->
+
+<script>
+document.getElementById('treg-ct').textContent=`· ${Object.keys(T).length}`;
+render();
+
+function toggleTheme(){
+  const html=document.documentElement;
+  const cur=html.getAttribute('data-theme');
+  const sysDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  html.setAttribute('data-theme', cur ? (cur==='dark'?'light':'dark') : (sysDark?'light':'dark'));
+  updateThemeBtn();
+}
+function updateThemeBtn(){
+  const html=document.documentElement;
+  const cur=html.getAttribute('data-theme');
+  const sysDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const dark=cur==='dark'||(cur===null&&sysDark);
+  const btn=document.getElementById('theme-btn');
+  if(btn) btn.textContent=dark?'☀ Light':'☾ Dark';
+}
+updateThemeBtn();
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{
+  if(!document.documentElement.getAttribute('data-theme')) updateThemeBtn();
+});
+</script>
+</body>
+</html>
