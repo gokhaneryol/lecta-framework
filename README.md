@@ -13,6 +13,7 @@ Lecta Intelligence Lab'in yapay zekâ yönetişimi ve egemenlik kontrol çerçev
 | [`measurement-tool/`](measurement-tool/README.md) | Ölçüm aracı: YAML madde kaynağı, şema, betikler, Quick Scan kiti, üretilmiş rehber ve tablolar. **Başlangıç noktası** |
 | [`templates/`](templates/README.md) | Şablon kütüphanesi: 13 yönetişim belgesi (md master + Word) |
 | [`archive/v0-guardrails/`](archive/v0-guardrails/README.md) | Çerçevenin ilk sürümü (Sovereign AI Guardrails, Nisan–Mayıs 2026), salt okunur |
+| [`references/`](references/README.md) | Eşlemelerin ve yasal sürelerin dayandığı kaynaklar, son kontrol tarihleriyle |
 | [`ILK-ADIMLAR.md`](ILK-ADIMLAR.md) | Yeni katılan için başlangıç |
 | [`CHANGELOG.md`](CHANGELOG.md) | Sürüm notları |
 
