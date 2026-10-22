@@ -15,11 +15,19 @@
     applicability: {en: , tr: }  # when the item is NA, as a testable condition
     evidence:
       - {type: , en: , tr: }  # DOC CFG LOG TST INT OBS — INT alone never supports 2
-    rubric:
-      0: {en: , tr: }
-      1: {en: , tr: }
-      2: {en: , tr: }
-      3: {en: , tr: }
+    checks:                   # schema.md 5.5 — score is computed, rubric text is generated
+      - id: c1                # exactly one exist check
+        kind: exist           # exist | core | sustain
+        type: binary          # binary | ratio | date | count
+        threshold:            # ratio {min: 1.0, sample: N} | date {max_months: 12 | review_interval} | {max_days: 30} | count {min: N}
+        text:   {en: , tr: }  # one statement that is either true or false
+        evidence:             # DOC CFG LOG TST INT OBS
+        terms: []             # ids from terms.yaml
+        qs: true              # asked in Quick Scan?
+        sampling: false       # AS-02 sampling rule applies (ratio over >10 items)
+      - {id: c2, kind: core, type: binary, text: {en: , tr: }, evidence: , qs: true}
+      - {id: s1, kind: sustain, type: date, threshold: {max_months: review_interval}, text: {en: , tr: }, evidence: DOC, qs: true}
+    # rubric:                 # legacy hand-written rubric — only for items not yet converted
     review_interval:          # months; quantifies "reviewed" in score 3
     quick_scan: false
     qs_question: {en: , tr: } # only if quick_scan: true

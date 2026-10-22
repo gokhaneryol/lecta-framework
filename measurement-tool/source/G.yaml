@@ -113,37 +113,72 @@ items:
         en: Sanctioned AI tool list with the data classes allowed per tool and last update date
         tr: Araç başına izin verilen veri sınıflarını ve son güncelleme tarihini gösteren onaylı AI araç listesi
       - type: INT
-        en: Two or more staff from different units describe the rules consistently
-        tr: Farklı birimlerden en az iki çalışan kuralları tutarlı biçimde anlatıyor
-    rubric:
-      0:
-        en: No written rules on staff use of AI tools.
-        tr: Çalışanların AI araçlarını kullanımına dair yazılı kural yok.
-      1:
-        en: >
-          Rules exist but at least one of these is true: they do not refer to the
-          organisation's data classification; there is no sanctioned tool list; the list
-          has not been updated in the last 12 months; staff interviewed do not know the rules.
-        tr: >
-          Kurallar var ama şunlardan en az biri geçerli: kurumun veri sınıflandırmasına atıf
-          yapmıyor; onaylı araç listesi yok; liste son 12 ayda güncellenmemiş; görüşülen
-          çalışanlar kuralları bilmiyor.
-      2:
-        en: >
-          Rules refer to the data classification, a sanctioned tool list states the allowed
-          data classes per tool and was updated in the last 12 months, and at least two
-          interviewed staff from different units describe the rules consistently.
-        tr: >
-          Kurallar veri sınıflandırmasına atıf yapıyor; onaylı araç listesi araç başına izin
-          verilen veri sınıflarını belirtiyor ve son 12 ayda güncellenmiş; farklı birimlerden
-          görüşülen en az iki çalışan kuralları tutarlı anlatıyor.
-      3:
-        en: >
-          Meets 2, and compliance with the rules is checked against G-INV-02 data within
-          review_interval, with a dated record of findings and actions.
-        tr: >
-          2'yi karşılıyor ve kurallara uyum review_interval içinde G-INV-02 verileriyle
-          karşılaştırılarak kontrol edilmiş; bulgu ve aksiyonların tarihli kaydı var.
+        en: Answers of two staff from different units on which tool they may use and which data class they may enter (check c5)
+        tr: Farklı birimlerden iki çalışanın hangi aracı kullanabileceği ve hangi veri sınıfını girebileceğine dair cevapları (kontrol c5)
+    checks:   # A2 pilot — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: There are written rules on staff use of AI tools (stand-alone or within a policy).
+          tr: Çalışanların yapay zekâ araçlarını kullanımına dair yazılı kural var (ayrı belge ya da bir politikanın içinde).
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: binary
+        text:
+          en: The rules refer to the organisation's data classes.
+          tr: Kurallar kurumun veri sınıflarına atıf yapıyor.
+        terms: [data-class]
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: A sanctioned tool list exists and states the allowed data classes for every tool on it.
+          tr: Onaylı araç listesi var ve listedeki her araç için izin verilen veri sınıfları yazılı.
+        terms: [sanctioned-tool-list, data-class]
+        evidence: DOC
+        qs: true
+      - id: c4
+        kind: core
+        type: date
+        threshold: {max_months: 12}
+        text:
+          en: The last-update date of the sanctioned tool list is within the last 12 months.
+          tr: Onaylı araç listesinin son güncelleme tarihi son 12 ay içinde.
+        terms: [sanctioned-tool-list]
+        evidence: DOC
+        qs: true
+      - id: c5
+        kind: core
+        type: ratio
+        threshold: {min: 1.0, sample: 2}
+        text:
+          en: >
+            Two staff from different units, each asked "which AI tool may you use, and may you
+            enter <one data class> into it?", give answers that match the list.
+          tr: >
+            Farklı birimlerden iki çalışana "hangi yapay zekâ aracını kullanabilirsin, ona <bir veri
+            sınıfı> girebilir misin?" diye sorulduğunda cevapları listeyle uyuşuyor.
+        evidence: INT
+        qs: false
+      - id: s1
+        kind: sustain
+        type: date
+        threshold: {max_months: review_interval}
+        text:
+          en: >
+            Compliance with the rules was compared against G-INV-02 usage data, and the dated
+            record of that comparison is within review_interval.
+          tr: >
+            Kurallara uyum G-INV-02 kullanım verisiyle karşılaştırılmış ve bu karşılaştırmanın
+            tarihli kaydı review_interval içinde.
+        terms: [dated-record]
+        evidence: DOC
+        qs: true
     review_interval: 6
     quick_scan: true
     qs_question:

@@ -20,14 +20,28 @@
 
 **Uygulanabilirlik:** Her zaman uygulanır.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | Çalışanların yapay zekâ araçlarını kullanımına dair yazılı kural var (ayrı belge ya da bir politikanın içinde). | E / H / B |
+| c2 | temel | Kurallar kurumun veri sınıflarına atıf yapıyor. | E / H / B |
+| c3 | temel | Onaylı araç listesi var ve listedeki her araç için izin verilen veri sınıfları yazılı. | E / H / B |
+| c4 | temel | Onaylı araç listesinin son güncelleme tarihi son 12 ay içinde. **[≤ 12 ay]** | E / H / B |
+| s1 | sürdürme | Kurallara uyum G-INV-02 kullanım verisiyle karşılaştırılmış ve bu karşılaştırmanın tarihli kaydı 6 ay içinde. **[≤ 6 ay]** | E / H / B |
+
+*QS'de sorulmaz, AS-02'de bakılır:* c5
+
+*Terimler:* **veri sınıfı**: Kurumun yazılı veri sınıflandırmasındaki bir kategori (ör. açık, iç, gizli, kişisel, özel nitelikli kişisel). Sınıflandırma tarihli bir belge olmalıdır; yazılı olmayan ya da sözlü bir ayrım sayılmaz. · **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz. · **onaylı araç listesi**: Çalışanların kullanabileceği her yapay zekâ aracını adıyla (ürün ve gerekiyorsa hesap türü, ör. kurumsal/bireysel) sayan, sahibi ve son güncelleme tarihi olan yazılı liste. Yalnız kategori sayan liste ("onaylı sohbet botları") sayılmaz.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Çalışanların AI araçlarını kullanımına dair yazılı kural yok. |
-| 1 | Kurallar var ama şunlardan en az biri geçerli: kurumun veri sınıflandırmasına atıf yapmıyor; onaylı araç listesi yok; liste son 12 ayda güncellenmemiş; görüşülen çalışanlar kuralları bilmiyor. |
-| 2 | Kurallar veri sınıflandırmasına atıf yapıyor; onaylı araç listesi araç başına izin verilen veri sınıflarını belirtiyor ve son 12 ayda güncellenmiş; farklı birimlerden görüşülen en az iki çalışan kuralları tutarlı anlatıyor. |
-| 3 | 2'yi karşılıyor ve kurallara uyum 6 ay içinde G-INV-02 verileriyle karşılaştırılarak kontrol edilmiş; bulgu ve aksiyonların tarihli kaydı var. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c5) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c5) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1) karşılanıyor. |
 
-*AS-02'de istenecek kanıt:* `DOC` Kabul edilebilir kullanım kuralları (ayrı belge ya da AI/kabul edilebilir kullanım politikası içinde); `DOC` Araç başına izin verilen veri sınıflarını ve son güncelleme tarihini gösteren onaylı AI araç listesi; `INT` Farklı birimlerden en az iki çalışan kuralları tutarlı biçimde anlatıyor
+*AS-02'de istenecek kanıt:* `DOC` Kabul edilebilir kullanım kuralları (ayrı belge ya da AI/kabul edilebilir kullanım politikası içinde); `DOC` Araç başına izin verilen veri sınıflarını ve son güncelleme tarihini gösteren onaylı AI araç listesi; `INT` Farklı birimlerden iki çalışanın hangi aracı kullanabileceği ve hangi veri sınıfını girebileceğine dair cevapları (kontrol c5)
 
 ### G-INV-01 · Yapay zekâ sistem envanteri  `L1`
 
@@ -243,12 +257,28 @@
 
 **Uygulanabilirlik:** HYG-ING-01 ile aynı.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | En az bir veri giriş yolunda kişisel veriyi otomatik tespit eden bir kontrol var. | E / H / B |
+| c2 | temel | Giriş yolu envanteri var. | E / H / B |
+| c3 | temel | Envanterdeki yollardan tespit kontrolü bulunanların oranı. **[%100 (hepsi)]** | E / H / B |
+| c4 | temel | Kontrol bulunan yollardan kontrolün saklamadan önce çalıştığı yolların oranı. **[%100 (hepsi)]** | E / H / B |
+| c5 | temel | Kontrol HYG-ING-01'deki muameleyi otomatik uyguluyor (yalnız kaydetmiyor, elle adım gerekmiyor). | E / H / B |
+| s1 | sürdürme | Değişiklik sürecinde, yeni bir giriş yolunun kontrol olmadan canlıya alınmasını engelleyen bir adım var. | E / H / B |
+| s2 | sürdürme | Yol envanteri çalışan sistemle karşılaştırılmış; tarihli kaydı 6 ay içinde. **[≤ 6 ay]** | E / H / B |
+
+*QS'de sorulmaz, AS-02'de bakılır:* c6
+
+*Terimler:* **saklamadan önce**: Kontrol, içerik yapay zekâ sisteminin okuduğu herhangi bir depoya (vektör indeksi, veritabanı, dosya deposu, eğitim kümesi) yazılmadan önce çalışır. Geçici işlem belleği depo sayılmaz. · **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz. · **veri giriş yolu**: İçeriğin bir yapay zekâ sistemine saklanmak, indekslenmek, bağlam olarak ya da eğitimde kullanılmak üzere girdiği her yol: dosya yükleme, başka sisteme bağlayıcı, API, zamanlanmış aktarım, e-posta ya da sohbet kanalı. Her bağlayıcı ve her API ayrı yol sayılır. · **giriş yolu envanteri**: Sistemin her veri giriş yolunu adıyla gösteren, tarihli yazılı liste (ya da mimari/veri akış şeması). Yollarla ilgili oran kontrollerinin paydasıdır. · **muamele**: HYG-ING-01'de her kişisel veri kategorisi için tanımlanan işlem: maskeleme, tokenizasyon, takma adlandırma, çıkarma ya da engelleme. Yalnız tespit edip kaydetmek muamele değildir.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Hiçbir giriş yolunda otomatik tespit yok. |
-| 1 | Şunlardan en az biri geçerli: kontrol yolların yalnız bir kısmında; tespit edip kaydediyor ama muameleyi uygulamıyor; veri saklandıktan ya da indekslendikten sonra çalışıyor; muamele elle yapılıyor; kayıt kanıtı sunulamıyor. |
-| 2 | Envanterdeki her yolda kontrol saklama/indeksleme öncesinde var, HYG-ING-01'deki muamele uygulanıyor ve son 30 günde veri alan her yol için o döneme ait kayıt var. |
-| 3 | 2'yi karşılıyor; değişiklik yönetiminde hiçbir yeni giriş yolunun kontrol olmadan canlıya alınmadığını güvenceye alan bir kontrol adımı var; yol envanteri 6 ay içinde çalışan sistemle karşılaştırılmış, tarihli kaydı var. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c6) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c6) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1–s2) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` Veri giriş yolları envanteri (mimari ya da veri akış şeması); `CFG` Kontrolün her yoldaki varlığını ve saklama/indeksleme öncesindeki yerini gösteren yapılandırma; `LOG` Son 30 güne ait, her yoldan tespit/muamele kayıtları
 
