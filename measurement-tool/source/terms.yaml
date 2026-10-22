@@ -342,3 +342,144 @@ terms:
       tr: 'KVKK md. 6''daki (ve uygulanıyorsa GDPR md. 9''daki) kategoriler: ırk, etnik köken, siyasi düşünce,
         inanç, kılık kıyafet, dernek/sendika üyeliği, sağlık, cinsel hayat, ceza mahkûmiyeti, biyometrik
         ve genetik veri.'
+
+  - id: outdated-protocol
+    term:
+      en: outdated protocol version
+      tr: eskimiş protokol sürümü
+    definition:
+      en: TLS below 1.2, any SSL version, SSH version 1, or an unencrypted protocol (HTTP, FTP, LDAP, SMTP
+        without STARTTLS) on a flow carrying AI data.
+      tr: 1.2 altındaki TLS, herhangi bir SSL sürümü, SSH sürüm 1 ya da AI verisi taşıyan bir akışta şifresiz
+        protokol (HTTP, FTP, LDAP, STARTTLS'siz SMTP).
+
+  - id: network-segmented
+    term:
+      en: network-segmented
+      tr: ağ düzeyinde ayrıştırılmış
+    definition:
+      en: The store sits in a network segment (VLAN, subnet, security group or namespace policy) that the
+        general user or server network cannot reach directly.
+      tr: Depo, genel kullanıcı ya da sunucu ağının doğrudan ulaşamadığı bir ağ bölümünde (VLAN, alt ağ,
+        güvenlik grubu ya da namespace politikası) bulunur.
+
+  - id: default-deny-access
+    term:
+      en: default-deny access
+      tr: varsayılan red erişim
+    definition:
+      en: Inbound connections to the store are blocked unless the source is on an explicit allow list in
+        network configuration.
+      tr: Kaynak ağ yapılandırmasındaki açık izin listesinde değilse depoya gelen bağlantılar engellenir.
+
+  - id: classification-record
+    term:
+      en: classification record
+      tr: sınıflandırma kaydı
+    definition:
+      en: 'Per system: the risk category assigned, the rationale, the signer by name and the date.'
+      tr: 'Sistem başına: atanan risk kategorisi, gerekçe, adıyla imzalayan ve tarih.'
+
+  - id: pipeline-stages
+    term:
+      en: six pipeline stages
+      tr: altı pipeline aşaması
+    definition:
+      en: Ingestion, storage, prompt, inference, response, downstream (meta.yaml stages).
+      tr: Veri girişi, saklama, prompt, çıkarım, yanıt, aşağı akış (meta.yaml aşamaları).
+
+  - id: sovereignty-questions
+    term:
+      en: three sovereignty questions
+      tr: üç egemenlik sorusu
+    definition:
+      en: Jurisdiction of the provider's ultimate parent company; evidence of the architectural boundary
+        where data is processed; ability to operate independently of, or exit from, the provider.
+      tr: Sağlayıcının nihai ana şirketinin hukuki yetki alanı; verinin işlendiği mimari sınırın kanıtı;
+        sağlayıcıdan bağımsız işletebilme ya da hizmetten çıkabilme.
+
+  - id: critical-provider
+    term:
+      en: critical provider
+      tr: kritik sağlayıcı
+    definition:
+      en: A provider whose unavailability would stop a live AI system with no alternative in place, or that
+        is marked critical in the risk assessment (G-RSK-01).
+      tr: Erişilemez olması durumunda canlı bir AI sistemini alternatifsiz durduracak ya da risk değerlendirmesinde
+        (G-RSK-01) kritik işaretlenmiş sağlayıcı.
+
+  - id: contract-clauses
+    term:
+      en: five contract clauses
+      tr: beş sözleşme maddesi
+    definition:
+      en: Data processing terms; ban on, or opt-out from, use of customer data for training; deletion at
+        termination; breach notification within a stated period; audit or assurance rights.
+      tr: Veri işleme şartları; müşteri verisinin eğitimde kullanılmasının yasağı ya da bundan çıkış; sona
+        ermede silme; belirtilmiş süre içinde ihlal bildirimi; denetim ya da güvence hakları.
+
+  - id: risk-acceptance
+    term:
+      en: risk acceptance
+      tr: risk kabulü
+    definition:
+      en: A record signed by the system owner accepting a named gap, referenced in the risk assessment (G-RSK-01),
+        with a date.
+      tr: Sistem sahibinin imzaladığı, adı konmuş bir eksikliği kabul eden, risk değerlendirmesinde (G-RSK-01)
+        atıf yapılan, tarihli kayıt.
+
+  - id: ai-roles
+    term:
+      en: AI roles
+      tr: AI rolleri
+    definition:
+      en: Roles that develop, operate, review or oversee AI systems, taken from G-ROL-01 and G-OVS-01.
+      tr: AI sistemlerini geliştiren, işleten, gözden geçiren ya da gözetim yapan roller; G-ROL-01 ve G-OVS-01'den
+        alınır.
+
+  - id: oversight-elements
+    term:
+      en: four oversight elements
+      tr: dört gözetim unsuru
+    definition:
+      en: Output classes that need human review; the reviewing role; the time limit for the decision; what
+        happens to the output while review is pending.
+      tr: İnsan incelemesi gerektiren çıktı sınıfları; inceleyen rol; karar için süre sınırı; inceleme beklerken
+        çıktıya ne olacağı.
+
+  - id: fail-closed
+    term:
+      en: fail-closed
+      tr: fail-closed
+    definition:
+      en: 'When the control cannot do its job, data does not pass: it is blocked or quarantined.'
+      tr: 'Kontrol işini yapamadığında veri geçmez: engellenir ya da karantinaya alınır.'
+
+  - id: failure-classes
+    term:
+      en: three failure classes
+      tr: üç hata sınıfı
+    definition:
+      en: Control unreachable; control returns an error or times out; unsupported language, format or category.
+      tr: Kontrole erişilemiyor; kontrol hata döndürüyor ya da zaman aşımına uğruyor; desteklenmeyen dil,
+        format ya da kategori.
+
+  - id: known-answer-set
+    term:
+      en: known-answer test set
+      tr: bilinen-cevaplı test seti
+    definition:
+      en: A synthetic data set in which every occurrence of each category is labelled in advance, so recall
+        can be computed per category. No real personal data.
+      tr: Her kategorinin her geçişinin önceden etiketlendiği, böylece kategori başına recall hesaplanabilen
+        sentetik veri seti. Gerçek kişisel veri içermez.
+
+  - id: own-credential
+    term:
+      en: own credential
+      tr: kendine ait kimlik bilgisi
+    definition:
+      en: A credential used by exactly one source (system, connector or person). A key shared by two connectors,
+        or a team upload account, does not count.
+      tr: Yalnız bir kaynağın (sistem, bağlayıcı ya da kişi) kullandığı kimlik bilgisi. İki bağlayıcının
+        paylaştığı anahtar ya da ekip yükleme hesabı sayılmaz.

@@ -63,7 +63,7 @@ Asistan,SISTEM,CE,CON-INF-02,c4,temel: Kontrollü noktayı atlayarak sağlayıc�
 Asistan,SISTEM,CE,CON-INF-02,c5,temel: Dış modelleri çağırmak için kişisel hesap ya da kişisel API anahtarı kullanılmıyor.,L1,,,declared,,,,,
 Asistan,SISTEM,CE,CON-INF-02,c6,"temel: Son 30 günün çağrıları sağlayıcı, uç nokta, çağıran sistem ve zamanla kayıtlı.",L1,,,declared,,,,,
 Asistan,SISTEM,CE,CON-INF-02,s1,sürdürme: Çağrı kayıtları G-SUP-01 ile karşılaştırılarak gözden geçirilmiş; tarihli kaydı 3 ay içinde. [≤ 3 ay],L1,,,declared,,,,,
-Asistan,SISTEM,CE,CON-INF-02,s2,sürdürme: Onaylı listeden çıkarılan her sağlayıcının kontrollü noktada 5 iş günü içinde engellendiği kayıtla gösteriliyor.,L1,,,declared,,,,,
+Asistan,SISTEM,CE,CON-INF-02,s2,sürdürme: Onaylı listeden çıkarılan her sağlayıcının kontrollü noktada 5 iş günü içinde engellendiği kayıtla gösteriliyor. Dönem içinde hiç sağlayıcı çıkarılmadıysa 5 iş günü hedefini içeren yazılı engelleme prosedürü yeterli.,L1,,,declared,,,,,
 Asistan,SISTEM,CE,CON-STO-02,c1,varlık: Sistemin kaynak belgelerini ya da korpusunu tutan depolar depolamada şifreli.,L1,,,declared,,,,,
 Asistan,SISTEM,CE,CON-STO-02,c2,"temel: Depo envanteri indeksler, prompt ve yanıt kayıtları, yedekler ve sağlayıcı depoları dahil her AI veri deposunu sayıyor.",L1,,,declared,,,,,
 Asistan,SISTEM,CE,CON-STO-02,c3,temel: Envanterdeki depolardan depolamada şifreli olduğu yapılandırma ya da sağlayıcı belgesiyle gösterilenlerin oranı. [%100 (hepsi)],L1,,,declared,,,,,

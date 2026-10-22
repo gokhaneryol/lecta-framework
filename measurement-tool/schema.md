@@ -55,8 +55,7 @@ measurement-tool/
 | `level` | ✓ | Profil başına: `{CE: L1, SOV: L1}`; `null` = o profilde uygulanmaz |
 | `applicability` | ✓ | Maddenin hangi durumda N/A olduğu, ölçütüyle `{en, tr}` |
 | `evidence` | ✓ | Beklenen kanıtlar; her biri bir tür kodu (aşağıda) + `{en, tr}` açıklama |
-| `rubric` | ✓* | `0`–`3`, her puan için ölçüt `{en, tr}` (Bölüm 5). *`checks` olan maddede yazılmaz, üretilir |
-| `checks` | — | Kontrol listesi; varsa puan kuralla hesaplanır (Bölüm 5.5) |
+| `checks` | ✓ | Kontrol listesi; puan kuralla hesaplanır, rubric metni bundan üretilir (Bölüm 5.5) |
 | `review_interval` | 3 puanı için | Ay cinsinden; rubric 3'teki "düzenli" kelimesinin sayısal karşılığı |
 | `quick_scan` | ✓ | `true/false` + varsa beyana dayalı kısa soru `qs_question {en, tr}` |
 | `validation_tests` | — | AS-03 senaryoları: ön koşul · adımlar · beklenen sonuç `{en, tr}` · ilgili rubric puanı |
@@ -97,7 +96,7 @@ Bir sistem, bir profil için **Lk** seviyesindedir ⇔ `level ≤ Lk` olan **tü
 
 ### 5.5 Kontrol listesi ve sabit puanlama kuralı (A2, pilot)
 
-Amaç: iki değerlendirici aynı maddeye aynı puanı versin. Rubric metni elle yazılmaz; madde `checks` alanında **atomik kontroller** taşır, puan bu kontrollerin cevabından kuralla hesaplanır. Pilot G-POL-02 ve HYG-ING-02 ile onaylandı ✅ (Gökhan, 22 Ekim); Quick Scan kesitindeki 18 maddenin hepsi bu biçimde. Kesit dışındaki 11 madde henüz `rubric` alanıyla elle puanlanır, sırayla çevrilecek.
+Amaç: iki değerlendirici aynı maddeye aynı puanı versin. Rubric metni elle yazılmaz; madde `checks` alanında **atomik kontroller** taşır, puan bu kontrollerin cevabından kuralla hesaplanır. Pilot G-POL-02 ve HYG-ING-02 ile onaylandı ✅ (Gökhan, 22 Ekim). 29 maddenin hepsi bu biçimde (182 kontrol, 48 terim). Yeni madde de `checks` ile yazılır; elle yazılmış `rubric` alanı yalnız geriye dönük uyumluluk için araçlarda okunur.
 
 **Kontrol türü (`kind`):**
 

@@ -37,35 +37,59 @@ items:
       - type: TST
         en: Dated test of an unauthenticated submission being rejected
         tr: Kimliği doğrulanmamış bir gönderimin reddedildiğini gösteren tarihli test
-    rubric:
-      0:
-        en: One or more ingestion paths accept data without authentication.
-        tr: Bir ya da daha fazla giriş yolu kimlik doğrulaması olmadan veri kabul ediyor.
-      1:
-        en: >
-          All paths require authentication, but at least one of these is true: a credential is
-          shared by several sources or people; credentials do not expire or rotate; no test
-          record.
-        tr: >
-          Tüm yollar kimlik doğrulaması istiyor ama şunlardan en az biri geçerli: bir kimlik
-          bilgisi birden çok kaynak ya da kişi tarafından paylaşılıyor; kimlik bilgilerinin
-          süresi dolmuyor ya da yenilenmiyor; test kaydı yok.
-      2:
-        en: >
-          Every path requires authentication with individual credentials, credentials expire
-          or rotate on a defined period, and a dated test shows rejection of an unauthenticated
-          submission.
-        tr: >
-          Her yol kendine ait kimlik bilgileriyle doğrulama istiyor, kimlik bilgileri tanımlı
-          bir sürede doluyor ya da yenileniyor ve tarihli bir test kimliksiz gönderimin
-          reddedildiğini gösteriyor.
-      3:
-        en: >
-          Meets 2, and source credentials were reviewed within review_interval; unused
-          credentials are revoked, with a record.
-        tr: >
-          2'yi karşılıyor; kaynak kimlik bilgileri review_interval içinde gözden geçirilmiş ve
-          kullanılmayanlar iptal edilmiş, kaydı var.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: Every ingestion path requires authentication before accepting data.
+          tr: Her giriş yolu veri kabul etmeden önce kimlik doğrulaması istiyor.
+        terms:
+        - ingestion-path
+        evidence: CFG
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of sources that authenticate with their own credential.
+          tr: Kaynaklardan kendine ait kimlik bilgisiyle doğrulananların oranı.
+        terms:
+        - own-credential
+        evidence: DOC
+        qs: true
+        sampling: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: Source credentials expire or are rotated within a defined period.
+          tr: Kaynak kimlik bilgileri tanımlı bir sürede doluyor ya da yenileniyor.
+        evidence: CFG
+        qs: true
+      - id: c4
+        kind: core
+        type: binary
+        text:
+          en: A dated test shows an unauthenticated submission rejected.
+          tr: Tarihli bir test kimliği doğrulanmamış bir gönderimin reddedildiğini gösteriyor.
+        evidence: TST
+        qs: false
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: Source credentials were reviewed and unused ones revoked; the dated record is within review_interval.
+          tr: Kaynak kimlik bilgileri gözden geçirilmiş ve kullanılmayanlar iptal edilmiş; tarihli kaydı review_interval
+            içinde.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
     review_interval: 6
     quick_scan: false
     mappings:

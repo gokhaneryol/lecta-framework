@@ -44,3 +44,4 @@ changelog:
   - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "references/README.md added: sources behind mappings and legal deadlines, with reliability and last-check date"}
   - {date: 2026-10-22, version: v1.0-draft, by: GE + Claude, change: "A2 pilot: check list + fixed scoring rule (schema 5.5), terms.yaml, tools/kontrol.py; G-POL-02 and HYG-ING-02 converted; thresholds kept, to be calibrated in pilot"}
   - {date: 2026-10-22, version: v1.0-draft, by: GE + Claude, change: "A2 pattern approved; remaining 16 QS items converted to checks (18 QS items, 120 checks); terms.yaml 33 terms; hand-written rubric kept only for the 11 non-QS items"}
+  - {date: 2026-10-22, version: v1.0-draft, by: GE + Claude, change: "A2 complete: remaining 11 non-QS items converted; all 29 items check-based (182 checks), terms.yaml 48 terms; hand-written rubric field retired"}

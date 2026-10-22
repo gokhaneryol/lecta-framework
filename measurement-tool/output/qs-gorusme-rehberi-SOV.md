@@ -6,7 +6,7 @@
 
 > Bu görüşme bir **Hızlı Tarama**dır: sorularımız beyanınıza dayanır, kanıt incelemesi yapılmaz. Sonuç bir **gösterge hazırlık seviyesidir**; denetim görüşü ya da belge değildir. Bilmediğiniz soruya "bilmiyorum" demeniz en doğru cevaptır ve öyle kaydedilir.
 
-**Puanlama notu:** Kontrol listeli maddelerde her kontrole beyana göre E / H / B yazılır, puan betikle hesaplanır (`basis: declared`). Kontrol listesi olmayan maddede 0–3 verilir. Katılımcı cevabı bilmiyorsa **NE**; madde kurumda yoksa ve uygulanabilirlik ölçütü karşılanmıyorsa **NA** (gerekçe yazılır). Kanıt istenmez; katılımcı kendiliğinden gösterirse `evidence_ref` alanına not edilir.
+**Puanlama notu:** Her kontrole beyana göre E / H / B yazılır; puan betikle hesaplanır (`basis: declared`). B (bilmiyor) karşılanmıyor sayılır; c1 B ise madde **NE** olur. Madde kurumda uygulanmıyorsa c1 satırına **NA** yazılır, gerekçe `na_reason` alanına. Kanıt istenmez; katılımcı kendiliğinden gösterirse `evidence_ref` alanına not edilir.
 
 **Süre:** 9 kurum + 8 sistem maddesi (sistem başına) · ~4 dk/madde · 1 sistemle ~83 dk.
 

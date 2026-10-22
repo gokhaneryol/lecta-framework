@@ -64,7 +64,7 @@ Araç hangi seviyede olursa olsun **hazırlığı** ölçer, denetim yapmaz. L6,
 | 1 | Lecta yöntem ekibi | Maddeleri ve rubric'leri yazar, onaylar, sürüm verir. Bu, her müşteride değil, framework güncellendiğinde yapılır | `source/*.yaml` |
 | 2 | Betik | Kapsama göre görüşme rehberini, boş puanlama tablosunu ve (AS-02'de) kanıt talep listesini üretir | `output/` |
 | 3 | Değerlendirici | Görüşmeyi yapar. AS-02'de belgeleri, yapılandırma ve kayıt örneklerini inceler | görüşme rehberi |
-| 4 | Değerlendirici | Her maddeye puan (0–3) ya da NA/NE girer; gerekçe, not ve kanıt referansı yazar | **puanlama tablosu** |
+| 4 | Değerlendirici | Her kontrole E / H / B (ya da c1'e NA) girer; puanı betik hesaplar. Not ve kanıt referansı yazar | **puanlama tablosu** |
 | 5 | İkinci değerlendirici | Puanların gerekçesini okur, kanıtların bir örneklemini yeniden açar, uyuşmazlıkları kaydeder | aynı tablo, `reviewer` sütunu |
 | 6 | Betik | Geçiş kapısı ve G sınırıyla seviyeleri hesaplar, riskleri sabit kurala göre sıralar | seviye çıktısı |
 | 7 | Değerlendirici | Memo ya da raporu ve yol haritasını yazar | memo / rapor şablonu |
@@ -103,12 +103,12 @@ Bunların dışındaki her şey betikle üretilir. Değerlendirme kayıtları m�
 | 2 | Kapsamın tamamında uygulanıyor ve kanıtlı |
 | 3 | 2 + madde başına tanımlı aralıkla (ay) gözden geçiriliyor ya da ölçülüyor |
 
-Her maddenin rubric'i bu iskeleti sayılabilir ölçütlerle doldurur. "Yeterli", "uygun", "düzenli" gibi ölçütsüz kelimeler kullanılmaz. Puan dışı iki işaret var:
+Her maddenin rubric'i bu iskeleti sayılabilir kontrollerle doldurur (aşağıda). "Yeterli", "uygun", "düzenli" gibi ölçütsüz kelimeler kullanılmaz. Puan dışı iki işaret var:
 
 - **NA:** Madde uygulanmaz; hesaba girmez.
 - **NE:** Değerlendirilemedi; kapıyı kapatır.
 
-**Kontrol listesiyle puanlama (`schema.md` 5.5):** Quick Scan kesitindeki 18 maddede puan elle verilmez. Madde birkaç evet/hayır kontrole bölünür: bir varlık kontrolü (`c1`), temel kontroller (`c2…`) ve sürdürme kontrolleri (`s1…`). Puan sabit kuralla hesaplanır: c1 yoksa 0; temel kontrollerden biri eksikse 1; hepsi tamamsa 2; sürdürme kontrolleri de tamamsa 3. Yoruma açık terimler `source/terms.yaml` içinde tanımlıdır. Kesit dışındaki 11 madde henüz elle yazılmış rubric'le puanlanır; sırayla çevrilecek.
+**Kontrol listesiyle puanlama (`schema.md` 5.5):** Hiçbir maddede puan elle verilmez. Madde birkaç evet/hayır kontrole bölünür: bir varlık kontrolü (`c1`), temel kontroller (`c2…`) ve sürdürme kontrolleri (`s1…`). Puan sabit kuralla hesaplanır: c1 yoksa 0; temel kontrollerden biri eksikse 1; hepsi tamamsa 2; sürdürme kontrolleri de tamamsa 3. Yoruma açık terimler `source/terms.yaml` içinde tanımlıdır.
 
 **Seviye:** Bir sistem Lk seviyesindedir ⇔ seviyesi Lk ve altı olan tüm uygulanabilir maddeler en az 2 puan almıştır. Raporlanan seviye, sistemin matris seviyesi ile G bloğu seviyesinin düşük olanıdır. Örnek: teknik olarak L1 olan bir RAG sistemi, kurumun AI envanteri eksikse L0 olarak raporlanır.
 
@@ -128,7 +128,7 @@ Bir Quick Scan yaklaşık 2–3 adam-gün sürer. İçinde tek bir görüşme va
 1. **Kapsam:** Kurum adı ve en çok 2 sistem belirlenir. Her sistemin profili (CE/SOV) bu aşamada seçilir.
 2. **Puanlama tablosu üretilir:** `python3 qs.py puanlama --kurum "Kurum" --sistem "Asistan:CE" --out kurum-qs.csv`
 3. **Görüşme:** Profile göre `output/qs-gorusme-rehberi-CE.md` ya da `-SOV.md` rehberi kullanılır. Açılış metni okunur: "beyana dayalı, denetim değil". Katılımcılar BT/güvenlik sorumlusu ve bir iş birimi sahibidir.
-4. **Puanlar CSV'ye girilir:** Her maddeye 0–3, NA ya da NE yazılır. Kontrol listeli maddelerde her kontrol ayrı satırdır; `answer` sütununa E / H / B yazılır, puan sütunu boş bırakılır (betik hesaplar). Kanıt istenmez; katılımcı kendiliğinden gösterirse `evidence_ref` alanına not edilir.
+4. **Cevaplar CSV'ye girilir:** Her kontrol ayrı satırdır; `answer` sütununa E / H / B yazılır, puan sütunu boş bırakılır (betik hesaplar). Kanıt istenmez; katılımcı kendiliğinden gösterirse `evidence_ref` alanına not edilir.
 5. **İkinci değerlendirici** CSV'yi kontrol eder ve `reviewer` sütununu doldurur.
 6. **Seviye hesaplanır:** `python3 qs.py seviye kurum-qs.csv --out kurum-seviye.md`. Çıktıda sistem başına gösterge seviye ve en kritik 5 risk yer alır.
 7. **Memo yazılır:** [`04-quick-scan-memo-sablonu.md`](04-quick-scan-memo-sablonu.md) kullanılır. Seviye tablosu ve risk sırası betikten gelir; değerlendirici bunları değiştirmez. Önerilen sonraki adım karar tablosundan seçilir.

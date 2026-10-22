@@ -71,9 +71,8 @@ def cmd_rehber(a):
     L.append('> Bu görüşme bir **Hızlı Tarama**dır: sorularımız beyanınıza dayanır, kanıt incelemesi yapılmaz. '
              'Sonuç bir **gösterge hazırlık seviyesidir**; denetim görüşü ya da belge değildir. '
              'Bilmediğiniz soruya "bilmiyorum" demeniz en doğru cevaptır ve öyle kaydedilir.\n')
-    L.append('**Puanlama notu:** Kontrol listeli maddelerde her kontrole beyana göre E / H / B yazılır, puan betikle hesaplanır (`basis: declared`). '
-             'Kontrol listesi olmayan maddede 0–3 verilir. '
-             'Katılımcı cevabı bilmiyorsa **NE**; madde kurumda yoksa ve uygulanabilirlik ölçütü karşılanmıyorsa **NA** (gerekçe yazılır). '
+    L.append('**Puanlama notu:** Her kontrole beyana göre E / H / B yazılır; puan betikle hesaplanır (`basis: declared`). '
+             'B (bilmiyor) karşılanmıyor sayılır; c1 B ise madde **NE** olur. Madde kurumda uygulanmıyorsa c1 satırına **NA** yazılır, gerekçe `na_reason` alanına. '
              'Kanıt istenmez; katılımcı kendiliğinden gösterirse `evidence_ref` alanına not edilir.\n')
     L.append(f'**Süre:** {len(gov)} kurum + {len(mat)} sistem maddesi (sistem başına) · ~4 dk/madde · 1 sistemle ~{4*(len(gov)+len(mat))+15} dk.\n')
 
