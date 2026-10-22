@@ -27,7 +27,6 @@
         sampling: false       # AS-02 sampling rule applies (ratio over >10 items)
       - {id: c2, kind: core, type: binary, text: {en: , tr: }, evidence: , qs: true}
       - {id: s1, kind: sustain, type: date, threshold: {max_months: review_interval}, text: {en: , tr: }, evidence: DOC, qs: true}
-    # rubric:                 # legacy hand-written rubric — only for items not yet converted
     review_interval:          # months; quantifies "reviewed" in score 3
     quick_scan: false
     qs_question: {en: , tr: } # only if quick_scan: true

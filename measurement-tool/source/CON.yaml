@@ -168,33 +168,75 @@ items:
       - type: TST
         en: Scan or test result showing no plaintext or deprecated-protocol endpoint, dated within 6 months
         tr: Son 6 ay içinde tarihli, şifresiz ya da eskimiş protokollü uç nokta olmadığını gösteren tarama/test sonucu
-    rubric:
-      0:
-        en: One or more external-facing flows are unencrypted, or the state is unknown.
-        tr: Dışa açık bir ya da daha fazla akış şifresiz ya da durum bilinmiyor.
-      1:
-        en: >
-          External-facing flows are encrypted, but at least one of these is true: internal
-          service-to-service flows are unencrypted; deprecated protocol versions are accepted;
-          no flow list exists; no test result can be produced.
-        tr: >
-          Dışa açık akışlar şifreli ama şunlardan en az biri geçerli: servisler arası iç akışlar
-          şifresiz; eskimiş protokol sürümleri kabul ediliyor; akış listesi yok; test sonucu
-          sunulamıyor.
-      2:
-        en: >
-          Every flow in the list, internal and external, is encrypted, deprecated versions are
-          refused, and a test result from the last 6 months confirms it.
-        tr: >
-          Listedeki iç ve dış her akış şifreli, eskimiş sürümler reddediliyor ve son 6 aya ait
-          bir test sonucu bunu doğruluyor.
-      3:
-        en: >
-          Meets 2, and certificate expiry and protocol configuration are monitored with
-          alerts, and the test is repeated within review_interval.
-        tr: >
-          2'yi karşılıyor; sertifika süreleri ve protokol yapılandırması alarmla izleniyor ve
-          test review_interval içinde tekrarlanıyor.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: Every externally exposed flow, including calls to external model providers, is encrypted in transit.
+          tr: Dış model sağlayıcılarına yapılan çağrılar dahil dışa açık her akış aktarımda şifreli.
+        evidence: CFG
+        qs: true
+      - id: c2
+        kind: core
+        type: binary
+        text:
+          en: A list of data flows showing the protocol of each flow exists.
+          tr: Her akışın protokolünü gösteren veri akışları listesi var.
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of flows in the list, internal service-to-service flows included, that are encrypted in
+            transit.
+          tr: Listedeki akışlardan, servisler arası iç akışlar dahil, aktarımda şifreli olanların oranı.
+        evidence: CFG
+        qs: true
+        sampling: true
+      - id: c4
+        kind: core
+        type: binary
+        text:
+          en: Outdated protocol versions are rejected on every endpoint.
+          tr: Eskimiş protokol sürümleri her uç noktada reddediliyor.
+        terms:
+        - outdated-protocol
+        evidence: CFG
+        qs: true
+      - id: c5
+        kind: core
+        type: date
+        threshold:
+          max_months: 6
+        text:
+          en: Date of the latest scan or test showing no unencrypted or outdated-protocol endpoint is within
+            the last 6 months.
+          tr: Şifresiz ya da eskimiş protokollü uç nokta olmadığını gösteren son tarama/testin tarihi son 6
+            ay içinde.
+        terms:
+        - outdated-protocol
+        evidence: TST
+        qs: false
+      - id: s1
+        kind: sustain
+        type: binary
+        text:
+          en: Certificate expiry and protocol configuration are monitored with alerts.
+          tr: Sertifika süreleri ve protokol yapılandırması alarmla izleniyor.
+        evidence: CFG
+        qs: true
+      - id: s2
+        kind: sustain
+        type: binary
+        text:
+          en: At least two dated tests exist and the gap between the two most recent is not longer than review_interval.
+          tr: En az iki tarihli test var ve son ikisi arasındaki süre review_interval'dan uzun değil.
+        evidence: TST
+        qs: true
     review_interval: 6
     quick_scan: false
     mappings:
@@ -248,31 +290,78 @@ items:
       - type: TST
         en: Connection test from a non-allowed component, dated
         tr: İzinsiz bir bileşenden yapılmış, tarihli bağlantı testi
-    rubric:
-      0:
-        en: AI data stores are reachable from the general network with no segmentation.
-        tr: AI veri depolarına genel ağdan erişilebiliyor, ayrıştırma yok.
-      1:
-        en: >
-          At least one of these is true: some stores are segmented and others are not; rules
-          allow broader access than the inventory states; the default is allow; no test record.
-        tr: >
-          Şunlardan en az biri geçerli: bazı depolar ayrıştırılmış, diğerleri değil; kurallar
-          envanterde belirtilenden geniş erişime izin veriyor; varsayılan izin; test kaydı yok.
-      2:
-        en: >
-          Every store in the inventory is segmented with default deny, allowed flows match the
-          inventory, and a dated test shows a non-allowed component is refused.
-        tr: >
-          Envanterdeki her depo varsayılan red ile ayrıştırılmış, izinli akışlar envanterle
-          örtüşüyor ve tarihli bir test izinsiz bir bileşenin reddedildiğini gösteriyor.
-      3:
-        en: >
-          Meets 2, and rules were reconciled against the inventory within review_interval,
-          and rule changes require recorded approval.
-        tr: >
-          2'yi karşılıyor; kurallar review_interval içinde envanterle karşılaştırılmış ve kural
-          değişiklikleri kayıtlı onay gerektiriyor.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: At least one AI data store is network-segmented.
+          tr: En az bir AI veri deposu ağ düzeyinde ayrıştırılmış.
+        terms:
+        - network-segmented
+        - ai-data-store
+        evidence: CFG
+        qs: true
+      - id: c2
+        kind: core
+        type: binary
+        text:
+          en: A store inventory shows which components may reach each store.
+          tr: Depo envanteri her depoya hangi bileşenlerin erişebileceğini gösteriyor.
+        terms:
+        - ai-data-store
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of stores in the inventory that are segmented with default-deny access.
+          tr: Envanterdeki depolardan varsayılan red ile ayrıştırılmış olanların oranı.
+        terms:
+        - network-segmented
+        - default-deny-access
+        evidence: CFG
+        qs: true
+        sampling: true
+      - id: c4
+        kind: core
+        type: binary
+        text:
+          en: The allowed flows in the network rules match the inventory (no wider access).
+          tr: Ağ kurallarındaki izinli akışlar envanterle örtüşüyor (daha geniş erişim yok).
+        evidence: CFG
+        qs: false
+      - id: c5
+        kind: core
+        type: binary
+        text:
+          en: A dated test from a component not on the inventory shows the connection rejected.
+          tr: Envanterde olmayan bir bileşenden yapılmış tarihli test bağlantının reddedildiğini gösteriyor.
+        evidence: TST
+        qs: false
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: The rules were reconciled against the inventory; the dated record is within review_interval.
+          tr: Kurallar envanterle karşılaştırılmış; tarihli kaydı review_interval içinde.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
+      - id: s2
+        kind: sustain
+        type: binary
+        text:
+          en: A change to these rules requires a recorded approval.
+          tr: Bu kurallarda değişiklik kayıtlı bir onay gerektiriyor.
+        evidence: DOC
+        qs: true
     review_interval: 6
     quick_scan: false
     mappings:

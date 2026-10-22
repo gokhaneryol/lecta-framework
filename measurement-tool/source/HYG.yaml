@@ -322,36 +322,71 @@ items:
       - type: LOG
         en: Quarantine/rejection events
         tr: Karantina/ret kayıtları
-    rubric:
-      0:
-        en: Fails open (data passes untreated), or behaviour is unknown.
-        tr: Hata durumunda açık kalıyor (veri işlenmeden geçiyor) ya da davranış bilinmiyor.
-      1:
-        en: >
-          Fail-closed is configured but has never been tested, or covers only some failure
-          classes (e.g. unavailability but not unsupported language/format), or only some paths.
-        tr: >
-          Fail-closed yapılandırılmış ama hiç test edilmemiş; ya da yalnız bazı hata
-          sınıflarını (ör. erişilemezlik var, desteklenmeyen dil/format yok) veya yalnız bazı
-          yolları kapsıyor.
-      2:
-        en: >
-          Fail-closed is configured on every path for unavailability, error/timeout and
-          unsupported language/format, and a dated test record shows data blocked or
-          quarantined in each class.
-        tr: >
-          Fail-closed her yolda erişilemezlik, hata/zaman aşımı ve desteklenmeyen dil/format
-          için yapılandırılmış; tarihli test kaydı her sınıfta verinin engellendiğini ya da
-          karantinaya alındığını gösteriyor.
-      3:
-        en: >
-          Meets 2, and the test is repeated at every change of the detection component and
-          at least within review_interval; quarantine events raise an alert that is handled,
-          with records.
-        tr: >
-          2'yi karşılıyor; test, tespit bileşeninin her değişikliğinde ve en geç
-          review_interval içinde tekrarlanıyor; karantina olayları alarm üretiyor ve
-          alarmın ele alındığına dair kayıt var.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: On at least one ingestion path the detection control is configured fail-closed.
+          tr: En az bir giriş yolunda tespit kontrolü fail-closed yapılandırılmış.
+        terms:
+        - fail-closed
+        evidence: CFG
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of ingestion paths configured fail-closed for all three failure classes.
+          tr: Giriş yollarından üç hata sınıfının hepsi için fail-closed yapılandırılmış olanların oranı.
+        terms:
+        - fail-closed
+        - failure-classes
+        - path-inventory
+        evidence: CFG
+        qs: true
+        sampling: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: A dated test record shows data blocked or quarantined in each of the three failure classes.
+          tr: Tarihli test kaydı üç hata sınıfının her birinde verinin engellendiğini ya da karantinaya alındığını
+            gösteriyor.
+        terms:
+        - failure-classes
+        evidence: TST
+        qs: true
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: Date of the latest fail-closed test is within review_interval.
+          tr: Son fail-closed testinin tarihi review_interval içinde.
+        evidence: TST
+        qs: true
+      - id: s2
+        kind: sustain
+        type: binary
+        text:
+          en: The test was repeated after each change to the detection component (every change record has a
+            later test record).
+          tr: Test, tespit bileşenindeki her değişiklikten sonra tekrarlanmış (her değişiklik kaydının ardından
+            bir test kaydı var).
+        evidence: TST
+        qs: true
+      - id: s3
+        kind: sustain
+        type: binary
+        text:
+          en: Quarantine events raise an alert and each alert has a handling record.
+          tr: Karantina olayları alarm üretiyor ve her alarmın ele alınma kaydı var.
+        evidence: LOG
+        qs: true
     review_interval: 6
     quick_scan: false
     validation_tests:
@@ -421,34 +456,77 @@ items:
       - type: DOC
         en: Threshold per category set by the owner; action record for categories below threshold
         tr: Sahibin belirlediği kategori başına eşik; eşiğin altındaki kategoriler için aksiyon kaydı
-    rubric:
-      0:
-        en: Never measured.
-        tr: Hiç ölçülmemiş.
-      1:
-        en: >
-          Measured ad hoc, or without a known-answer set, or not per category, or no result
-          record retained.
-        tr: >
-          Gelişigüzel ölçülmüş; ya da bilinen-cevaplı set kullanılmamış, kategori bazında
-          ölçülmemiş veya sonuç kaydı saklanmamış.
-      2:
-        en: >
-          Measured with a known-answer set covering every category in HYG-ING-01; per-category
-          recall recorded; each category meets its threshold or has an open action with owner
-          and date.
-        tr: >
-          HYG-ING-01'deki her kategoriyi kapsayan bilinen-cevaplı setle ölçülmüş; kategori
-          başına recall kaydedilmiş; her kategori eşiğini karşılıyor ya da sahibi ve tarihi
-          belli açık bir aksiyonu var.
-      3:
-        en: >
-          Meets 2, and the measurement is repeated at every change of detection configuration
-          or model and at least within review_interval; results are kept as a time series.
-        tr: >
-          2'yi karşılıyor; ölçüm tespit yapılandırmasının ya da modelinin her değişikliğinde
-          ve en geç review_interval içinde tekrarlanıyor; sonuçlar zaman serisi olarak
-          saklanıyor.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: Detection quality was measured at least once and the result is recorded.
+          tr: Tespit kalitesi en az bir kez ölçülmüş ve sonucu kayıtlı.
+        evidence: TST
+        qs: true
+      - id: c2
+        kind: core
+        type: binary
+        text:
+          en: A known-answer test set covers every category in HYG-ING-01.
+          tr: Bilinen-cevaplı test seti HYG-ING-01'deki her kategoriyi kapsıyor.
+        terms:
+        - known-answer-set
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: Recall is recorded per category, with a date.
+          tr: Recall kategori başına, tarihli olarak kayıtlı.
+        evidence: TST
+        qs: true
+      - id: c4
+        kind: core
+        type: binary
+        text:
+          en: The owner has set a recall threshold for each category.
+          tr: Sahibi her kategori için bir recall eşiği belirlemiş.
+        evidence: DOC
+        qs: true
+      - id: c5
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of categories that meet their threshold or have an open action with an owner and a due date.
+          tr: Kategorilerden eşiğini karşılayan ya da sahibi ve tarihi belli açık aksiyonu olanların oranı.
+        evidence: TST
+        qs: true
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: Date of the latest measurement is within review_interval.
+          tr: Son ölçümün tarihi review_interval içinde.
+        evidence: TST
+        qs: true
+      - id: s2
+        kind: sustain
+        type: binary
+        text:
+          en: The measurement was repeated after each change to the detection configuration or model.
+          tr: Ölçüm, tespit yapılandırmasının ya da modelinin her değişikliğinden sonra tekrarlanmış.
+        evidence: TST
+        qs: true
+      - id: s3
+        kind: sustain
+        type: binary
+        text:
+          en: Every measurement result is retained, so results form a time series.
+          tr: Her ölçüm sonucu saklanıyor; sonuçlar zaman serisi oluşturuyor.
+        evidence: DOC
+        qs: true
     review_interval: 6
     quick_scan: false
     mappings:

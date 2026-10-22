@@ -712,33 +712,65 @@ items:
       - type: DOC
         en: Classification record per system with category, rationale referencing the criteria, signatory and date
         tr: Sistem başına kategori, ölçütlere atıf yapan gerekçe, imzalayan ve tarih içeren sınıflandırma kaydı
-    rubric:
-      0:
-        en: No system has been classified.
-        tr: Hiçbir sistem sınıflandırılmamış.
-      1:
-        en: >
-          At least one of these is true: only some systems are classified; the rationale does
-          not reference the criteria applied; there is no named signatory; sector rules
-          applicable to the organisation are not considered.
-        tr: >
-          Şunlardan en az biri geçerli: yalnız bazı sistemler sınıflandırılmış; gerekçe
-          uygulanan ölçütlere atıf yapmıyor; adı belli imzalayan yok; kuruma uygulanan sektör
-          kuralları dikkate alınmamış.
-      2:
-        en: >
-          Every inventoried system has a classification with rationale referencing the
-          criteria, applicable sector rules are considered, and a named person signed it.
-        tr: >
-          Envanterdeki her sistemin, ölçütlere atıf yapan gerekçeli bir sınıflandırması var,
-          uygulanabilir sektör kuralları dikkate alınmış ve adı belli bir kişi imzalamış.
-      3:
-        en: >
-          Meets 2, and classifications were reconfirmed within review_interval and after
-          every change of purpose or user group, with records.
-        tr: >
-          2'yi karşılıyor ve sınıflandırmalar review_interval içinde ve her amaç ya da
-          kullanıcı grubu değişikliğinden sonra yeniden teyit edilmiş, kayıtları var.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: At least one AI system has a regulatory risk classification.
+          tr: En az bir AI sisteminin düzenleyici risk sınıflandırması var.
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of systems in the inventory (G-INV-01) with a classification record.
+          tr: Envanterdeki (G-INV-01) sistemlerden sınıflandırma kaydı olanların oranı.
+        terms:
+        - classification-record
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of classifications whose rationale cites the criteria applied (article or annex).
+          tr: Sınıflandırmalardan gerekçesi uygulanan ölçütlere (madde ya da ek) atıf yapanların oranı.
+        terms:
+        - classification-record
+        evidence: DOC
+        qs: false
+        sampling: true
+      - id: c4
+        kind: core
+        type: binary
+        text:
+          en: The sector rules applicable to the organisation are listed and each classification states whether
+            they apply.
+          tr: Kuruma uygulanan sektör kuralları listelenmiş ve her sınıflandırma bunların uygulanıp uygulanmadığını
+            belirtiyor.
+        evidence: DOC
+        qs: true
+      - id: s1
+        kind: sustain
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of classifications reconfirmed within review_interval and after each change of purpose or
+            user group.
+          tr: Sınıflandırmalardan review_interval içinde ve her amaç ya da kullanıcı grubu değişikliğinden sonra
+            yeniden teyit edilenlerin oranı.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
+        sampling: true
     review_interval: 12
     quick_scan: false
     mappings:
@@ -779,36 +811,91 @@ items:
       - type: DOC
         en: Impact assessment per system with data map across pipeline stages, risk list, mitigations and DPO opinion
         tr: Sistem başına, pipeline aşamalarında veri haritası, risk listesi, önlemler ve DPO görüşünü içeren etki değerlendirmesi
-    rubric:
-      0:
-        en: No impact assessment for any AI system processing personal data.
-        tr: Kişisel veri işleyen hiçbir AI sistemi için etki değerlendirmesi yok.
-      1:
-        en: >
-          At least one of these is true: assessments exist for only some systems; the data map
-          does not cover all pipeline stages; points where data leaves the country are not
-          identified; there is no DPO opinion.
-        tr: >
-          Şunlardan en az biri geçerli: yalnız bazı sistemler için değerlendirme var; veri
-          haritası tüm pipeline aşamalarını kapsamıyor; verinin yurt dışına çıktığı noktalar
-          belirlenmemiş; DPO görüşü yok.
-      2:
-        en: >
-          Every AI system processing personal data has an assessment with a data map across
-          all pipeline stages, identified cross-border points, mitigations with owners, and a
-          recorded DPO opinion.
-        tr: >
-          Kişisel veri işleyen her AI sisteminin, tüm pipeline aşamalarında veri haritası,
-          belirlenmiş yurt dışı aktarım noktaları, sahipli önlemler ve kayıtlı DPO görüşü
-          içeren değerlendirmesi var.
-      3:
-        en: >
-          Meets 2, and mitigations are tracked to closure, and each assessment was updated
-          within review_interval or after a change of data categories or provider.
-        tr: >
-          2'yi karşılıyor; önlemler kapanışa kadar izleniyor ve her değerlendirme
-          review_interval içinde ya da veri kategorisi veya sağlayıcı değişikliğinden sonra
-          güncellenmiş.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: At least one AI system that processes personal data has an impact assessment.
+          tr: Kişisel veri işleyen en az bir AI sistemi için etki değerlendirmesi var.
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of AI systems processing personal data that have a completed impact assessment.
+          tr: Kişisel veri işleyen AI sistemlerinden tamamlanmış etki değerlendirmesi olanların oranı.
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of assessments whose data map covers all six pipeline stages.
+          tr: Değerlendirmelerden veri haritası altı pipeline aşamasının hepsini kapsayanların oranı.
+        terms:
+        - pipeline-stages
+        evidence: DOC
+        qs: true
+        sampling: true
+      - id: c4
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of assessments that identify every point where data leaves the country.
+          tr: Değerlendirmelerden verinin yurt dışına çıktığı her noktayı belirleyenlerin oranı.
+        evidence: DOC
+        qs: false
+        sampling: true
+      - id: c5
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of assessments in which every measure has an owner.
+          tr: Değerlendirmelerden her önlemin bir sahibi olanların oranı.
+        evidence: DOC
+        qs: false
+        sampling: true
+      - id: c6
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of assessments with a recorded DPO opinion.
+          tr: Değerlendirmelerden kayıtlı DPO görüşü olanların oranı.
+        evidence: DOC
+        qs: true
+      - id: s1
+        kind: sustain
+        type: binary
+        text:
+          en: Measures are tracked to closure (status and closing date recorded).
+          tr: Önlemler kapanışa kadar izleniyor (durum ve kapanış tarihi kayıtlı).
+        evidence: DOC
+        qs: true
+      - id: s2
+        kind: sustain
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of assessments updated within review_interval or after each change of data category or provider
+            (whichever comes first).
+          tr: Değerlendirmelerden review_interval içinde ya da her veri kategorisi veya sağlayıcı değişikliğinden
+            sonra (hangisi önce gelirse) güncellenenlerin oranı.
+        evidence: DOC
+        qs: true
+        sampling: true
     review_interval: 12
     quick_scan: false
     mappings:
@@ -972,35 +1059,70 @@ items:
       - type: LOG
         en: For the boundary question, egress or residency evidence (not only a provider statement)
         tr: Sınır sorusu için çıkış trafiği ya da veri yerleşimi kanıtı (yalnız sağlayıcı beyanı değil)
-    rubric:
-      0:
-        en: The three questions have not been addressed for any provider.
-        tr: Üç soru hiçbir sağlayıcı için ele alınmamış.
-      1:
-        en: >
-          At least one of these is true: answered for only some providers; one of the three
-          questions is unanswered; the boundary answer rests only on a provider statement;
-          no exit plan exists for a critical provider.
-        tr: >
-          Şunlardan en az biri geçerli: yalnız bazı sağlayıcılar için cevaplanmış; üç
-          sorudan biri cevapsız; sınır cevabı yalnız sağlayıcı beyanına dayanıyor; kritik bir
-          sağlayıcı için çıkış planı yok.
-      2:
-        en: >
-          All three questions are answered with sources for every provider in scope, the
-          boundary answer is supported by egress or residency evidence, and every critical
-          provider has an exit plan or an alternative-provider assessment.
-        tr: >
-          Kapsamdaki her sağlayıcı için üç soru kaynaklarıyla cevaplanmış, sınır cevabı çıkış
-          trafiği ya da veri yerleşimi kanıtıyla destekleniyor ve her kritik sağlayıcının çıkış
-          planı ya da alternatif sağlayıcı değerlendirmesi var.
-      3:
-        en: >
-          Meets 2, and the exit plan for at least one critical provider was exercised
-          (tabletop or technical test) within review_interval, with a record.
-        tr: >
-          2'yi karşılıyor ve en az bir kritik sağlayıcının çıkış planı review_interval içinde
-          işletilmiş (masa başı ya da teknik test), kaydı var.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: The three sovereignty questions are addressed for at least one provider or hosting arrangement.
+          tr: Üç egemenlik sorusu en az bir sağlayıcı ya da barındırma düzeni için ele alınmış.
+        terms:
+        - sovereignty-questions
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of in-scope providers for which all three questions are answered with sources.
+          tr: Kapsamdaki sağlayıcılardan üç sorunun hepsi kaynaklarıyla cevaplanmış olanların oranı.
+        terms:
+        - sovereignty-questions
+        evidence: DOC
+        qs: true
+        sampling: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of boundary answers supported by egress traffic or data residency evidence, not by provider
+            statement alone.
+          tr: Sınır cevaplarından yalnız sağlayıcı beyanına değil, çıkış trafiği ya da veri yerleşimi kanıtına
+            dayananların oranı.
+        evidence: LOG
+        qs: false
+        sampling: true
+      - id: c4
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of critical providers with an exit plan or an alternative provider assessment.
+          tr: Kritik sağlayıcılardan çıkış planı ya da alternatif sağlayıcı değerlendirmesi olanların oranı.
+        terms:
+        - critical-provider
+        evidence: DOC
+        qs: true
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: The exit plan of at least one critical provider was exercised (tabletop or technical test); the
+            dated record is within review_interval.
+          tr: En az bir kritik sağlayıcının çıkış planı işletilmiş (masa başı ya da teknik test); tarihli kaydı
+            review_interval içinde.
+        terms:
+        - critical-provider
+        - dated-record
+        evidence: DOC
+        qs: true
     review_interval: 12
     quick_scan: false
     mappings:
@@ -1042,31 +1164,49 @@ items:
       - type: DOC
         en: Contract or accepted terms per provider, with the five clauses marked
         tr: Sağlayıcı başına, beş madde işaretlenmiş sözleşme ya da kabul edilmiş koşullar
-    rubric:
-      0:
-        en: No contract or terms reviewed for any provider, or none of the five clauses present.
-        tr: Hiçbir sağlayıcı için sözleşme ya da koşullar incelenmemiş ya da beş maddenin hiçbiri yok.
-      1:
-        en: >
-          At least one provider used with organisational data lacks one or more of the five
-          clauses, without a recorded risk acceptance by the system owner.
-        tr: >
-          Kurum verisiyle kullanılan en az bir sağlayıcıda beş maddeden biri ya da daha fazlası
-          eksik ve sistem sahibinin kayıtlı risk kabulü yok.
-      2:
-        en: >
-          Every provider used with organisational data has all five clauses, or each missing
-          clause has a risk acceptance signed by the system owner and referenced in G-RSK-01.
-        tr: >
-          Kurum verisiyle kullanılan her sağlayıcıda beş maddenin hepsi var ya da eksik her
-          madde için sistem sahibinin imzaladığı ve G-RSK-01'de atıf yapılan bir risk kabulü var.
-      3:
-        en: >
-          Meets 2, and provider term changes are monitored: a record shows terms were
-          re-checked within review_interval for every provider.
-        tr: >
-          2'yi karşılıyor ve sağlayıcı koşul değişiklikleri izleniyor: her sağlayıcı için
-          koşulların review_interval içinde yeniden kontrol edildiğini gösteren kayıt var.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: The contract or accepted terms of at least one provider were checked against the five clauses,
+            with the result recorded.
+          tr: En az bir sağlayıcının sözleşmesi ya da kabul edilmiş koşulları beş maddeye göre kontrol edilmiş,
+            sonuç kayıtlı.
+        terms:
+        - contract-clauses
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of providers used with organisation data where each of the five clauses is present or each
+            missing clause has a risk acceptance.
+          tr: Kurum verisiyle kullanılan sağlayıcılardan beş maddenin her biri var olan ya da eksik her madde
+            için risk kabulü bulunanların oranı.
+        terms:
+        - contract-clauses
+        - risk-acceptance
+        evidence: DOC
+        qs: true
+        sampling: true
+      - id: s1
+        kind: sustain
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of providers whose terms were rechecked within review_interval, with a dated record.
+          tr: Sağlayıcılardan koşulları review_interval içinde yeniden kontrol edilmiş ve tarihli kaydı olanların
+            oranı.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
+        sampling: true
     review_interval: 12
     quick_scan: false
     mappings:
@@ -1224,29 +1364,51 @@ items:
       - type: LOG
         en: Completion records per role holder
         tr: Rol sahibi başına tamamlama kayıtları
-    rubric:
-      0:
-        en: No role-based AI training.
-        tr: Role özgü AI eğitimi yok.
-      1:
-        en: >
-          At least one of these is true: roles are not mapped to modules; one or more role
-          holders have no recorded completion.
-        tr: >
-          Şunlardan en az biri geçerli: roller modüllerle eşlenmemiş; bir ya da daha fazla rol
-          sahibinin kayıtlı tamamlaması yok.
-      2:
-        en: >
-          Every AI role is mapped to a module and every current role holder has a recorded
-          completion.
-        tr: >
-          Her AI rolü bir modülle eşlenmiş ve her güncel rol sahibinin kayıtlı tamamlaması var.
-      3:
-        en: >
-          Meets 2, and role holders completed a refresher within review_interval.
-        tr: >
-          2'yi karşılıyor ve rol sahipleri review_interval içinde tazeleme eğitimini
-          tamamlamış.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: At least one role-specific AI training module exists.
+          tr: Role özgü en az bir yapay zekâ eğitim modülü var.
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of AI roles mapped to a training module.
+          tr: AI rollerinden bir eğitim modülüyle eşlenmiş olanların oranı.
+        terms:
+        - ai-roles
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of current role holders with a recorded completion of their module.
+          tr: Güncel rol sahiplerinden modülünü tamamladığı kayıtlı olanların oranı.
+        terms:
+        - ai-roles
+        evidence: LOG
+        qs: true
+      - id: s1
+        kind: sustain
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of role holders who completed refresher training within review_interval.
+          tr: Rol sahiplerinden review_interval içinde tazeleme eğitimini tamamlayanların oranı.
+        terms:
+        - ai-roles
+        evidence: LOG
+        qs: true
     review_interval: 12
     quick_scan: false
     mappings:
@@ -1415,31 +1577,53 @@ items:
       - type: LOG
         en: Review queue records showing decisions and times
         tr: Kararları ve süreleri gösteren inceleme kuyruğu kayıtları
-    rubric:
-      0:
-        en: No human oversight defined for any system.
-        tr: Hiçbir sistem için insan gözetimi tanımlı değil.
-      1:
-        en: >
-          At least one of these is true: defined for only some systems; one of the four
-          elements is missing; the procedure has never been run end to end.
-        tr: >
-          Şunlardan en az biri geçerli: yalnız bazı sistemler için tanımlı; dört unsurdan biri
-          eksik; prosedür hiç uçtan uca işletilmemiş.
-      2:
-        en: >
-          Every system has the four elements defined (or a signed no-review decision), and
-          each system with defined review classes has at least one recorded end-to-end run.
-        tr: >
-          Her sistem için dört unsur tanımlı (ya da imzalı inceleme-gerekmez kararı var) ve
-          inceleme sınıfı tanımlı her sistemin en az bir kayıtlı uçtan uca işletimi var.
-      3:
-        en: >
-          Meets 2, and within review_interval the share of reviews completed within the time
-          limit is measured and recorded per system.
-        tr: >
-          2'yi karşılıyor ve review_interval içinde süre sınırında tamamlanan incelemelerin
-          oranı sistem başına ölçülmüş ve kaydedilmiş.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: Human oversight is defined for at least one AI system.
+          tr: En az bir AI sistemi için insan gözetimi tanımlı.
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of systems with all four oversight elements defined, or with a signed "no review needed"
+            decision.
+          tr: Sistemlerden dört gözetim unsurunun hepsi tanımlı ya da imzalı "inceleme gerekmez" kararı olanların
+            oranı.
+        terms:
+        - oversight-elements
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of systems with defined review classes that have at least one recorded end-to-end run (real
+            case or test).
+          tr: İnceleme sınıfı tanımlı sistemlerden en az bir kayıtlı uçtan uca işletimi (gerçek vaka ya da test)
+            olanların oranı.
+        evidence: TST
+        qs: true
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: The share of reviews completed within the time limit was measured per system; the latest dated
+            measurement is within review_interval.
+          tr: Süre sınırında tamamlanan incelemelerin oranı sistem başına ölçülmüş; son tarihli ölçüm review_interval
+            içinde.
+        evidence: LOG
+        qs: true
     review_interval: 6
     quick_scan: false
     mappings:
