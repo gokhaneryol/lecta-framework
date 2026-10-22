@@ -36,33 +36,75 @@ items:
       - type: LOG
         en: Rejection events for unapproved sources, or a test record if none occurred in the last 90 days
         tr: Onaysız kaynak ret kayıtları; son 90 günde olmadıysa test kaydı
-    rubric:
-      0:
-        en: No source register and no restriction on ingestion paths.
-        tr: Kaynak kaydı yok ve giriş yollarında kısıt yok.
-      1:
-        en: >
-          At least one of these is true: the register exists but one or more paths accept
-          data from sources outside it; restriction is configured but no register exists;
-          neither rejection logs nor a test record can be produced.
-        tr: >
-          Şunlardan en az biri geçerli: kayıt var ama bir ya da daha fazla yol kayıt dışı
-          kaynaklardan veri kabul ediyor; kısıt yapılandırılmış ama kayıt yok; ne ret kaydı ne
-          test kaydı sunulabiliyor.
-      2:
-        en: >
-          Every source in use is in the register, every path accepts only registered sources,
-          and rejection logs or a dated test record show an unapproved source being rejected.
-        tr: >
-          Kullanılan her kaynak kayıtta, her yol yalnız kayıtlı kaynakları kabul ediyor ve ret
-          kayıtları ya da tarihli bir test kaydı onaysız bir kaynağın reddedildiğini gösteriyor.
-      3:
-        en: >
-          Meets 2, and the register was reconciled against the running configuration within
-          review_interval; adding a source requires a recorded approval.
-        tr: >
-          2'yi karşılıyor; kayıt review_interval içinde çalışan yapılandırmayla
-          karşılaştırılmış ve kaynak eklemek kayıtlı bir onay gerektiriyor.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: A register of approved data sources exists for the system.
+          tr: Sistem için onaylı veri kaynakları kaydı var.
+        terms:
+        - approved-source-register
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of sources actually feeding the system that are in the register.
+          tr: Sistemi fiilen besleyen kaynaklardan kayıtta bulunanların oranı.
+        terms:
+        - approved-source-register
+        evidence: DOC
+        qs: true
+        sampling: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of ingestion paths configured to accept data only from registered sources.
+          tr: Yalnız kayıtlı kaynaklardan veri kabul edecek biçimde yapılandırılmış giriş yollarının oranı.
+        terms:
+        - path-inventory
+        - ingestion-path
+        evidence: CFG
+        qs: true
+        sampling: true
+      - id: c4
+        kind: core
+        type: date
+        threshold:
+          max_days: 90
+        text:
+          en: Date of the latest rejection log entry, or of a dated test, showing an unapproved source being
+            rejected.
+          tr: Onaysız bir kaynağın reddedildiğini gösteren son ret kaydının ya da tarihli testin tarihi.
+        evidence: LOG
+        qs: false
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: The register was reconciled against the running configuration; the dated record is within review_interval.
+          tr: Kayıt çalışan yapılandırmayla karşılaştırılmış; tarihli kaydı review_interval içinde.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
+      - id: s2
+        kind: sustain
+        type: binary
+        text:
+          en: Adding a source to the register requires a recorded approval.
+          tr: Kayda kaynak eklemek kayıtlı bir onay gerektiriyor.
+        evidence: DOC
+        qs: true
     review_interval: 6
     quick_scan: true
     qs_question:
@@ -276,33 +318,68 @@ items:
       - type: DOC
         en: Provider documentation for provider-operated stores
         tr: Sağlayıcının işlettiği depolar için sağlayıcı belgeleri
-    rubric:
-      0:
-        en: One or more stores holding personal or confidential data are not encrypted, or status is unknown.
-        tr: Kişisel ya da gizli veri tutan bir ya da daha fazla depo şifresiz ya da durum bilinmiyor.
-      1:
-        en: >
-          Primary stores are encrypted, but at least one of these is true: logs, indexes or
-          backups are not; the key holder is not identified for every store; no configuration
-          or provider evidence can be produced.
-        tr: >
-          Ana depolar şifreli ama şunlardan en az biri geçerli: kayıtlar, indeksler ya da
-          yedekler şifresiz; her depo için anahtar sahibi belirlenmemiş; yapılandırma ya da
-          sağlayıcı kanıtı sunulamıyor.
-      2:
-        en: >
-          Every store in the inventory, including logs, indexes and backups, is encrypted at
-          rest with configuration or provider evidence, and the key holder is recorded for each.
-        tr: >
-          Kayıtlar, indeksler ve yedekler dahil envanterdeki her depo depolamada şifreli,
-          yapılandırma ya da sağlayıcı kanıtı var ve her biri için anahtar sahibi kayıtlı.
-      3:
-        en: >
-          Meets 2, and key rotation or access to keys was reviewed within review_interval, with
-          a record.
-        tr: >
-          2'yi karşılıyor ve anahtar rotasyonu ya da anahtarlara erişim review_interval içinde
-          gözden geçirilmiş, kaydı var.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: The stores holding the system's source documents or corpus are encrypted at rest.
+          tr: Sistemin kaynak belgelerini ya da korpusunu tutan depolar depolamada şifreli.
+        terms:
+        - ai-data-store
+        evidence: CFG
+        qs: true
+      - id: c2
+        kind: core
+        type: binary
+        text:
+          en: A store inventory lists every AI data store, including indexes, prompt and response logs, backups
+            and provider-run stores.
+          tr: Depo envanteri indeksler, prompt ve yanıt kayıtları, yedekler ve sağlayıcı depoları dahil her
+            AI veri deposunu sayıyor.
+        terms:
+        - ai-data-store
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of stores in the inventory that are encrypted at rest, shown by configuration or provider
+            documentation.
+          tr: Envanterdeki depolardan depolamada şifreli olduğu yapılandırma ya da sağlayıcı belgesiyle gösterilenlerin
+            oranı.
+        terms:
+        - ai-data-store
+        evidence: CFG
+        qs: true
+        sampling: true
+      - id: c4
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of stores in the inventory with a recorded key owner.
+          tr: Envanterdeki depolardan anahtar sahibi kayıtlı olanların oranı.
+        terms:
+        - key-owner
+        evidence: DOC
+        qs: true
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: Key rotation or access to keys was reviewed; the dated record is within review_interval.
+          tr: Anahtar rotasyonu ya da anahtarlara erişim gözden geçirilmiş; tarihli kaydı review_interval içinde.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
     review_interval: 12
     quick_scan: true
     qs_question:
@@ -352,33 +429,78 @@ items:
       - type: LOG
         en: Egress or drop logs from the inference environment for at least 7 days of operation, or a dated egress test
         tr: Çıkarım ortamından en az 7 günlük çalışmaya ait çıkış/düşürme kayıtları ya da tarihli çıkış testi
-    rubric:
-      0:
-        en: Inference environment has unrestricted outbound access, or models are called on an external service.
-        tr: Çıkarım ortamının dışarıya kısıtsız erişimi var ya da modeller dış bir servis üzerinden çağrılıyor.
-      1:
-        en: >
-          Models run inside the boundary, but at least one of these is true: egress is not
-          default deny; outbound destinations exist beyond the listed ones (e.g. telemetry,
-          model or package downloads at runtime); no log or test evidence.
-        tr: >
-          Modeller sınır içinde çalışıyor ama şunlardan en az biri geçerli: çıkış varsayılan
-          red değil; listelenenler dışında dış hedefler var (ör. telemetri, çalışma anında
-          model ya da paket indirme); kayıt ya da test kanıtı yok.
-      2:
-        en: >
-          All models run inside the boundary, egress is default deny with only listed internal
-          destinations, and logs or a dated test show no other outbound connection.
-        tr: >
-          Tüm modeller sınır içinde çalışıyor, çıkış yalnız listelenmiş iç hedeflerle varsayılan
-          red ve kayıtlar ya da tarihli bir test başka bir dış bağlantı olmadığını gösteriyor.
-      3:
-        en: >
-          Meets 2, and outbound attempts from the inference environment raise alerts that are
-          handled, and the egress test is repeated within review_interval.
-        tr: >
-          2'yi karşılıyor; çıkarım ortamından dışarıya bağlantı denemeleri alarm üretiyor ve
-          ele alınıyor; çıkış testi review_interval içinde tekrarlanıyor.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: At least one model of the system runs inside the managed boundary (not through an external service).
+          tr: Sistemin en az bir modeli yönetilen sınır içinde çalışıyor (dış bir servis üzerinden değil).
+        terms:
+        - managed-boundary
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of the system's models that run inside the managed boundary.
+          tr: Sistemin modellerinden yönetilen sınır içinde çalışanların oranı.
+        terms:
+        - managed-boundary
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: Egress from the inference environment is default-deny, with only listed internal destinations
+            allowed.
+          tr: Çıkarım ortamından çıkış varsayılan red; yalnız listelenmiş iç hedeflere izin var.
+        terms:
+        - default-deny-egress
+        evidence: CFG
+        qs: true
+      - id: c4
+        kind: core
+        type: binary
+        text:
+          en: The allow list contains no external destination (including telemetry and runtime model or package
+            downloads).
+          tr: İzin listesinde hiçbir dış hedef yok (telemetri, çalışma anında model ya da paket indirme dahil).
+        evidence: CFG
+        qs: true
+      - id: c5
+        kind: core
+        type: binary
+        text:
+          en: Egress or drop logs covering at least 7 days of operation, or a dated egress test, show no other
+            external connection.
+          tr: En az 7 günlük çalışmaya ait çıkış/düşürme kayıtları ya da tarihli bir çıkış testi başka bir dış
+            bağlantı olmadığını gösteriyor.
+        evidence: LOG
+        qs: false
+      - id: s1
+        kind: sustain
+        type: binary
+        text:
+          en: An outbound connection attempt from the inference environment raises an alert, and each alert
+            has a handling record.
+          tr: Çıkarım ortamından dışarıya bağlantı denemesi alarm üretiyor ve her alarmın ele alınma kaydı var.
+        evidence: LOG
+        qs: true
+      - id: s2
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: Date of the latest egress test is within review_interval.
+          tr: Son çıkış testinin tarihi review_interval içinde.
+        evidence: TST
+        qs: true
     review_interval: 6
     quick_scan: true
     qs_question:
@@ -441,37 +563,93 @@ items:
       - type: LOG
         en: Call logs with provider, endpoint, calling system and time for the last 30 days
         tr: Son 30 güne ait sağlayıcı, uç nokta, çağıran sistem ve zaman içeren çağrı kayıtları
-    rubric:
-      0:
-        en: Systems call external models directly with no controlled point, or with personal accounts or keys.
-        tr: Sistemler dış modelleri kontrollü nokta olmadan ya da kişisel hesap/anahtarla doğrudan çağırıyor.
-      1:
-        en: >
-          A controlled point exists but at least one of these is true: some systems bypass it;
-          it does not restrict destinations to the sanctioned list; personal accounts or keys
-          are in use; calls are not logged.
-        tr: >
-          Kontrollü nokta var ama şunlardan en az biri geçerli: bazı sistemler onu atlıyor;
-          hedefleri onaylı listeyle sınırlamıyor; kişisel hesap ya da anahtar kullanılıyor;
-          çağrılar kaydedilmiyor.
-      2:
-        en: >
-          Every system calls external models only through the controlled point, only sanctioned
-          destinations and organisation accounts are reachable, direct egress to providers is
-          blocked, and calls from the last 30 days are logged.
-        tr: >
-          Her sistem dış modelleri yalnız kontrollü noktadan çağırıyor, yalnız onaylı hedeflere
-          ve kurum hesaplarına erişilebiliyor, sağlayıcılara doğrudan çıkış engelli ve son 30
-          günün çağrıları kayıtlı.
-      3:
-        en: >
-          Meets 2, and call logs are reviewed within review_interval against G-SUP-01; a
-          provider removed from the sanctioned list is blocked within 5 working days, shown by
-          a record.
-        tr: >
-          2'yi karşılıyor; çağrı kayıtları review_interval içinde G-SUP-01 ile karşılaştırılarak
-          gözden geçiriliyor ve onaylı listeden çıkarılan bir sağlayıcının 5 iş günü içinde
-          engellendiği kayıtla gösteriliyor.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: A controlled point exists for calls to external model providers.
+          tr: Dış model sağlayıcılarına yapılan çağrılar için kontrollü bir nokta var.
+        terms:
+        - controlled-point
+        evidence: CFG
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of Controlled External systems that call external models only through the controlled point.
+          tr: Controlled External sistemlerden dış modelleri yalnız kontrollü nokta üzerinden çağıranların oranı.
+        terms:
+        - controlled-point
+        evidence: CFG
+        qs: true
+        sampling: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: The controlled point allows only the destinations and organisation accounts on the approved list
+            (consistent with G-SUP-01).
+          tr: Kontrollü nokta yalnız onaylı listedeki hedeflere ve kurum hesaplarına izin veriyor (G-SUP-01
+            ile tutarlı).
+        terms:
+        - org-account
+        evidence: CFG
+        qs: true
+      - id: c4
+        kind: core
+        type: binary
+        text:
+          en: Direct egress to provider endpoints that bypasses the controlled point is blocked.
+          tr: Kontrollü noktayı atlayarak sağlayıcı uç noktalarına doğrudan çıkış engelli.
+        terms:
+        - controlled-point
+        evidence: CFG
+        qs: true
+      - id: c5
+        kind: core
+        type: binary
+        text:
+          en: No personal account or personal API key is used to call external models.
+          tr: Dış modelleri çağırmak için kişisel hesap ya da kişisel API anahtarı kullanılmıyor.
+        terms:
+        - org-account
+        evidence: CFG
+        qs: true
+      - id: c6
+        kind: core
+        type: binary
+        text:
+          en: Calls of the last 30 days are logged with provider, endpoint, calling system and time.
+          tr: Son 30 günün çağrıları sağlayıcı, uç nokta, çağıran sistem ve zamanla kayıtlı.
+        evidence: LOG
+        qs: true
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: Call logs were reviewed against G-SUP-01; the dated record is within review_interval.
+          tr: Çağrı kayıtları G-SUP-01 ile karşılaştırılarak gözden geçirilmiş; tarihli kaydı review_interval
+            içinde.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
+      - id: s2
+        kind: sustain
+        type: binary
+        text:
+          en: Every provider removed from the approved list was blocked at the controlled point within 5 business
+            days, shown by records.
+          tr: Onaylı listeden çıkarılan her sağlayıcının kontrollü noktada 5 iş günü içinde engellendiği kayıtla
+            gösteriliyor.
+        evidence: LOG
+        qs: true
     review_interval: 3
     quick_scan: true
     qs_question:

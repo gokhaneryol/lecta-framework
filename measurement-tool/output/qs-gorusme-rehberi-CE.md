@@ -6,7 +6,7 @@
 
 > Bu görüşme bir **Hızlı Tarama**dır: sorularımız beyanınıza dayanır, kanıt incelemesi yapılmaz. Sonuç bir **gösterge hazırlık seviyesidir**; denetim görüşü ya da belge değildir. Bilmediğiniz soruya "bilmiyorum" demeniz en doğru cevaptır ve öyle kaydedilir.
 
-**Puanlama notu:** Her maddede beyana göre 0–3 verilir (`basis: declared`). Katılımcı cevabı bilmiyorsa **NE**; madde kurumda yoksa ve uygulanabilirlik ölçütü karşılanmıyorsa **NA** (gerekçe yazılır). Kanıt istenmez; katılımcı kendiliğinden gösterirse `evidence_ref` alanına not edilir.
+**Puanlama notu:** Kontrol listeli maddelerde her kontrole beyana göre E / H / B yazılır, puan betikle hesaplanır (`basis: declared`). Kontrol listesi olmayan maddede 0–3 verilir. Katılımcı cevabı bilmiyorsa **NE**; madde kurumda yoksa ve uygulanabilirlik ölçütü karşılanmıyorsa **NA** (gerekçe yazılır). Kanıt istenmez; katılımcı kendiliğinden gösterirse `evidence_ref` alanına not edilir.
 
 **Süre:** 9 kurum + 8 sistem maddesi (sistem başına) · ~4 dk/madde · 1 sistemle ~83 dk.
 
@@ -51,12 +51,24 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Her zaman uygulanır.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | AI sistemleri ve kullanım senaryoları envanteri var. | E / H / B |
+| c2 | temel | Envanter kayıtlarından tüm zorunlu alanları dolu olanların oranı. **[%100 (hepsi)]** | E / H / B |
+| c3 | temel | Satın alma kayıtlarında, onaylı araç listesinde (G-POL-02) ya da görüşmelerde görülen sistemlerden envanterde bulunanların oranı. **[%100 (hepsi)]** | E / H / B |
+| c4 | temel | Envanterin son güncelleme tarihi son 6 ay içinde. **[≤ 6 ay]** | E / H / B |
+| s1 | sürdürme | Envanter G-INV-02 trafik verisiyle karşılaştırılmış, eklenen ve çıkarılan kayıtlar yazılmış; tarihli kaydı 6 ay içinde. **[≤ 6 ay]** | E / H / B |
+
+*Terimler:* **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz. · **envanter zorunlu alanları**: Amaç, sahip, kullanıcı grupları, veri kategorileri, sağlayıcı, profil (CE/SOV) ve durum.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | AI sistemleri ya da kullanım senaryoları için envanter yok. |
-| 1 | Envanter var ama şunlardan en az biri geçerli: bir ya da daha fazla kayıtta zorunlu bir alan boş; satın alma kayıtlarında, onaylı araç listesinde ya da görüşmelerde görülen bir sistem envanterde yok; son 6 ayda güncellenmemiş. |
-| 2 | Her kayıtta tüm zorunlu alanlar dolu; satın alma kayıtlarında, onaylı araç listesinde ya da görüşmelerde görülen hiçbir sistem eksik değil; envanter son 6 ayda güncellenmiş. |
-| 3 | 2'yi karşılıyor ve envanter 6 ay içinde G-INV-02 trafik verileriyle karşılaştırılmış; eklenen ve çıkarılan kayıtların tarihli kaydı var. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c4) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c4) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` Amaç, sahip, kullanıcılar, veri kategorileri, sağlayıcı, profil ve durum alanlarını içeren envanter; `DOC` Karşılaştırma için onaylı araç listesi (G-POL-02) ve satın alma ya da proje kayıtları
 
@@ -68,12 +80,26 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Her zaman uygulanır.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | Dış AI servislerine giden trafik DNS, proxy ya da firewall kayıtlarında tanımlanabiliyor. | E / H / B |
+| c2 | temel | Bu kayıtların saklama süresi (gün). **[≥ 90]** | E / H / B |
+| c3 | temel | Trafik bir birime ya da kullanıcı grubuna atfedilebiliyor. | E / H / B |
+| c4 | temel | AI servis alan adı listesinin son güncelleme tarihi son 6 ay içinde. **[≤ 6 ay]** | E / H / B |
+| c5 | temel | Talep edildiğinde birim bazında, en az 30 günü kapsayan rapor üretilebiliyor. | E / H / B |
+| s1 | sürdürme | Raporlar gözden geçirilmiş; tarihli kaydı 3 ay içinde. **[≤ 3 ay]** | E / H / B |
+| s2 | sürdürme | Onaylı listede (G-POL-02) olmayan bir servise giden trafik kayıtlı bir takip başlatıyor. | E / H / B |
+
+*Terimler:* **AI servis alan adı listesi**: Kayıtlarda AI servis trafiğini tanımak için kullanılan alan adı ve uç nokta listesi, tarihli. Üretici kategori beslemesi, güncelleme tarihi gösterilebiliyorsa sayılır. · **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | AI servislerine giden trafik tanımlanamıyor ya da ilgili kayıtlar tutulmuyor. |
-| 1 | Kayıtlar var ama şunlardan en az biri geçerli: saklama 90 günden kısa; trafik bir birime ya da kullanıcı grubuna atfedilemiyor; AI servis alan adı listesi tutulmuyor; hiç rapor üretilmemiş. |
-| 2 | Kayıtlar en az 90 gün saklanıyor, trafik bir birime ya da kullanıcı grubuna atfedilebiliyor, AI servis alan adı listesi son 6 ayda güncellenmiş ve talep edildiğinde en az 30 günlük rapor üretilebiliyor. |
-| 3 | 2'yi karşılıyor; raporlar 3 ay içinde gözden geçiriliyor ve onaylı listede (G-POL-02) olmayan servislere giden trafik kayıtlı bir takip başlatıyor. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c5) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c5) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1–s2) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `CFG` DNS, proxy ya da firewall kayıt yapılandırması ve saklama süresi; `DOC` Tanımlama için kullanılan, güncelleme tarihli AI servis alan adı/uç nokta listesi; `LOG` En az 30 günlük dönem için birim bazında AI servis trafiği raporu ya da sorgu sonucu
 
@@ -85,12 +111,27 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Her zaman uygulanır.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | Yapay zekâ okuryazarlık programı var. | E / H / B |
+| c2 | temel | Program içeriği üç konuyu kapsıyor. | E / H / B |
+| c3 | temel | Tamamlama kişi başına tarihli kayıt altında. | E / H / B |
+| c4 | temel | AI kullanıcılarından kayıtlı tamamlaması olanların oranı. **[en az %80]** | E / H / B |
+| s1 | sürdürme | İçeriğin son güncelleme tarihi 12 ay içinde. **[≤ 12 ay]** | E / H / B |
+| s2 | sürdürme | Anlama ölçülüyor (sınav ya da uygulama) ve sonuçlar kayıtlı. | E / H / B |
+
+*QS'de sorulmaz, AS-02'de bakılır:* c5
+
+*Terimler:* **AI kullanıcısı**: AI envanterindeki (G-INV-01) en az bir sisteme erişimi olan kişi. Eğitim oranlarının paydası AI kullanıcısı sayısıdır. · **üç okuryazarlık konusu**: Kabul edilebilir kullanım (G-POL-02); veri riskleri (neyin girilemeyeceği ve nedeni); AI çıktısının sınırları (hatalar, doğrulama yükümlülüğü).
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Yapay zekâ okuryazarlık programı yok. |
-| 1 | Program var ama şunlardan en az biri geçerli: üç konudan birini atlıyor; tamamlama kaydedilmiyor; kayıtlı tamamlama AI kullanıcılarının %80'inin altında. |
-| 2 | Program üç konuyu kapsıyor ve AI kullanıcılarının en az %80'inin kayıtlı tamamlaması var; yeni kullanıcılar erişimden sonraki 60 gün içinde tamamlıyor. |
-| 3 | 2'yi karşılıyor; içerik 12 ay içinde güncellenmiş ve anlama ölçülüyor (sınav ya da uygulama), sonuçlar kayıtlı. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c5) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c5) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1–s2) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` Üç konuyu kapsayan program içeriği; `LOG` Kişi başına tarihli tamamlama kayıtları; payda için G-INV-01'den AI kullanıcı sayısı
 
@@ -102,12 +143,27 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Her zaman uygulanır.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | Yazılı bir yapay zekâ politikası var ya da AI onaylı başka bir politikada ele alınıyor. | E / H / B |
+| c2 | temel | Politika üst yönetim ya da yetkilendirdiği bir kurul tarafından onaylanmış, onay kaydı var. | E / H / B |
+| c3 | temel | Politika hesap verecek rolü adlandırıyor. | E / H / B |
+| c4 | temel | Politika yeni bir AI sisteminin onay yolunu tanımlıyor. | E / H / B |
+| c6 | temel | Kapsamdaki tüm çalışanlara duyuru kaydı var. | E / H / B |
+| s1 | sürdürme | Politika gözden geçirilmiş; tarihli kaydı (değişiklikler ya da "değişiklik yok") 12 ay içinde. **[≤ 12 ay]** | E / H / B |
+
+*QS'de sorulmaz, AS-02'de bakılır:* c5
+
+*Terimler:* **duyuru kaydı**: Belgenin kapsamdaki çalışanlara ulaştığını gösteren tarihli kayıt: intranet yayını, onları kapsayan dağıtım listesine e-posta ya da okundu listesi. · **onay kaydı**: Onaylayanı, tarihi ve onaylanan sürümü gösteren kayıt (kurul kararı, imzalı kapak sayfası ya da belge yönetim sistemi iş akışı girdisi). · **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Yapay zekâ politikası yok ve AI başka hiçbir onaylı politikada ele alınmıyor. |
-| 1 | Politika ya da taslak var ama şunlardan en az biri geçerli: üst yönetim ya da yetkilendirdiği bir kurul tarafından onaylanmamış; hesap verecek rolü belirtmiyor; yeni bir AI sisteminin nasıl onaylanacağını tanımlamıyor; çalışanlara duyurulduğuna dair kayıt yok. |
-| 2 | Politika üst yönetim ya da yetkilendirilmiş kurul tarafından onaylanmış, hesap verecek rolü belirtiyor, yeni AI sistemleri için onay yolunu tanımlıyor, G-POL-02'ye atıf yapıyor ve kapsamdaki tüm çalışanlara duyurulduğuna dair kayıt var. |
-| 3 | 2'yi karşılıyor ve politika 12 ay içinde gözden geçirilmiş; değişiklikleri ya da değişiklik olmadığını belirten tarihli kayıt var. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c6) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c6) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` Onay kaydıyla (onaylayan, tarih, sürüm) yapay zekâ politikası; `DOC` Duyuru kaydı (intranet yayını, e-posta, okundu listesi)
 
@@ -119,12 +175,26 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Her zaman uygulanır.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | En az bir AI sisteminin adı belli sahibi var ya da bir AI yönetişim rolü atanmış. | E / H / B |
+| c2 | temel | Envanterdeki (G-INV-01) sistemlerden adı belli sahibi olanların oranı. **[%100 (hepsi)]** | E / H / B |
+| c3 | temel | AI yönetişim rolü resmî olarak atanmış (atama yazısı ya da görev tanımı). | E / H / B |
+| c4 | temel | DPO ve güvenlik için danışma noktaları tanımlı. | E / H / B |
+| s1 | sürdürme | Sahipler ve rol atamaları, personel değişikliği sonrası güncellemeler dahil teyit edilmiş; tarihli kaydı 12 ay içinde. **[≤ 12 ay]** | E / H / B |
+
+*QS'de sorulmaz, AS-02'de bakılır:* c5
+
+*Terimler:* **danışma noktaları**: DPO ve güvenliğe danışılması gereken, yazılı olaylar; en az: yeni AI sistemi, yeni kişisel veri kategorisi, yeni sağlayıcı. · **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz. · **adı belli sahip**: Belirli bir kişi ya da aynı anda tek kişinin tuttuğu bir rol; adıyla ya da rol unvanıyla kayıtlı. Birim adı ya da "BT" sayılmaz.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Adı belli sahip yok, yönetişim rolü yok. |
-| 1 | Şunlardan en az biri geçerli: envanterdeki bir ya da daha fazla sistemin adı belli sahibi yok; yönetişim rolü resmî olarak atanmamış; DPO ve güvenlik için danışma noktaları tanımlı değil. |
-| 2 | Envanterdeki her sistemin adı belli sahibi var, yönetişim rolü resmî olarak atanmış, danışma noktaları tanımlı ve en az bir danışmanın yapıldığına dair kayıt var (ya da son 12 ayda tetiklenmediği belirtilmiş). |
-| 3 | 2'yi karşılıyor ve sahipler ile rol atamaları 12 ay içinde teyit edilmiş; personel değişikliği sonrası güncellemeleri de içeren tarihli kayıt var. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c5) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c5) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` G-INV-01'de kişi ya da rol adıyla doldurulmuş sahip alanı; `DOC` AI yönetişim rolü için atama yazısı ya da görev tanımı; `DOC` DPO ve güvenlik için tanımlı danışma noktaları (ör. yeni sistem, yeni veri kategorisi, yeni sağlayıcı)
 
@@ -136,12 +206,26 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Kurum verisiyle hiçbir dış AI modeli ya da servisi kullanılmıyorsa uygulanmaz (G-INV-01 ve G-INV-02'ye göre).
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | Kurum verisiyle kullanılan en az bir dış AI sağlayıcısı için yazılı değerlendirme var. | E / H / B |
+| c2 | temel | Kurum verisiyle kullanılan dış AI sağlayıcılarından yazılı değerlendirmesi olanların oranı. **[%100 (hepsi)]** | E / H / B |
+| c3 | temel | Değerlendirmelerden beş konunun hepsini kapsayanların oranı. **[%100 (hepsi)]** | E / H / B |
+| c4 | temel | Değerlendirmelerden kurum verisiyle ilk kullanımdan önce tarihli olanların oranı. **[%100 (hepsi)]** | E / H / B |
+| s1 | sürdürme | Değerlendirmelerden 12 ay içinde ve sağlayıcı koşullarında ya da alt işleyenlerde bildirilen her değişiklikten sonra tekrarlanmış olanların oranı. **[%100 (hepsi)]** | E / H / B |
+
+*QS'de sorulmaz, AS-02'de bakılır:* c5
+
+*Terimler:* **beş sağlayıcı konusu**: Verinin tutulduğu yer; saklama süresi; müşteri verisinin eğitimde kullanımı; alt işleyenler; yurt dışı aktarım mekanizması.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Dış AI servisleri hiçbir sağlayıcı değerlendirmesi olmadan kullanılıyor. |
-| 1 | Şunlardan en az biri geçerli: yalnız bazı sağlayıcılar değerlendirilmiş; bir değerlendirme beş konudan birini atlıyor; değerlendirme ilk kullanımdan sonra tarihli; dayanılan sağlayıcı belgeleri saklanmamış. |
-| 2 | Kurum verisiyle kullanılan her sağlayıcının, beş konunun hepsini kapsayan, ilk kullanımdan önce tarihli değerlendirmesi var ve dayanılan sağlayıcı belgeleri saklanıyor. |
-| 3 | 2'yi karşılıyor ve her değerlendirme 12 ay içinde ve sağlayıcı koşullarında ya da alt işleyenlerde bildirilen her değişiklikten sonra tekrarlanmış, kayıtları var. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c5) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c5) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` Sağlayıcı başına beş konuyu kapsayan, ilk kullanımdan önce tarihli değerlendirme kaydı; `DOC` Dayanılan sağlayıcı belgeleri (koşullar, veri işleme eki, alt işleyen listesi, veri yerleşimi beyanı)
 
@@ -153,12 +237,28 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Her zaman uygulanır.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | AI olayları bir olay prosedüründe ele alınıyor (ayrı ya da genel prosedürün içinde). | E / H / B |
+| c2 | temel | Prosedür dört AI olay türünün hepsini adlandırıyor. | E / H / B |
+| c3 | temel | Raporlama zinciri adı belli rollerle tanımlı. | E / H / B |
+| c4 | temel | Uygulanan bildirim sürelerinin tablosu var. | E / H / B |
+| c6 | temel | Son tatbikatın ya da ele alınmış AI olayı kaydının tarihi son 12 ay içinde. **[≤ 12 ay]** | E / H / B |
+| s1 | sürdürme | Her tatbikat ya da olaydan çıkan dersler kayıtlı ve aksiyonlar kapanışa kadar izleniyor. | E / H / B |
+| s2 | sürdürme | Prosedür gözden geçirilmiş; tarihli kaydı 12 ay içinde. **[≤ 12 ay]** | E / H / B |
+
+*QS'de sorulmaz, AS-02'de bakılır:* c5
+
+*Terimler:* **dört AI olay türü**: Prompt ya da çıktı yoluyla veri sızıntısı; etkisi olan zararlı ya da yanlış çıktı; model üzerinden yetkisiz erişim; sağlayıcı tarafı olay. · **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz. · **uygulanan bildirim süreleri**: Kuruma uygulanan süreler, her biri hukuki dayanağı ve muhatabıyla; en az KVKK ihlal bildirimi (72 saat) ve uygulanıyorsa 7545 sayılı Kanun ve sektör kuralları.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | AI olayları hiçbir prosedürde ele alınmıyor. |
-| 1 | Şunlardan en az biri geçerli: prosedür dört AI olay türünü adlandırmıyor; raporlama zincirinde adı belli roller yok; uygulanan bildirim süreleri eksik; genel olay süreciyle bağlantılı değil. |
-| 2 | Prosedür dört olay türünü, adı belli rollerle raporlama zincirini ve uygulanan süreleri tanımlıyor, genel süreçle bağlantılı ve son 12 ayda bir tatbikat ya da ele alınmış bir AI olayı kayıtlı. |
-| 3 | 2'yi karşılıyor; her tatbikat ya da olaydan çıkan dersler kayıtlı, aksiyonlar kapanışa kadar izleniyor ve prosedür 12 ay içinde gözden geçirilmiş. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c6) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c6) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1–s2) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` En az şu AI olay türlerini adlandıran prosedür — prompt ya da çıktı yoluyla veri sızıntısı, etkisi olan zararlı ya da yanlış çıktı, model üzerinden yetkisiz erişim, sağlayıcı tarafı olay; `DOC` Bildirim süreleri tablosu (ör. KVKK ihlal bildirimi, sektör ve siber güvenlik yükümlülükleri); `TST` Bir tatbikatın ya da ele alınmış bir AI olayının kaydı
 
@@ -170,12 +270,27 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Her zaman uygulanır.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | En az bir AI sistemi için yazılı risk değerlendirmesi var. | E / H / B |
+| c2 | temel | Kriterleri, ölçekleri ve kabul kuralını içeren yazılı bir risk değerlendirme yöntemi var. | E / H / B |
+| c3 | temel | Canlıdaki AI sistemlerinden bu yöntemle yapılmış tarihli yazılı risk değerlendirmesi olanların oranı. **[%100 (hepsi)]** | E / H / B |
+| c4 | temel | Değerlendirmelerden dört AI'ye özgü risk grubunun hepsini ele alanların oranı. **[%100 (hepsi)]** | E / H / B |
+| c6 | temel | Yeniden değerlendirme tetikleyicileri tanımlı. | E / H / B |
+| s1 | sürdürme | Değerlendirmelerden 12 ay içinde ve her tetikleyici olaydan sonra (hangisi önce gelirse) tekrarlanmış olanların oranı. **[%100 (hepsi)]** | E / H / B |
+
+*QS'de sorulmaz, AS-02'de bakılır:* c5
+
+*Terimler:* **AI'ye özgü risk grupları**: Dört grup: prompt ya da çıktı yoluyla veri sızıntısı; yanlış ya da zararlı çıktı; model üzerinden yetkisiz erişim; sağlayıcı bağımlılığı. · **yeniden değerlendirme tetikleyicileri**: Yeni değerlendirme gerektiren yazılı olaylar; en az: yeni model ya da sağlayıcı, yeni veri kategorisi, yeni kullanıcı grubu, olay.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Hiçbir AI sistemi için risk değerlendirmesi yok. |
-| 1 | Şunlardan en az biri geçerli: yalnız bazı sistemler için değerlendirme var; yazılı yöntem yok; değerlendirmeler AI'ye özgü riskleri (prompt ile veri çıkışı, yanlış ya da zararlı çıktı, model üzerinden yetkisiz erişim, sağlayıcı bağımlılığı) ele almıyor; yeniden değerlendirme tetikleyicileri tanımlı değil. |
-| 2 | Canlıdaki her sistem için, yazılı yöntemle yapılmış, dört AI'ye özgü risk grubunu ele alan, muamele kararları sahip tarafından onaylanmış tarihli bir değerlendirme var ve yeniden değerlendirme tetikleyicileri tanımlı. |
-| 3 | 2'yi karşılıyor ve her değerlendirme 12 ay içinde ya da her tetikleyici olaydan sonra (hangisi önce gelirse) tekrarlanmış, kayıtları var. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c6) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c6) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` AI'ye özgü riskleri kapsayan risk değerlendirme yöntemi (kriterler, ölçekler, kabul); `DOC` Envanterdeki her sistem için tarihli, muamele kararlarını ve sahip onayını içeren risk değerlendirmesi; `DOC` Tanımlı yeniden değerlendirme tetikleyicileri (yeni model ya da sağlayıcı, yeni veri kategorisi, yeni kullanıcı grubu, olay)
 
@@ -189,12 +304,26 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** HYG-ING-01 ile aynı (kurumun işlettiği en az bir veri giriş yolu).
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | Sistem için onaylı veri kaynakları kaydı var. | E / H / B |
+| c2 | temel | Sistemi fiilen besleyen kaynaklardan kayıtta bulunanların oranı. **[%100 (hepsi)]** | E / H / B |
+| c3 | temel | Yalnız kayıtlı kaynaklardan veri kabul edecek biçimde yapılandırılmış giriş yollarının oranı. **[%100 (hepsi)]** | E / H / B |
+| s1 | sürdürme | Kayıt çalışan yapılandırmayla karşılaştırılmış; tarihli kaydı 6 ay içinde. **[≤ 6 ay]** | E / H / B |
+| s2 | sürdürme | Kayda kaynak eklemek kayıtlı bir onay gerektiriyor. | E / H / B |
+
+*QS'de sorulmaz, AS-02'de bakılır:* c4
+
+*Terimler:* **onaylı kaynak kaydı**: AI sistemini beslemesine izin verilen her kaynak için kaynağı, sahibini, veri kategorilerini, kullandığı giriş yolunu ve onay tarihini sayan yazılı kayıt. · **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz. · **veri giriş yolu**: İçeriğin bir yapay zekâ sistemine saklanmak, indekslenmek, bağlam olarak ya da eğitimde kullanılmak üzere girdiği her yol: dosya yükleme, başka sisteme bağlayıcı, API, zamanlanmış aktarım, e-posta ya da sohbet kanalı. Her bağlayıcı ve her API ayrı yol sayılır. · **giriş yolu envanteri**: Sistemin her veri giriş yolunu adıyla gösteren, tarihli yazılı liste (ya da mimari/veri akış şeması). Yollarla ilgili oran kontrollerinin paydasıdır.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Kaynak kaydı yok ve giriş yollarında kısıt yok. |
-| 1 | Şunlardan en az biri geçerli: kayıt var ama bir ya da daha fazla yol kayıt dışı kaynaklardan veri kabul ediyor; kısıt yapılandırılmış ama kayıt yok; ne ret kaydı ne test kaydı sunulabiliyor. |
-| 2 | Kullanılan her kaynak kayıtta, her yol yalnız kayıtlı kaynakları kabul ediyor ve ret kayıtları ya da tarihli bir test kaydı onaysız bir kaynağın reddedildiğini gösteriyor. |
-| 3 | 2'yi karşılıyor; kayıt 6 ay içinde çalışan yapılandırmayla karşılaştırılmış ve kaynak eklemek kayıtlı bir onay gerektiriyor. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c4) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c4) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1–s2) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` Onaylı kaynak kaydı (kaynak, sahip, veri kategorileri, giriş yolu, onay tarihi); `CFG` Her giriş yolunda kabul edilen kaynakları sınırlayan yapılandırma (izin listesi, bağlayıcı kapsamı, yükleme yetkileri); `LOG` Onaysız kaynak ret kayıtları; son 90 günde olmadıysa test kaydı
 
@@ -206,12 +335,27 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Yalnız Controlled External profil. Sovereign sistemlerde CON-INF-01 değerlendirilir.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | Dış model sağlayıcılarına yapılan çağrılar için kontrollü bir nokta var. | E / H / B |
+| c2 | temel | Controlled External sistemlerden dış modelleri yalnız kontrollü nokta üzerinden çağıranların oranı. **[%100 (hepsi)]** | E / H / B |
+| c3 | temel | Kontrollü nokta yalnız onaylı listedeki hedeflere ve kurum hesaplarına izin veriyor (G-SUP-01 ile tutarlı). | E / H / B |
+| c4 | temel | Kontrollü noktayı atlayarak sağlayıcı uç noktalarına doğrudan çıkış engelli. | E / H / B |
+| c5 | temel | Dış modelleri çağırmak için kişisel hesap ya da kişisel API anahtarı kullanılmıyor. | E / H / B |
+| c6 | temel | Son 30 günün çağrıları sağlayıcı, uç nokta, çağıran sistem ve zamanla kayıtlı. | E / H / B |
+| s1 | sürdürme | Çağrı kayıtları G-SUP-01 ile karşılaştırılarak gözden geçirilmiş; tarihli kaydı 3 ay içinde. **[≤ 3 ay]** | E / H / B |
+| s2 | sürdürme | Onaylı listeden çıkarılan her sağlayıcının kontrollü noktada 5 iş günü içinde engellendiği kayıtla gösteriliyor. | E / H / B |
+
+*Terimler:* **kontrollü nokta**: Dış model sağlayıcılarına yapılan tüm çağrıların geçtiği, bunlara izin verebilen, engelleyebilen ve kaydedebilen tek uygulama noktası: AI gateway, ileri proxy ya da çıkış firewall kuralları. · **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz. · **kurum hesabı**: Kurumun sözleşme yaptığı, anahtarlarını kurumun verip geri aldığı sağlayıcı hesabı. Bir çalışanın kendi adına açtığı hesap, ücretini kurum ödese bile sayılmaz.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Sistemler dış modelleri kontrollü nokta olmadan ya da kişisel hesap/anahtarla doğrudan çağırıyor. |
-| 1 | Kontrollü nokta var ama şunlardan en az biri geçerli: bazı sistemler onu atlıyor; hedefleri onaylı listeyle sınırlamıyor; kişisel hesap ya da anahtar kullanılıyor; çağrılar kaydedilmiyor. |
-| 2 | Her sistem dış modelleri yalnız kontrollü noktadan çağırıyor, yalnız onaylı hedeflere ve kurum hesaplarına erişilebiliyor, sağlayıcılara doğrudan çıkış engelli ve son 30 günün çağrıları kayıtlı. |
-| 3 | 2'yi karşılıyor; çağrı kayıtları 3 ay içinde G-SUP-01 ile karşılaştırılarak gözden geçiriliyor ve onaylı listeden çıkarılan bir sağlayıcının 5 iş günü içinde engellendiği kayıtla gösteriliyor. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c6) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c6) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1–s2) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` Onaylı sağlayıcılar, uç noktalar ve kurum hesapları listesi (G-SUP-01 ile tutarlı); `CFG` Yalnız listelenmiş hedeflere izin veren kontrollü nokta yapılandırması (gateway, proxy ya da çıkış kuralları); `LOG` Son 30 güne ait sağlayıcı, uç nokta, çağıran sistem ve zaman içeren çağrı kayıtları
 
@@ -223,12 +367,24 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Her zaman uygulanır. Sağlayıcının işlettiği depolarda kanıt, sağlayıcının belgelenmiş şifreleme ve anahtar düzenidir.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | Sistemin kaynak belgelerini ya da korpusunu tutan depolar depolamada şifreli. | E / H / B |
+| c2 | temel | Depo envanteri indeksler, prompt ve yanıt kayıtları, yedekler ve sağlayıcı depoları dahil her AI veri deposunu sayıyor. | E / H / B |
+| c3 | temel | Envanterdeki depolardan depolamada şifreli olduğu yapılandırma ya da sağlayıcı belgesiyle gösterilenlerin oranı. **[%100 (hepsi)]** | E / H / B |
+| c4 | temel | Envanterdeki depolardan anahtar sahibi kayıtlı olanların oranı. **[%100 (hepsi)]** | E / H / B |
+| s1 | sürdürme | Anahtar rotasyonu ya da anahtarlara erişim gözden geçirilmiş; tarihli kaydı 12 ay içinde. **[≤ 12 ay]** | E / H / B |
+
+*Terimler:* **AI veri deposu**: AI sisteminin verisini tutan her depo: belge korpusu, vektör indeksi, veritabanı, model dosyaları, prompt ve yanıt kayıtları, yedekler. Sağlayıcının işlettiği depolar dahildir. · **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz. · **anahtar sahibi**: Bir deponun şifreleme anahtarını kontrol eden taraf; şunlardan biri olarak kaydedilir: kurum (kendi KMS/HSM), sağlayıcı KMS'i üzerinden kurum ya da sağlayıcı.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Kişisel ya da gizli veri tutan bir ya da daha fazla depo şifresiz ya da durum bilinmiyor. |
-| 1 | Ana depolar şifreli ama şunlardan en az biri geçerli: kayıtlar, indeksler ya da yedekler şifresiz; her depo için anahtar sahibi belirlenmemiş; yapılandırma ya da sağlayıcı kanıtı sunulamıyor. |
-| 2 | Kayıtlar, indeksler ve yedekler dahil envanterdeki her depo depolamada şifreli, yapılandırma ya da sağlayıcı kanıtı var ve her biri için anahtar sahibi kayıtlı. |
-| 3 | 2'yi karşılıyor ve anahtar rotasyonu ya da anahtarlara erişim 12 ay içinde gözden geçirilmiş, kaydı var. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c4) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c4) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` Depo başına şifreleme durumu ve anahtar sahibini gösteren depo envanteri (CON-STO-01 + sağlayıcı depoları ve yedekler); `CFG` Kurumun işlettiği depolar için şifreleme yapılandırması; `DOC` Sağlayıcının işlettiği depolar için sağlayıcı belgeleri
 
@@ -240,12 +396,26 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Kurumun sisteme en az bir veri giriş yolu işlettiği durumda uygulanır (belge yükleme, RAG indeksleme, veri seti aktarımı, bağlayıcı senkronizasyonu). Tek veri girişi kullanıcının yazdığı prompt ise NA işaretlenir, HYG-PRM değerlendirilir.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | Sistem için tespit edilecek kişisel veri kategorilerinin yazılı listesi var. | E / H / B |
+| c2 | temel | Kapsamdaki veri kaynaklarından listede karşılığı olanların oranı. **[%100 (hepsi)]** | E / H / B |
+| c3 | temel | Liste özel nitelikli kişisel verileri içeriyor. | E / H / B |
+| c4 | temel | Liste ilgili yerel tanımlayıcıları (ör. TCKN, IBAN) içeriyor. | E / H / B |
+| c5 | temel | Her kategori için muamele tanımlı; her "izin ver" için yazılı dayanak var. | E / H / B |
+| c6 | temel | Liste adı belli bir sahip tarafından onaylanmış. | E / H / B |
+| s1 | sürdürme | Son tarihli gözden geçirme 12 ay içinde ve son veri kaynağı eklenmesinden önce değil. | E / H / B |
+
+*Terimler:* **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz. · **veri giriş yolu**: İçeriğin bir yapay zekâ sistemine saklanmak, indekslenmek, bağlam olarak ya da eğitimde kullanılmak üzere girdiği her yol: dosya yükleme, başka sisteme bağlayıcı, API, zamanlanmış aktarım, e-posta ya da sohbet kanalı. Her bağlayıcı ve her API ayrı yol sayılır. · **özel nitelikli kişisel veri**: KVKK md. 6'daki (ve uygulanıyorsa GDPR md. 9'daki) kategoriler: ırk, etnik köken, siyasi düşünce, inanç, kılık kıyafet, dernek/sendika üyeliği, sağlık, cinsel hayat, ceza mahkûmiyeti, biyometrik ve genetik veri. · **muamele**: HYG-ING-01'de her kişisel veri kategorisi için tanımlanan işlem: maskeleme, tokenizasyon, takma adlandırma, çıkarma ya da engelleme. Yalnız tespit edip kaydetmek muamele değildir.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Sistem için yazılı bir kişisel veri kategori listesi yok. |
-| 1 | Liste var ama şunlardan en az biri geçerli: kapsamdaki her veri kaynağını kapsamıyor; özel nitelikli verileri içermiyor; veriyle ilgili yerel tanımlayıcıları (ör. TCKN, IBAN) içermiyor; kategori başına muamele tanımlı değil; adı belli bir sahip tarafından onaylanmamış. |
-| 2 | Liste kapsamdaki her veri kaynağını kapsıyor, özel nitelikli verileri ve ilgili yerel tanımlayıcıları içeriyor, kategori başına muamele tanımlıyor ve adı belli bir sahip tarafından onaylanmış. |
-| 3 | 2'yi karşılıyor ve liste 12 ay içinde ya da son veri kaynağı eklendikten sonra (hangisi önce gelirse) gözden geçirilmiş; tarihli gözden geçirme kaydı var. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c6) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c6) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` Veri kaynağı başına kategori listesi (ör. TCKN, IBAN, kart numarası, telefon, adres, sağlık verisi); `DOC` Muamele tablosu: kategori -> engelle / maskele / takma adlandır / izin ver; 'izin ver' için dayanak; `DOC` Sahibini adıyla gösteren onay kaydı
 
@@ -290,12 +460,27 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Prompt arayüzü olan her sisteme uygulanır.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | En az bir prompt kanalında model çağrısından önce otomatik kişisel veri kontrolü var. | E / H / B |
+| c2 | temel | Prompt kanallarından kontrolün model çağrısından önce çalıştığı kanalların oranı. **[%100 (hepsi)]** | E / H / B |
+| c3 | temel | Serbest metnin yanında ekler de kontrol ediliyor. | E / H / B |
+| c4 | temel | Kontrol tanımlı muameleyi uyguluyor (yalnız tespit edip uyarmıyor). | E / H / B |
+| c5 | temel | Kullanıcının her atlatması kayıtlı gerekçe gerektiriyor. | E / H / B |
+| s1 | sürdürme | Atlatmalar ve tespitler gözden geçirilmiş, aksiyonlar yazılmış; tarihli kaydı 3 ay içinde. **[≤ 3 ay]** | E / H / B |
+
+*QS'de sorulmaz, AS-02'de bakılır:* c6
+
+*Terimler:* **atlatma**: İçeriği tanımlı muamele olmadan modele gönderen kullanıcı eylemi (ör. "yine de gönder", kontrolü bir oturum için kapatma). · **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz. · **prompt kanalı**: Metnin ya da dosyanın modele prompt olarak ulaştığı her yol: sohbet arayüzü, API, eklenti ya da entegrasyon, e-posta ya da sohbet botu. Her biri ayrı sayılır. · **muamele**: HYG-ING-01'de her kişisel veri kategorisi için tanımlanan işlem: maskeleme, tokenizasyon, takma adlandırma, çıkarma ya da engelleme. Yalnız tespit edip kaydetmek muamele değildir.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Prompt içeriği kişisel veri için otomatik kontrol olmadan modele ulaşıyor. |
-| 1 | Şunlardan en az biri geçerli: kanalların yalnız bir kısmı kapsanıyor; ekler kontrol edilmiyor; kontrol tespit edip uyarıyor ama muameleyi uygulamıyor; kullanıcı kayıtlı gerekçe olmadan atlatabiliyor; kayıt kanıtı yok. |
-| 2 | Ekler dahil her prompt kanalı model çağrısından önce tanımlı muameleyi uyguluyor; kullanıcının her atlatması kayıtlı gerekçe gerektiriyor; o dönemde kullanılan her kanal için son 30 güne ait kayıt var. |
-| 3 | 2'yi karşılıyor; atlatmalar ve tespitler 3 ay içinde gözden geçiriliyor, aksiyonlar kayıtlı. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c6) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c6) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` Prompt'lar için kategori ve muamele listesi (HYG-ING-01 kullanılabilir; serbest metin ve ekleri kapsamalı); `CFG` Kontrolün her prompt kanalında (arayüz, API, eklentiler) model çağrısından önce bulunduğunu gösteren yapılandırma; `LOG` Kanal başına son 30 güne ait tespit/muamele kayıtları
 
@@ -307,12 +492,27 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** Her zaman uygulanır. Sağlayıcının işlettiği depolarda kurum tarafındaki erişim (yönetim konsolları, çalışma alanı rolleri) değerlendirilir.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | Her AI veri deposu kimlik doğrulama istiyor ve hiçbiri varsayılan olarak tüm çalışanlara açık değil. | E / H / B |
+| c2 | temel | Prompt ve yanıt kayıtları dahil depolardan rolleri tanımlı olanların oranı. **[%100 (hepsi)]** | E / H / B |
+| c3 | temel | Hiçbir depoya paylaşımlı ya da genel hesabın erişimi yok. | E / H / B |
+| c5 | temel | Son erişim gözden geçirmesinin (gözden geçiren ve kaldırılan erişimlerle) tarihi son 12 ay içinde. **[≤ 12 ay]** | E / H / B |
+| s1 | sürdürme | Son erişim gözden geçirmesinin tarihi 6 ay içinde. **[≤ 6 ay]** | E / H / B |
+| s2 | sürdürme | Ayrılan çalışanlardan erişimi 2 iş günü içinde kaldırılanların oranı. **[%100 (hepsi)]** | E / H / B |
+
+*QS'de sorulmaz, AS-02'de bakılır:* c4
+
+*Terimler:* **AI veri deposu**: AI sisteminin verisini tutan her depo: belge korpusu, vektör indeksi, veritabanı, model dosyaları, prompt ve yanıt kayıtları, yedekler. Sağlayıcının işlettiği depolar dahildir. · **paylaşımlı ya da genel hesap**: Birden fazla kişinin kullandığı ya da adı belli bir kişiye bağlı olmayan hesap (ör. "admin", "ai-ekip"). Yalnız bir sistemin kullandığı ve adı belli sahibi olan servis hesapları sayılmaz.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Bir ya da daha fazla AI deposu anonim erişime izin veriyor ya da varsayılan olarak tüm çalışanlara açık. |
-| 1 | Şunlardan en az biri geçerli: paylaşımlı ya da genel hesapların erişimi var; yetkiler rol tanımlarıyla örtüşmüyor; prompt ve yanıt kayıtları için rol tanımlı değil; hiç erişim gözden geçirmesi yapılmamış. |
-| 2 | Prompt ve yanıt kayıtları dahil her depo için roller tanımlı, erişim yalnız adı belli kimliklerde, yetkiler rol tanımlarıyla örtüşüyor ve son 12 ayda erişim gözden geçirmesi yapılmış. |
-| 3 | 2'yi karşılıyor; erişim gözden geçirmeleri 6 ay içinde yapılıyor ve ayrılan çalışanların erişiminin 2 iş günü içinde kaldırıldığı kayıtlarla gösteriliyor. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c5) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c5) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1–s2) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `DOC` Her depo için rol tanımları ve rol başına kimlik listesi; `CFG` Her depo için erişim kontrol yapılandırması (ya da yetki dökümü); `DOC` Tarih, gözden geçiren ve kaldırılan erişimleri içeren erişim gözden geçirme kaydı
 
@@ -324,12 +524,26 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 
 **Uygulanabilirlik:** HYG-ING-01 ile aynı.
 
+Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.
+
+| Kontrol | Tür | İfade (doğru mu?) | Cevap |
+|---|---|---|---|
+| c1 | varlık | En az bir giriş yolunda veri girişi kaydediliyor. | E / H / B |
+| c2 | temel | Giriş yollarından dört kaynak alanının hepsini kaydedenlerin oranı. **[%100 (hepsi)]** | E / H / B |
+| c3 | temel | Kayıt deposu korumalı. | E / H / B |
+| s1 | sürdürme | Kayıt bütünlüğü doğrulanmış (ör. özet kontrolü ya da boşluk tespiti); tarihli kaydı 3 ay içinde. **[≤ 3 ay]** | E / H / B |
+| s2 | sürdürme | Kayıt saklama süresi tanımlı saklama süresiyle örtüşüyor. | E / H / B |
+
+*QS'de sorulmaz, AS-02'de bakılır:* c4
+
+*Terimler:* **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz. · **giriş yolu envanteri**: Sistemin her veri giriş yolunu adıyla gösteren, tarihli yazılı liste (ya da mimari/veri akış şeması). Yollarla ilgili oran kontrollerinin paydasıdır. · **korumalı kayıt deposu**: Şunlardan en az birinin geçerli olduğu kayıt deposu: yalnız ekleme ya da tek yazım (WORM) ayarı; sistem yöneticilerinden ayrı yazma/silme yetkisi; bütünlük doğrulaması (özet zinciri ya da imza). · **dört kaynak alanı**: Kaynak, zaman, tespit edilen veri kategorileri, uygulanan muamele.
+
 | Puan | Ölçüt |
 |---|---|
-| 0 | Veri girişi kaydedilmiyor. |
-| 1 | Veri girişi kaydediliyor ama şunlardan en az biri geçerli: dört alandan biri eksik; bazı yollar kaydedilmiyor; sistem yöneticileri girdileri fark edilmeden değiştirip silebiliyor; örnek bir öğe izlenemiyor. |
-| 2 | Her yol dört alanı kaydediyor, kayıt deposu listelenen mekanizmalardan en az biriyle korunuyor ve üç örnek öğenin üçü de girdilerine kadar izleniyor. |
-| 3 | 2'yi karşılıyor; kayıt bütünlüğü 3 ay içinde doğrulanıyor (ör. özet kontrolü ya da boşluk tespiti) ve kaydı var; kayıt saklama süresi tanımlı süreyle örtüşüyor. |
+| 0 | Varlık kontrolü (c1) karşılanmıyor. |
+| 1 | c1 karşılanıyor; temel kontrollerden (c2–c4) en az biri karşılanmıyor. |
+| 2 | c1 ve tüm temel kontroller (c2–c4) karşılanıyor. |
+| 3 | 2 ve tüm sürdürme kontrolleri (s1–s2) karşılanıyor. |
 
 *AS-02'de istenecek kanıt:* `CFG` Her giriş yolunda dört alanı (kaynak, zaman, kategoriler, muamele) içeren kayıt yapılandırması; `CFG` Kayıt deposu koruması (yalnız ekleme ya da tek yazım ayarı, sistem yöneticilerinden ayrı yetki ya da bütünlük doğrulaması); `TST` Saklanan üç örnek öğenin kayıt girdilerine kadar izlenmesi
 

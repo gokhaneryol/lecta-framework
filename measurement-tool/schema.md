@@ -97,7 +97,7 @@ Bir sistem, bir profil için **Lk** seviyesindedir ⇔ `level ≤ Lk` olan **tü
 
 ### 5.5 Kontrol listesi ve sabit puanlama kuralı (A2, pilot)
 
-Amaç: iki değerlendirici aynı maddeye aynı puanı versin. Rubric metni elle yazılmaz; madde `checks` alanında **atomik kontroller** taşır, puan bu kontrollerin cevabından kuralla hesaplanır. Pilot maddeler: G-POL-02, HYG-ING-02. Kalıp onaylanınca diğer maddeler de çevrilir; o zamana kadar `rubric` alanı olan maddeler eskisi gibi elle puanlanır.
+Amaç: iki değerlendirici aynı maddeye aynı puanı versin. Rubric metni elle yazılmaz; madde `checks` alanında **atomik kontroller** taşır, puan bu kontrollerin cevabından kuralla hesaplanır. Pilot G-POL-02 ve HYG-ING-02 ile onaylandı ✅ (Gökhan, 22 Ekim); Quick Scan kesitindeki 18 maddenin hepsi bu biçimde. Kesit dışındaki 11 madde henüz `rubric` alanıyla elle puanlanır, sırayla çevrilecek.
 
 **Kontrol türü (`kind`):**
 

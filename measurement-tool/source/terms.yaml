@@ -84,3 +84,261 @@ terms:
       tr: >
         Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok")
         gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz.
+
+  - id: approved-source-register
+    term:
+      en: approved source register
+      tr: onaylı kaynak kaydı
+    definition:
+      en: 'A written register listing, for each source allowed to feed the AI system: the source, its owner,
+        its data categories, the ingestion path it uses and the approval date.'
+      tr: AI sistemini beslemesine izin verilen her kaynak için kaynağı, sahibini, veri kategorilerini,
+        kullandığı giriş yolunu ve onay tarihini sayan yazılı kayıt.
+
+  - id: ai-data-store
+    term:
+      en: AI data store
+      tr: AI veri deposu
+    definition:
+      en: 'Any store holding data of the AI system: document corpus, vector index, database, model files,
+        prompt and response logs, backups. Stores run by the provider count.'
+      tr: 'AI sisteminin verisini tutan her depo: belge korpusu, vektör indeksi, veritabanı, model dosyaları,
+        prompt ve yanıt kayıtları, yedekler. Sağlayıcının işlettiği depolar dahildir.'
+
+  - id: key-owner
+    term:
+      en: key owner
+      tr: anahtar sahibi
+    definition:
+      en: 'The party that controls the encryption key of a store, recorded as one of: the organisation (own
+        KMS/HSM), the organisation through a provider KMS, or the provider.'
+      tr: 'Bir deponun şifreleme anahtarını kontrol eden taraf; şunlardan biri olarak kaydedilir: kurum
+        (kendi KMS/HSM), sağlayıcı KMS''i üzerinden kurum ya da sağlayıcı.'
+
+  - id: managed-boundary
+    term:
+      en: managed boundary
+      tr: yönetilen sınır
+    definition:
+      en: The infrastructure the organisation operates or contractually controls (own data centre, dedicated
+        or private cloud tenancy) where it sets network policy. A shared public API is outside the boundary.
+      tr: Kurumun işlettiği ya da sözleşmeyle kontrol ettiği, ağ politikasını kendisinin belirlediği altyapı
+        (kendi veri merkezi, ayrılmış ya da özel bulut kiracılığı). Paylaşımlı genel API sınırın dışındadır.
+
+  - id: default-deny-egress
+    term:
+      en: default-deny egress
+      tr: varsayılan red çıkış
+    definition:
+      en: Outbound traffic is blocked unless the destination is on an explicit allow list; the rule is enforced
+        in network configuration, not by the application.
+      tr: Hedef açık bir izin listesinde değilse dışarıya giden trafik engellenir; kural uygulamada değil
+        ağ yapılandırmasında uygulanır.
+
+  - id: controlled-point
+    term:
+      en: controlled point
+      tr: kontrollü nokta
+    definition:
+      en: 'A single enforcement point that all calls to external model providers pass through and that can
+        allow, block and log them: an AI gateway, a forward proxy or egress firewall rules.'
+      tr: 'Dış model sağlayıcılarına yapılan tüm çağrıların geçtiği, bunlara izin verebilen, engelleyebilen
+        ve kaydedebilen tek uygulama noktası: AI gateway, ileri proxy ya da çıkış firewall kuralları.'
+
+  - id: org-account
+    term:
+      en: organisation account
+      tr: kurum hesabı
+    definition:
+      en: A provider account contracted by the organisation, whose keys are issued and revoked by the organisation.
+        An account opened by an employee in their own name does not count, even if paid by the organisation.
+      tr: Kurumun sözleşme yaptığı, anahtarlarını kurumun verip geri aldığı sağlayıcı hesabı. Bir çalışanın
+        kendi adına açtığı hesap, ücretini kurum ödese bile sayılmaz.
+
+  - id: approval-record
+    term:
+      en: approval record
+      tr: onay kaydı
+    definition:
+      en: A record showing who approved, the date and the version approved (board minute, signed cover page
+        or document management workflow entry).
+      tr: Onaylayanı, tarihi ve onaylanan sürümü gösteren kayıt (kurul kararı, imzalı kapak sayfası ya da
+        belge yönetim sistemi iş akışı girdisi).
+
+  - id: announcement-record
+    term:
+      en: announcement record
+      tr: duyuru kaydı
+    definition:
+      en: 'A dated record showing the document reached in-scope staff: intranet publication, e-mail to a
+        distribution list covering them, or a read-receipt list.'
+      tr: 'Belgenin kapsamdaki çalışanlara ulaştığını gösteren tarihli kayıt: intranet yayını, onları kapsayan
+        dağıtım listesine e-posta ya da okundu listesi.'
+
+  - id: inventory-fields
+    term:
+      en: mandatory inventory fields
+      tr: envanter zorunlu alanları
+    definition:
+      en: Purpose, owner, user groups, data categories, provider, profile (CE/SOV) and status.
+      tr: Amaç, sahip, kullanıcı grupları, veri kategorileri, sağlayıcı, profil (CE/SOV) ve durum.
+
+  - id: ai-service-domain-list
+    term:
+      en: AI service domain list
+      tr: AI servis alan adı listesi
+    definition:
+      en: A dated list of the domains and endpoints used to recognise AI service traffic in logs. A vendor
+        category feed counts if its update date can be shown.
+      tr: Kayıtlarda AI servis trafiğini tanımak için kullanılan alan adı ve uç nokta listesi, tarihli.
+        Üretici kategori beslemesi, güncelleme tarihi gösterilebiliyorsa sayılır.
+
+  - id: named-owner
+    term:
+      en: named owner
+      tr: adı belli sahip
+    definition:
+      en: A specific person, or a role held by exactly one person at a time, recorded by name or role title.
+        A unit name or "IT" does not count.
+      tr: Belirli bir kişi ya da aynı anda tek kişinin tuttuğu bir rol; adıyla ya da rol unvanıyla kayıtlı.
+        Birim adı ya da "BT" sayılmaz.
+
+  - id: consultation-points
+    term:
+      en: consultation points
+      tr: danışma noktaları
+    definition:
+      en: 'Written events at which the DPO and security must be consulted; at least: a new AI system, a
+        new personal data category, a new provider.'
+      tr: 'DPO ve güvenliğe danışılması gereken, yazılı olaylar; en az: yeni AI sistemi, yeni kişisel veri
+        kategorisi, yeni sağlayıcı.'
+
+  - id: ai-risk-groups
+    term:
+      en: AI-specific risk groups
+      tr: AI'ye özgü risk grupları
+    definition:
+      en: 'Four groups: data leakage through prompts or outputs; wrong or harmful output; unauthorised access
+        through the model; provider dependence.'
+      tr: 'Dört grup: prompt ya da çıktı yoluyla veri sızıntısı; yanlış ya da zararlı çıktı; model üzerinden
+        yetkisiz erişim; sağlayıcı bağımlılığı.'
+
+  - id: reassessment-triggers
+    term:
+      en: reassessment triggers
+      tr: yeniden değerlendirme tetikleyicileri
+    definition:
+      en: 'Written events that require a new assessment; at least: a new model or provider, a new data category,
+        a new user group, an incident.'
+      tr: 'Yeni değerlendirme gerektiren yazılı olaylar; en az: yeni model ya da sağlayıcı, yeni veri kategorisi,
+        yeni kullanıcı grubu, olay.'
+
+  - id: supplier-topics
+    term:
+      en: five supplier topics
+      tr: beş sağlayıcı konusu
+    definition:
+      en: Where data is held; retention period; use of customer data for training; sub-processors; cross-border
+        transfer mechanism.
+      tr: Verinin tutulduğu yer; saklama süresi; müşteri verisinin eğitimde kullanımı; alt işleyenler; yurt
+        dışı aktarım mekanizması.
+
+  - id: ai-user
+    term:
+      en: AI user
+      tr: AI kullanıcısı
+    definition:
+      en: A person with access to at least one system in the AI inventory (G-INV-01). The count of AI users
+        is the denominator for training ratios.
+      tr: AI envanterindeki (G-INV-01) en az bir sisteme erişimi olan kişi. Eğitim oranlarının paydası AI
+        kullanıcısı sayısıdır.
+
+  - id: literacy-topics
+    term:
+      en: three literacy topics
+      tr: üç okuryazarlık konusu
+    definition:
+      en: Acceptable use (G-POL-02); data risks (what may not be entered and why); limits of AI output (errors,
+        verification duty).
+      tr: Kabul edilebilir kullanım (G-POL-02); veri riskleri (neyin girilemeyeceği ve nedeni); AI çıktısının
+        sınırları (hatalar, doğrulama yükümlülüğü).
+
+  - id: ai-incident-types
+    term:
+      en: four AI incident types
+      tr: dört AI olay türü
+    definition:
+      en: Data leakage through prompts or outputs; harmful or wrong output with impact; unauthorised access
+        through the model; provider-side incident.
+      tr: Prompt ya da çıktı yoluyla veri sızıntısı; etkisi olan zararlı ya da yanlış çıktı; model üzerinden
+        yetkisiz erişim; sağlayıcı tarafı olay.
+
+  - id: notification-deadlines
+    term:
+      en: applicable notification deadlines
+      tr: uygulanan bildirim süreleri
+    definition:
+      en: Deadlines that apply to the organisation, each with its legal basis and recipient; at least KVKK
+        breach notification (72 hours) and, where applicable, Law 7545 and sector rules.
+      tr: Kuruma uygulanan süreler, her biri hukuki dayanağı ve muhatabıyla; en az KVKK ihlal bildirimi
+        (72 saat) ve uygulanıyorsa 7545 sayılı Kanun ve sektör kuralları.
+
+  - id: prompt-channel
+    term:
+      en: prompt channel
+      tr: prompt kanalı
+    definition:
+      en: 'Any route by which text or files reach the model as a prompt: chat interface, API, plug-in or
+        integration, e-mail or chat bot. Each counts separately.'
+      tr: 'Metnin ya da dosyanın modele prompt olarak ulaştığı her yol: sohbet arayüzü, API, eklenti ya
+        da entegrasyon, e-posta ya da sohbet botu. Her biri ayrı sayılır.'
+
+  - id: bypass
+    term:
+      en: bypass
+      tr: atlatma
+    definition:
+      en: A user action that sends content to the model without the defined treatment (e.g. "send anyway",
+        disabling the control for a session).
+      tr: İçeriği tanımlı muamele olmadan modele gönderen kullanıcı eylemi (ör. "yine de gönder", kontrolü
+        bir oturum için kapatma).
+
+  - id: shared-account
+    term:
+      en: shared or generic account
+      tr: paylaşımlı ya da genel hesap
+    definition:
+      en: An account used by more than one person, or not tied to a named person (e.g. "admin", "ai-team").
+        Service accounts used only by a system and with a named owner do not count.
+      tr: Birden fazla kişinin kullandığı ya da adı belli bir kişiye bağlı olmayan hesap (ör. "admin", "ai-ekip").
+        Yalnız bir sistemin kullandığı ve adı belli sahibi olan servis hesapları sayılmaz.
+
+  - id: provenance-fields
+    term:
+      en: four provenance fields
+      tr: dört kaynak alanı
+    definition:
+      en: Source, time, data categories detected, treatment applied.
+      tr: Kaynak, zaman, tespit edilen veri kategorileri, uygulanan muamele.
+
+  - id: protected-log-store
+    term:
+      en: protected log store
+      tr: korumalı kayıt deposu
+    definition:
+      en: 'A log store where at least one holds: append-only or write-once (WORM) setting; write/delete
+        permission separate from the system administrators; integrity verification (hash chain or signature).'
+      tr: 'Şunlardan en az birinin geçerli olduğu kayıt deposu: yalnız ekleme ya da tek yazım (WORM) ayarı;
+        sistem yöneticilerinden ayrı yazma/silme yetkisi; bütünlük doğrulaması (özet zinciri ya da imza).'
+
+  - id: special-category
+    term:
+      en: special-category personal data
+      tr: özel nitelikli kişisel veri
+    definition:
+      en: 'The categories in KVKK art. 6 (and GDPR art. 9 where applicable): race, ethnic origin, political
+        opinion, belief, appearance, association/union membership, health, sexual life, criminal conviction,
+        biometric and genetic data.'
+      tr: 'KVKK md. 6''daki (ve uygulanıyorsa GDPR md. 9''daki) kategoriler: ırk, etnik köken, siyasi düşünce,
+        inanç, kılık kıyafet, dernek/sendika üyeliği, sağlık, cinsel hayat, ceza mahkûmiyeti, biyometrik
+        ve genetik veri.'

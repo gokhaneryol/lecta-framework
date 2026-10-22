@@ -108,7 +108,7 @@ Her maddenin rubric'i bu iskeleti sayılabilir ölçütlerle doldurur. "Yeterli"
 - **NA:** Madde uygulanmaz; hesaba girmez.
 - **NE:** Değerlendirilemedi; kapıyı kapatır.
 
-**Kontrol listesiyle puanlama (pilot, `schema.md` 5.5):** G-POL-02 ve HYG-ING-02'de puan elle verilmez. Madde birkaç evet/hayır kontrole bölünür: bir varlık kontrolü (`c1`), temel kontroller (`c2…`) ve sürdürme kontrolleri (`s1…`). Puan sabit kuralla hesaplanır: c1 yoksa 0; temel kontrollerden biri eksikse 1; hepsi tamamsa 2; sürdürme kontrolleri de tamamsa 3. Yoruma açık terimler `source/terms.yaml` içinde tanımlıdır. Kalıp onaylanınca diğer maddeler de bu biçime çevrilir.
+**Kontrol listesiyle puanlama (`schema.md` 5.5):** Quick Scan kesitindeki 18 maddede puan elle verilmez. Madde birkaç evet/hayır kontrole bölünür: bir varlık kontrolü (`c1`), temel kontroller (`c2…`) ve sürdürme kontrolleri (`s1…`). Puan sabit kuralla hesaplanır: c1 yoksa 0; temel kontrollerden biri eksikse 1; hepsi tamamsa 2; sürdürme kontrolleri de tamamsa 3. Yoruma açık terimler `source/terms.yaml` içinde tanımlıdır. Kesit dışındaki 11 madde henüz elle yazılmış rubric'le puanlanır; sırayla çevrilecek.
 
 **Seviye:** Bir sistem Lk seviyesindedir ⇔ seviyesi Lk ve altı olan tüm uygulanabilir maddeler en az 2 puan almıştır. Raporlanan seviye, sistemin matris seviyesi ile G bloğu seviyesinin düşük olanıdır. Örnek: teknik olarak L1 olan bir RAG sistemi, kurumun AI envanteri eksikse L0 olarak raporlanır.
 

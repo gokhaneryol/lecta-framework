@@ -113,35 +113,82 @@ items:
       - type: DOC
         en: Access review record with date, reviewer and removals
         tr: Tarih, gözden geçiren ve kaldırılan erişimleri içeren erişim gözden geçirme kaydı
-    rubric:
-      0:
-        en: One or more AI stores allow anonymous access or are accessible to all staff by default.
-        tr: Bir ya da daha fazla AI deposu anonim erişime izin veriyor ya da varsayılan olarak tüm çalışanlara açık.
-      1:
-        en: >
-          At least one of these is true: shared or generic accounts have access; permissions
-          do not match the role definitions; roles are not defined for prompt and response
-          logs; no access review has been done.
-        tr: >
-          Şunlardan en az biri geçerli: paylaşımlı ya da genel hesapların erişimi var; yetkiler
-          rol tanımlarıyla örtüşmüyor; prompt ve yanıt kayıtları için rol tanımlı değil; hiç
-          erişim gözden geçirmesi yapılmamış.
-      2:
-        en: >
-          Every store, including prompt and response logs, has defined roles, only named
-          identities hold access, permissions match the role definitions, and an access review
-          was done in the last 12 months.
-        tr: >
-          Prompt ve yanıt kayıtları dahil her depo için roller tanımlı, erişim yalnız adı belli
-          kimliklerde, yetkiler rol tanımlarıyla örtüşüyor ve son 12 ayda erişim gözden
-          geçirmesi yapılmış.
-      3:
-        en: >
-          Meets 2, and access reviews are done within review_interval, and leavers lose access
-          within 2 working days, shown by records.
-        tr: >
-          2'yi karşılıyor; erişim gözden geçirmeleri review_interval içinde yapılıyor ve
-          ayrılan çalışanların erişiminin 2 iş günü içinde kaldırıldığı kayıtlarla gösteriliyor.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: Every AI data store requires authentication and none is open to all staff by default.
+          tr: Her AI veri deposu kimlik doğrulama istiyor ve hiçbiri varsayılan olarak tüm çalışanlara açık
+            değil.
+        terms:
+        - ai-data-store
+        evidence: CFG
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of stores, including prompt and response logs, with defined roles.
+          tr: Prompt ve yanıt kayıtları dahil depolardan rolleri tanımlı olanların oranı.
+        terms:
+        - ai-data-store
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: No shared or generic account has access to any store.
+          tr: Hiçbir depoya paylaşımlı ya da genel hesabın erişimi yok.
+        terms:
+        - shared-account
+        evidence: CFG
+        qs: true
+      - id: c4
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of granted permissions that match the role definitions.
+          tr: Verilmiş yetkilerden rol tanımlarıyla örtüşenlerin oranı.
+        evidence: CFG
+        qs: false
+        sampling: true
+      - id: c5
+        kind: core
+        type: date
+        threshold:
+          max_months: 12
+        text:
+          en: Date of the latest access review (with reviewer and removed access) is within the last 12 months.
+          tr: Son erişim gözden geçirmesinin (gözden geçiren ve kaldırılan erişimlerle) tarihi son 12 ay içinde.
+        evidence: DOC
+        qs: true
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: Date of the latest access review is within review_interval.
+          tr: Son erişim gözden geçirmesinin tarihi review_interval içinde.
+        evidence: DOC
+        qs: true
+      - id: s2
+        kind: sustain
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of leavers whose access was removed within 2 business days.
+          tr: Ayrılan çalışanlardan erişimi 2 iş günü içinde kaldırılanların oranı.
+        evidence: LOG
+        qs: true
+        sampling: true
     review_interval: 6
     quick_scan: true
     qs_question:
