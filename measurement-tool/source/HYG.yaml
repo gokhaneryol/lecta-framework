@@ -138,36 +138,85 @@ items:
       - type: LOG
         en: Detection/treatment events from each path, from the last 30 days
         tr: Son 30 güne ait, her yoldan tespit/muamele kayıtları
-    rubric:
-      0:
-        en: No automated detection on any ingestion path.
-        tr: Hiçbir giriş yolunda otomatik tespit yok.
-      1:
-        en: >
-          At least one of these is true: the control covers only some paths; it detects and
-          logs but does not apply the treatment; it runs after data is stored or indexed;
-          treatment is manual; no log evidence can be produced.
-        tr: >
-          Şunlardan en az biri geçerli: kontrol yolların yalnız bir kısmında; tespit edip
-          kaydediyor ama muameleyi uygulamıyor; veri saklandıktan ya da indekslendikten sonra
-          çalışıyor; muamele elle yapılıyor; kayıt kanıtı sunulamıyor.
-      2:
-        en: >
-          Every path in the inventory has the control before storage/indexing, the treatment
-          from HYG-ING-01 is applied, and log events from the last 30 days exist for every
-          path that received data in that period.
-        tr: >
-          Envanterdeki her yolda kontrol saklama/indeksleme öncesinde var, HYG-ING-01'deki
-          muamele uygulanıyor ve son 30 günde veri alan her yol için o döneme ait kayıt var.
-      3:
-        en: >
-          Meets 2, and a change-control check ensures no new ingestion path goes live
-          without the control; the path inventory was reconciled against the running
-          system within review_interval, with a dated record.
-        tr: >
-          2'yi karşılıyor; değişiklik yönetiminde hiçbir yeni giriş yolunun kontrol olmadan
-          canlıya alınmadığını güvenceye alan bir kontrol adımı var; yol envanteri
-          review_interval içinde çalışan sistemle karşılaştırılmış, tarihli kaydı var.
+    checks:   # A2 pilot — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: At least one ingestion path has an automated control that detects personal data.
+          tr: En az bir veri giriş yolunda kişisel veriyi otomatik tespit eden bir kontrol var.
+        terms: [ingestion-path]
+        evidence: CFG
+        qs: true
+      - id: c2
+        kind: core
+        type: binary
+        text:
+          en: An ingestion path inventory exists.
+          tr: Giriş yolu envanteri var.
+        terms: [path-inventory]
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold: {min: 1.0}
+        text:
+          en: Share of paths in the inventory that have the detection control.
+          tr: Envanterdeki yollardan tespit kontrolü bulunanların oranı.
+        terms: [path-inventory, ingestion-path]
+        evidence: CFG
+        qs: true
+        sampling: true
+      - id: c4
+        kind: core
+        type: ratio
+        threshold: {min: 1.0}
+        text:
+          en: Share of controlled paths where the control runs before persistence.
+          tr: Kontrol bulunan yollardan kontrolün saklamadan önce çalıştığı yolların oranı.
+        terms: [before-persistence]
+        evidence: CFG
+        qs: true
+        sampling: true
+      - id: c5
+        kind: core
+        type: binary
+        text:
+          en: The control applies the HYG-ING-01 treatment automatically (it does not only log, and no manual step is needed).
+          tr: Kontrol HYG-ING-01'deki muameleyi otomatik uyguluyor (yalnız kaydetmiyor, elle adım gerekmiyor).
+        terms: [treatment]
+        evidence: TST
+        qs: true
+      - id: c6
+        kind: core
+        type: ratio
+        threshold: {min: 1.0}
+        text:
+          en: Share of paths that received data in the last 30 days for which detection/treatment log events from that period exist.
+          tr: Son 30 günde veri alan yollardan, o döneme ait tespit/muamele kaydı bulunanların oranı.
+        evidence: LOG
+        qs: false
+        sampling: true
+      - id: s1
+        kind: sustain
+        type: binary
+        text:
+          en: The change process has a step that blocks a new ingestion path from going live without the control.
+          tr: Değişiklik sürecinde, yeni bir giriş yolunun kontrol olmadan canlıya alınmasını engelleyen bir adım var.
+        terms: [ingestion-path]
+        evidence: DOC
+        qs: true
+      - id: s2
+        kind: sustain
+        type: date
+        threshold: {max_months: review_interval}
+        text:
+          en: The path inventory was reconciled against the running system; the dated record is within review_interval.
+          tr: Yol envanteri çalışan sistemle karşılaştırılmış; tarihli kaydı review_interval içinde.
+        terms: [path-inventory, dated-record]
+        evidence: DOC
+        qs: true
     review_interval: 6
     quick_scan: true
     qs_question:

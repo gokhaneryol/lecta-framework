@@ -10,6 +10,7 @@
 """
 import argparse, glob, os, sys
 import yaml
+import kontrol
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.worksheet.datavalidation import DataValidation
@@ -23,7 +24,7 @@ LAYERS = ['CON', 'HYG', 'IDE', 'BEH', 'TRA', 'ATT']
 def items():
     out = []
     for f in sorted(glob.glob(os.path.join(SRC, '*.yaml'))):
-        if os.path.basename(f) in ('meta.yaml', '_template.yaml'):
+        if os.path.basename(f) in ('meta.yaml', '_template.yaml', 'terms.yaml'):
             continue
         out += yaml.safe_load(open(f, encoding='utf-8'))['items']
     key = lambda i: (ORDER[i['block']], LAYERS.index(i['layer']) if i['block'] == 'matrix' else 0, i['id'])
@@ -40,25 +41,27 @@ def cmd_uret(a):
     ws = wb.active; ws.title = 'Maddeler'
     cols = [('ID', 13), ('Karar', 11), ('Yorum', 40), ('Durum', 9), ('QS', 5), ('CE', 6), ('SOV', 6),
             ('Başlık', 28), ('Amaç', 50), ('Soru', 40), ('Uygulanabilirlik (NA)', 30),
-            ('0', 30), ('1', 45), ('2', 45), ('3', 40), ('Gözden geçirme (ay)', 8),
+            ('0', 30), ('1', 45), ('2', 45), ('3', 40), ('Kontroller', 60), ('Gözden geçirme (ay)', 8),
             ('Kanıt', 45), ('Eşleme', 30), ('Servisler', 14), ('Not (iç)', 40),
             ('Title (EN)', 28), ('Rubric 2 (EN)', 45)]
     ws.append([c for c, _ in cols])
     for n, (_, w) in enumerate(cols, 1):
         ws.column_dimensions[ws.cell(1, n).column_letter].width = w
     for i in its:
-        r = i['rubric']
+        rb = kontrol.rubric(i); rben = kontrol.rubric(i, 'en')
         ri = i.get('review_interval')
-        rub = [j(r[k]).replace('review_interval', f'{ri} ay' if ri else 'review_interval') for k in (0, 1, 2, 3)]
+        rub = [rb[k] for k in (0, 1, 2, 3)]
+        chk = '\n'.join(f"{c['id']} [{kontrol.KIND[c['kind']]['tr']}{'' if c.get('qs', True) else ', QS dışı'}] "
+                        f"{kontrol.check_line(c, i).replace('**', '')}" for c in i.get('checks', []))
         ev = '\n'.join(f"[{e['type']}] {' '.join(e['tr'].split())}" for e in i['evidence'])
         mp = '\n'.join(f"{m['framework']} {m['ref']}" for m in i['mappings'])
         lv = i['level']
         ws.append([i['id'], '', '', i.get('status', ''), '✓' if i.get('quick_scan') else '',
                    lv.get('CE') or '—', lv.get('SOV') or '—',
                    j(i['title']), j(i['objective']), j(i['question']), j(i['applicability']),
-                   *rub, ri or '', ev, mp, ', '.join(i.get('services', [])),
+                   *rub, chk, ri or '', ev, mp, ', '.join(i.get('services', [])),
                    ' '.join(str(i.get('notes', '')).split()),
-                   j(i['title'], 'en'), j(r[2], 'en')])
+                   j(i['title'], 'en'), rben[2]])
     hdr = PatternFill('solid', fgColor='1F3A5F'); you = PatternFill('solid', fgColor='FFF4CC')
     for c in ws[1]:
         c.font = Font(bold=True, color='FFFFFF'); c.fill = hdr
@@ -73,7 +76,7 @@ def cmd_uret(a):
     dv = DataValidation(type='list', formula1='"Onay,Düzelt,Sil,Tartışalım"', allow_blank=True)
     ws.add_data_validation(dv); dv.add(f'B2:B{ws.max_row}')
     # hidden EN columns grouped
-    ws.column_dimensions.group('U', 'V', hidden=True)
+    ws.column_dimensions.group('V', 'W', hidden=True)
 
     h = wb.create_sheet('Nasıl okunur', 0)
     lines = [
@@ -84,7 +87,7 @@ def cmd_uret(a):
         ('2. Okuma sırası önerisi: önce QS ✓ olanlar (filtre: QS), sonra kalanlar. G maddeleri üstte, matris altta.', False),
         ('3. Her madde için bakılacak üç şey: (a) Amaç tek bir gereksinim mi? (b) Rubric 1 ile 2 arasındaki çizgiyi başka bir değerlendirici aynı yere çizer mi? (c) Seviye (CE/SOV) doğru mu?', False),
         ('4. "Düzelt" dediğinde yorumda ne değişecek, kısaca yaz; metni yeniden yazman gerekmez.', False),
-        ('5. EN metinler U–V sütunlarında gizli (grup "+" ile açılır). TR ile anlam farkı görürsen yorumda belirt.', False),
+        ('5. EN metinler V–W sütunlarında gizli (grup "+" ile açılır). TR ile anlam farkı görürsen yorumda belirt.', False),
         ('6. Bitirince dosyayı aynı yerde kaydet ve Claude\'a "inceleme bitti" de: kararlar okunur, YAML güncellenir, onaylananlar approved olur.', False),
     ]
     for t, b in lines:
@@ -114,10 +117,12 @@ def cmd_tablo(a):
     L = ['# Madde ve rubric tablosu', '',
          f'*Kaynak: `source/*.yaml` · `tools/inceleme.py tablo` ile üretildi — elle düzenlemeyin · {len(its)} madde*', '',
          'CE / SOV: maddenin o profildeki seviyesi (— = o profilde uygulanmaz) · QS: Quick Scan kesitinde · "… ay içinde": gözden geçirme aralığı', '',
-         '| ID | Madde | CE | SOV | QS | 0 | 1 | 2 | 3 |', '| --- | --- | --- | --- | --- | --- | --- | --- | --- |']
+         '| ID | Madde | CE | SOV | QS | 0 | 1 | 2 | 3 | Kontroller |', '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |']
     for i in its:
-        ri = i.get('review_interval')
-        r = [c(i['rubric'][k]['tr']).replace('review_interval', f'{ri} ay') for k in (0, 1, 2, 3)]
+        rb = kontrol.rubric(i)
+        r = [c(rb[k]) for k in (0, 1, 2, 3)]
+        r.append('<br>'.join(f"{x['id']} ({kontrol.KIND[x['kind']]['tr']}{'' if x.get('qs', True) else ', QS dışı'}): "
+                             f"{c(kontrol.check_line(x, i))}" for x in i.get('checks', [])))
         lv = i['level']
         L.append(f"| {i['id']} | {c(i['title']['tr'])} | {lv.get('CE') or '—'} | {lv.get('SOV') or '—'} | "
                  f"{'✓' if i.get('quick_scan') else ''} | " + ' | '.join(r) + ' |')

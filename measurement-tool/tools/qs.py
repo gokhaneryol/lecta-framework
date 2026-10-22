@@ -14,23 +14,26 @@ Kurallar (schema.md 5.2–5.3, 03-quick-scan-kesiti.md):
   - Kapı: level <= Lk olan tüm uygulanabilir maddeler >= 2. NA hariç; NE ya da boş = geçmez.
   - G bloğu sistem seviyesini sınırlar: raporlanan = min(sistem, G[profil]).
   - Quick Scan'de en çok 2 sistem.
+  - `checks` taşıyan maddelerde puan elle verilmez: CSV'de her QS kontrolü ayrı satırdır,
+    `answer` sütunu E/H/B (NA yalnız c1'de) doldurulur, puan kontrol.py kuralıyla hesaplanır (schema.md 5.5).
 """
 import argparse, csv, glob, os, sys
 import yaml
+import kontrol
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, '..', 'source')
 LV = {f'L{i}': i for i in range(7)}
 QS_CAP = 1  # gösterge seviye L1'i aşmaz
 CE_CHAIN = ['G-POL-02', 'G-INV-02', 'G-SUP-01', 'CON-INF-02', 'HYG-PRM-01']
-FIELDS = ['unit', 'unit_type', 'profile', 'item_id', 'title_tr', 'level', 'score',
+FIELDS = ['unit', 'unit_type', 'profile', 'item_id', 'check_id', 'title_tr', 'level', 'answer', 'score',
           'basis', 'na_reason', 'note', 'evidence_ref', 'assessor', 'reviewer']
 
 
 def load_items():
     items = []
     for f in sorted(glob.glob(os.path.join(SRC, '*.yaml'))):
-        if os.path.basename(f) in ('meta.yaml', '_template.yaml'):
+        if os.path.basename(f) in ('meta.yaml', '_template.yaml', 'terms.yaml'):
             continue
         with open(f, encoding='utf-8') as fh:
             items += yaml.safe_load(fh)['items']
@@ -80,13 +83,25 @@ def cmd_rehber(a):
             L.append(f"**Soru:** {t(i['qs_question'])}\n")
             L.append(f"**Derinleştirme:** {t(i['question'])}\n")
             L.append(f"**Uygulanabilirlik:** {t(i['applicability'])}\n")
+            rb = kontrol.rubric(i)
+            if 'checks' in i:
+                L.append('Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da tarih isteyen kontrolde '
+                         'eşik sağlanıyorsa E. Puan cevaplardan hesaplanır, elle verilmez.\n')
+                L.append('| Kontrol | Tür | İfade (doğru mu?) | Cevap |\n|---|---|---|---|')
+                for c in i['checks']:
+                    if c.get('qs', True):
+                        L.append(f"| {c['id']} | {kontrol.KIND[c['kind']]['tr']} | {kontrol.check_line(c, i)} | E / H / B |")
+                rest = [c['id'] for c in i['checks'] if not c.get('qs', True)]
+                L.append('')
+                if rest:
+                    L.append(f"*QS'de sorulmaz, AS-02'de bakılır:* {', '.join(rest)}\n")
+                tm = kontrol.terms()
+                used = sorted({x for c in i['checks'] for x in c.get('terms', [])})
+                if used:
+                    L.append('*Terimler:* ' + ' · '.join(f"**{tm[x]['term']['tr']}**: {t(tm[x]['definition'])}" for x in used) + '\n')
             L.append('| Puan | Ölçüt |\n|---|---|')
-            ri = i.get('review_interval')
             for k in (0, 1, 2, 3):
-                txt = t(i['rubric'][k])
-                if ri:
-                    txt = txt.replace('review_interval', f'{ri} ay')
-                L.append(f"| {k} | {txt} |")
+                L.append(f"| {k} | {rb[k]} |")
             L.append('')
             ev = '; '.join(f"`{e['type']}` {' '.join(e['tr'].split())}" for e in i['evidence'])
             L.append(f'*AS-02\'de istenecek kanıt:* {ev}\n')
@@ -120,6 +135,7 @@ def cmd_puanlama(a):
         for i in qs_items(p)[1]:
             rows.append(dict(unit=name, unit_type='SISTEM', profile=p, item_id=i['id'],
                              title_tr=t(i['title']), level=i['level'][p], basis='declared'))
+    rows = expand(rows)
     out = open(a.out, 'w', newline='', encoding='utf-8') if a.out else sys.stdout
     w = csv.DictWriter(out, fieldnames=FIELDS)
     w.writeheader()
@@ -127,6 +143,48 @@ def cmd_puanlama(a):
         w.writerow({k: r.get(k, '') for k in FIELDS})
     if a.out:
         out.close(); print(f'yazıldı: {a.out} ({len(rows)} satır)')
+
+
+def expand(rows):
+    """`checks` taşıyan maddenin satırını QS kontrolleri başına bir satıra açar; score boş kalır (hesaplanır)."""
+    byid = {i['id']: i for i in load_items()}
+    out = []
+    for r in rows:
+        i = byid[r['item_id']]
+        if 'checks' not in i:
+            out.append(r); continue
+        for c in i['checks']:
+            if c.get('qs', True):
+                out.append(dict(r, check_id=c['id'],
+                                title_tr=f"{kontrol.KIND[c['kind']]['tr']}: {kontrol.check_line(c, i).replace('**', '')}"))
+    return out
+
+
+def collapse(rows):
+    """Kontrol satırlarını madde satırına indirir; puanı kontrol.score ile hesaplar."""
+    byid = {i['id']: i for i in load_items()}
+    out, groups = [], {}
+    for r in rows:
+        if not r.get('check_id', '').strip():
+            out.append(r); continue
+        k = (r['unit'], r['item_id'])
+        if k not in groups:
+            groups[k] = dict(r, check_id='', answers={}, note='', na_reason='')
+            out.append(groups[k])
+        g = groups[k]
+        g['answers'][r['check_id']] = r['answer']
+        for f in ('note', 'na_reason'):
+            if r.get(f, '').strip():
+                g[f] = (g[f] + ' ' if g[f] else '') + f"{r['check_id']}: {r[f].strip()}"
+    for g in groups.values():
+        i = byid[g['item_id']]
+        g['score'] = kontrol.score(i, g['answers'], qs=True)
+        miss = [c['id'] for c in i['checks'] if c.get('qs', True)
+                and not kontrol.check_met(c, g['answers'].get(c['id']), i)]
+        g['title_tr'] = t(i['title'])
+        if miss and g['score'] not in ('NA', 'NE'):
+            g['note'] = (g['note'] + ' · ' if g['note'] else '') + 'karşılanmayan: ' + ', '.join(miss)
+    return out
 
 
 # ------------------------------------------------------------------ seviye
@@ -156,7 +214,15 @@ def lvname(k):
 def cmd_seviye(a):
     with open(a.csv, encoding='utf-8') as fh:
         rows = list(csv.DictReader(fh))
-    blank = [r['item_id'] + '@' + r['unit'] for r in rows if not r['score'].strip()]
+    for r in rows:
+        for f in FIELDS:
+            r.setdefault(f, '')
+            if r[f] is None:
+                r[f] = ''
+    blank = [r['item_id'] + '/' + r['check_id'] + '@' + r['unit'] for r in rows
+             if r['check_id'].strip() and not r['answer'].strip()]
+    rows = collapse(rows)
+    blank += [r['item_id'] + '@' + r['unit'] for r in rows if not r['score'].strip()]
     gov = [r for r in rows if r['unit_type'] == 'KURUM']
     sysunits = []
     for r in rows:
@@ -172,7 +238,7 @@ def cmd_seviye(a):
     L = ['# Quick Scan — Gösterge Seviye Hesabı\n',
          f"*Kaynak: `{os.path.basename(a.csv)}` · `tools/qs.py seviye` ile üretildi*\n"]
     if blank:
-        L.append(f'> ⚠️ Boş puan ({len(blank)}): ' + ', '.join(blank) + ' — boş, NE gibi işlem görür.\n')
+        L.append(f'> ⚠️ Boş puan ({len(blank)}): ' + ', '.join(blank) + ' — boş puan NE, boş kontrol cevabı B (bilmiyor) gibi işlem görür.\n')
     L.append('| Birim | Profil | Matris (gösterge) | G bloğu (gösterge) | **Raporlanan** |')
     L.append('|---|---|---|---|---|')
     for name, p in sysunits:

@@ -1,0 +1,86 @@
+# Lecta Sovereign AI Control Framework — terimler sözlüğü
+# Kontrol metinlerinde geçen ve iki değerlendiricinin aynı şeyi anlaması gereken terimler.
+# Kontrol `terms: [id]` ile atıf yapar; rehber ve inceleme tablosu tanımı maddenin altına basar.
+# Kural: tanım, bir şeyin bu terime girip girmediğine evet/hayır ile karar verdirmeli.
+
+terms:
+  - id: data-class
+    term: {en: data class, tr: veri sınıfı}
+    definition:
+      en: >
+        A category in the organisation's written data classification (e.g. public,
+        internal, confidential, personal, special-category personal). The classification
+        must be a dated document; an unwritten or verbal scheme does not count.
+      tr: >
+        Kurumun yazılı veri sınıflandırmasındaki bir kategori (ör. açık, iç, gizli, kişisel,
+        özel nitelikli kişisel). Sınıflandırma tarihli bir belge olmalıdır; yazılı olmayan ya
+        da sözlü bir ayrım sayılmaz.
+
+  - id: sanctioned-tool-list
+    term: {en: sanctioned tool list, tr: onaylı araç listesi}
+    definition:
+      en: >
+        A written list naming each AI tool staff may use (product and, where relevant,
+        account type such as enterprise/consumer), with an owner and a last-update date.
+        A list that names categories only ("approved chatbots") does not count.
+      tr: >
+        Çalışanların kullanabileceği her yapay zekâ aracını adıyla (ürün ve gerekiyorsa hesap
+        türü, ör. kurumsal/bireysel) sayan, sahibi ve son güncelleme tarihi olan yazılı liste.
+        Yalnız kategori sayan liste ("onaylı sohbet botları") sayılmaz.
+
+  - id: ingestion-path
+    term: {en: ingestion path, tr: veri giriş yolu}
+    definition:
+      en: >
+        Any route by which content enters an AI system so that it can be stored, indexed,
+        used as context or used for training: file upload, connector to another system,
+        API, scheduled import, e-mail or chat channel. Each connector or API counts as a
+        separate path.
+      tr: >
+        İçeriğin bir yapay zekâ sistemine saklanmak, indekslenmek, bağlam olarak ya da eğitimde
+        kullanılmak üzere girdiği her yol: dosya yükleme, başka sisteme bağlayıcı, API, zamanlanmış
+        aktarım, e-posta ya da sohbet kanalı. Her bağlayıcı ve her API ayrı yol sayılır.
+
+  - id: path-inventory
+    term: {en: ingestion path inventory, tr: giriş yolu envanteri}
+    definition:
+      en: >
+        A written list (or architecture/data-flow diagram) that names every ingestion path
+        of the system, with a date. It is the denominator for ratio checks on paths.
+      tr: >
+        Sistemin her veri giriş yolunu adıyla gösteren, tarihli yazılı liste (ya da mimari/veri
+        akış şeması). Yollarla ilgili oran kontrollerinin paydasıdır.
+
+  - id: treatment
+    term: {en: treatment, tr: muamele}
+    definition:
+      en: >
+        The action defined in HYG-ING-01 for each personal data category: mask, tokenise,
+        pseudonymise, drop or block. Detecting and logging only is not treatment.
+      tr: >
+        HYG-ING-01'de her kişisel veri kategorisi için tanımlanan işlem: maskeleme,
+        tokenizasyon, takma adlandırma, çıkarma ya da engelleme. Yalnız tespit edip kaydetmek
+        muamele değildir.
+
+  - id: before-persistence
+    term: {en: before persistence, tr: saklamadan önce}
+    definition:
+      en: >
+        The control runs before the content is written to any store the AI system reads
+        from (vector index, database, file store, training set). Temporary processing
+        memory does not count as a store.
+      tr: >
+        Kontrol, içerik yapay zekâ sisteminin okuduğu herhangi bir depoya (vektör indeksi,
+        veritabanı, dosya deposu, eğitim kümesi) yazılmadan önce çalışır. Geçici işlem belleği
+        depo sayılmaz.
+
+  - id: dated-record
+    term: {en: dated record, tr: tarihli kayıt}
+    definition:
+      en: >
+        A document, ticket or log entry showing the date, who did the work, what was found
+        and the resulting action (or "no finding"). A calendar invite or a verbal statement
+        does not count.
+      tr: >
+        Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok")
+        gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz.

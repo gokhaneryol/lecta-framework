@@ -108,6 +108,8 @@ Her maddenin rubric'i bu iskeleti sayılabilir ölçütlerle doldurur. "Yeterli"
 - **NA:** Madde uygulanmaz; hesaba girmez.
 - **NE:** Değerlendirilemedi; kapıyı kapatır.
 
+**Kontrol listesiyle puanlama (pilot, `schema.md` 5.5):** G-POL-02 ve HYG-ING-02'de puan elle verilmez. Madde birkaç evet/hayır kontrole bölünür: bir varlık kontrolü (`c1`), temel kontroller (`c2…`) ve sürdürme kontrolleri (`s1…`). Puan sabit kuralla hesaplanır: c1 yoksa 0; temel kontrollerden biri eksikse 1; hepsi tamamsa 2; sürdürme kontrolleri de tamamsa 3. Yoruma açık terimler `source/terms.yaml` içinde tanımlıdır. Kalıp onaylanınca diğer maddeler de bu biçime çevrilir.
+
 **Seviye:** Bir sistem Lk seviyesindedir ⇔ seviyesi Lk ve altı olan tüm uygulanabilir maddeler en az 2 puan almıştır. Raporlanan seviye, sistemin matris seviyesi ile G bloğu seviyesinin düşük olanıdır. Örnek: teknik olarak L1 olan bir RAG sistemi, kurumun AI envanteri eksikse L0 olarak raporlanır.
 
 **Kanıt dayanağı:**
@@ -126,7 +128,7 @@ Bir Quick Scan yaklaşık 2–3 adam-gün sürer. İçinde tek bir görüşme va
 1. **Kapsam:** Kurum adı ve en çok 2 sistem belirlenir. Her sistemin profili (CE/SOV) bu aşamada seçilir.
 2. **Puanlama tablosu üretilir:** `python3 qs.py puanlama --kurum "Kurum" --sistem "Asistan:CE" --out kurum-qs.csv`
 3. **Görüşme:** Profile göre `output/qs-gorusme-rehberi-CE.md` ya da `-SOV.md` rehberi kullanılır. Açılış metni okunur: "beyana dayalı, denetim değil". Katılımcılar BT/güvenlik sorumlusu ve bir iş birimi sahibidir.
-4. **Puanlar CSV'ye girilir:** Her maddeye 0–3, NA ya da NE yazılır. Kanıt istenmez; katılımcı kendiliğinden gösterirse `evidence_ref` alanına not edilir.
+4. **Puanlar CSV'ye girilir:** Her maddeye 0–3, NA ya da NE yazılır. Kontrol listeli maddelerde her kontrol ayrı satırdır; `answer` sütununa E / H / B yazılır, puan sütunu boş bırakılır (betik hesaplar). Kanıt istenmez; katılımcı kendiliğinden gösterirse `evidence_ref` alanına not edilir.
 5. **İkinci değerlendirici** CSV'yi kontrol eder ve `reviewer` sütununu doldurur.
 6. **Seviye hesaplanır:** `python3 qs.py seviye kurum-qs.csv --out kurum-seviye.md`. Çıktıda sistem başına gösterge seviye ve en kritik 5 risk yer alır.
 7. **Memo yazılır:** [`04-quick-scan-memo-sablonu.md`](04-quick-scan-memo-sablonu.md) kullanılır. Seviye tablosu ve risk sırası betikten gelir; değerlendirici bunları değiştirmez. Önerilen sonraki adım karar tablosundan seçilir.
@@ -184,10 +186,12 @@ measurement-tool/
     meta.yaml                   sürüm, değişiklik kaydı, seviye/profil tanımları
     G.yaml                      G bloğu (15 madde)
     CON.yaml HYG.yaml IDE.yaml TRA.yaml   matris maddeleri (14)
+    terms.yaml                  kontrol metinlerindeki terimlerin tanımları
     _template.yaml              yeni madde için boş şablon
   tools/
     qs.py                       Quick Scan: rehber, puanlama CSV, seviye hesabı
     inceleme.py                 inceleme tablosu (xlsx), kararları okuma, rubric tablosu (md)
+    kontrol.py                  ortak kütüphane: kontrol cevabından puan hesabı, rubric metni üretimi
   output/                       üretilen dosyalar (elle düzenlenmez)
   01-hucre-analizi.md           v0 çerçevenin 36 hücresinin ölçülebilirlik analizi
   02-g-blogu-basliklar.md       G bloğu özeti

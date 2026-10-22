@@ -55,7 +55,8 @@ measurement-tool/
 | `level` | ✓ | Profil başına: `{CE: L1, SOV: L1}`; `null` = o profilde uygulanmaz |
 | `applicability` | ✓ | Maddenin hangi durumda N/A olduğu, ölçütüyle `{en, tr}` |
 | `evidence` | ✓ | Beklenen kanıtlar; her biri bir tür kodu (aşağıda) + `{en, tr}` açıklama |
-| `rubric` | ✓ | `0`–`3`, her puan için ölçüt `{en, tr}` (Bölüm 5) |
+| `rubric` | ✓* | `0`–`3`, her puan için ölçüt `{en, tr}` (Bölüm 5). *`checks` olan maddede yazılmaz, üretilir |
+| `checks` | — | Kontrol listesi; varsa puan kuralla hesaplanır (Bölüm 5.5) |
 | `review_interval` | 3 puanı için | Ay cinsinden; rubric 3'teki "düzenli" kelimesinin sayısal karşılığı |
 | `quick_scan` | ✓ | `true/false` + varsa beyana dayalı kısa soru `qs_question {en, tr}` |
 | `validation_tests` | — | AS-03 senaryoları: ön koşul · adımlar · beklenen sonuç `{en, tr}` · ilgili rubric puanı |
@@ -93,6 +94,48 @@ Bir sistem, bir profil için **Lk** seviyesindedir ⇔ `level ≤ Lk` olan **tü
 - Ağırlıklandırma yok. Ortalama hesaplanmaz.
 - Raporda ayrıca katman × aşama ısı haritası ve **"seviyeyi bloklayan maddeler"** listesi verilir — yol haritası buradan çıkar.
 - **G bloğu ile ilişki** ✅: G bloğu kurum için ayrı bir seviye üretir ve **sistem seviyesini sınırlar**: sistem Lk'yı ancak G bloğunda da Lk'ya kadarki maddeler geçmişse raporlar (ör. insan gözetimi prosedürü olmayan kurumda sistem L3 olamaz). Raporda sistemin "matris seviyesi" ve "raporlanan seviye" (G ile sınırlanmış) ayrı gösterilir; fark yol haritasında G eksikleri olarak listelenir.
+
+### 5.5 Kontrol listesi ve sabit puanlama kuralı (A2, pilot)
+
+Amaç: iki değerlendirici aynı maddeye aynı puanı versin. Rubric metni elle yazılmaz; madde `checks` alanında **atomik kontroller** taşır, puan bu kontrollerin cevabından kuralla hesaplanır. Pilot maddeler: G-POL-02, HYG-ING-02. Kalıp onaylanınca diğer maddeler de çevrilir; o zamana kadar `rubric` alanı olan maddeler eskisi gibi elle puanlanır.
+
+**Kontrol türü (`kind`):**
+
+| Tür | Kod | Anlamı |
+|---|---|---|
+| varlık | `exist` | Maddenin konusu var mı? Her maddede tek, `c1` |
+| temel | `core` | 2 puan için hepsi gerekli. `c2`, `c3`, … |
+| sürdürme | `sustain` | 3 puan için 2'ye ek olarak hepsi gerekli. `s1`, `s2`, … |
+
+**Ölçüm tipi (`type`) ve eşik (`threshold`):**
+
+| Tip | AS-02 cevabı | Eşik | Örnek |
+|---|---|---|---|
+| `binary` | E / H | — | Kurallar veri sınıflarına atıf yapıyor |
+| `ratio` | a/b | `min` (0–1), isteğe bağlı `sample` | Envanterdeki yolların %100'ünde kontrol var |
+| `date` | YYYY-MM-DD | `max_months` (sayı ya da `review_interval`) / `max_days` | Liste son 12 ay içinde güncellenmiş |
+| `count` | tam sayı | `min` | — |
+
+Quick Scan'de her kontrol E / H / B (bilmiyor) ile cevaplanır; eşik sağlanıyorsa E. **B ve boş cevap karşılanmıyor sayılır.**
+
+**Puanlama kuralı (sabit, maddeye göre değişmez):**
+
+| Puan | Kural |
+|---|---|
+| 0 | `c1` karşılanmıyor |
+| 1 | `c1` karşılanıyor, temel kontrollerden en az biri karşılanmıyor |
+| 2 | `c1` ve tüm temel kontroller karşılanıyor |
+| 3 | 2 + tüm sürdürme kontrolleri karşılanıyor (sürdürme kontrolü yoksa 3 verilmez) |
+
+`c1` = B ise madde **NE**, `c1` = NA ise madde **NA** (gerekçe `na_reason`). Kural `tools/kontrol.py` içinde tek yerde yazılıdır; rehber, tablo ve rubric metni oradan üretilir.
+
+**Kontrol alanları:** `id` · `kind` · `type` · `threshold` · `text {en, tr}` (doğru/yanlış denebilecek tek ifade) · `evidence` (kanıt türü kodu) · `qs` (Quick Scan'de sorulur mu; `false` olanlar QS puanında hesap dışı, AS-02'de bakılır) · `terms` (sözlük atfı) · `sampling` (örneklem kuralı uygulanır mı).
+
+**Terimler:** Kontrol metninde geçen ve yoruma açık her terim `source/terms.yaml` içinde tanımlanır. Tanım, bir şeyin terime girip girmediğine evet/hayır ile karar verdirmelidir.
+
+**Örneklem (AS-02, `sampling: true` kontroller):** Paydada 10 ya da daha az öğe varsa hepsine bakılır. 10'dan fazlaysa en az 5 öğe seçilir; seçim gerekçesi ve seçilen öğeler değerlendirme kaydına yazılır. Örneklemdeki tek bir başarısızlık oranı %100'ün altına düşürür. `[KALİBRASYON: pilot]`
+
+**Eşikler:** Mevcut eşikler (%100, 12 ay, 30 gün, `review_interval`) korunur, pilotta kalibre edilir ✅ (Gökhan, 22 Ekim).
 
 ### 5.4 İkinci değerlendirici
 

@@ -22,6 +22,15 @@ g_domains: {POL: Policy, INV: Inventory, ROL: Roles, RSK: Risk & impact, SUP: Su
 text_fields: bilingual {en, tr}   # Gökhan 14 Oct; notes: single language allowed
 evidence_types: {DOC: Document, CFG: Configuration, LOG: Log sample, TST: Test result, INT: Interview statement, OBS: Live observation}
 
+scoring_rule:   # schema.md 5.5 — items with `checks`; implemented in tools/kontrol.py
+  0: exist check (c1) not met
+  1: c1 met, at least one core check not met
+  2: c1 and all core checks met
+  3: 2 + all sustain checks met (no sustain checks -> 3 not available)
+  NE: c1 answered "don't know"
+  NA: c1 answered NA (reason required)
+sampling: {all_if_at_most: 10, otherwise_min: 5, record_selection: true, status: calibrate-in-pilot}
+
 changelog:
   - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "Session 1: schema draft, 36-cell analysis, HYG-ING worked example (4 items), G block headline list"}
   - {date: 2026-10-14, version: v1.0-draft, by: GE, change: "Decisions: all text fields bilingual; 0-3 rubric skeleton approved; YAML master + G-DOMAIN-NN IDs; G block caps system level"}
@@ -33,3 +42,4 @@ changelog:
   - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "Legal deadlines in templates verified (KVKK 72h, Law 7545 art. 7(1)(b)/16(10), KVKK art. 9 5 business days, EU AI Act dates after Omnibus 2026/1744); TPL-03/06/10/13 and G-INC-01/G-OVS-01 mappings updated"}
   - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "All [CHECK] mappings resolved: ISO 42001 Annex A refs verified (AI Verify crosswalk), NIST AI RMF, EU AI Act Art. 9/26/27, DORA Art. 28/28(8), BDDK IS Regulation art. 25, KVKK md. 12(2)/16, SOC 2 CC6.1; weak refs replaced (TRA-ING-01 GDPR Art. 30 -> ISO A.6.2.8; G-POL-02 AI Act 26(1) removed; G-INV-02 ISO A.9.2 removed; G-RSK-02 MAP 1.5 -> MAP 1)"}
   - {date: 2026-10-14, version: v1.0-draft, by: GE + Claude, change: "references/README.md added: sources behind mappings and legal deadlines, with reliability and last-check date"}
+  - {date: 2026-10-22, version: v1.0-draft, by: GE + Claude, change: "A2 pilot: check list + fixed scoring rule (schema 5.5), terms.yaml, tools/kontrol.py; G-POL-02 and HYG-ING-02 converted; thresholds kept, to be calibrated in pilot"}
