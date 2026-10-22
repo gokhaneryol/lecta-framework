@@ -36,37 +36,72 @@ items:
       - type: DOC
         en: Communication record (intranet publication, e-mail, acknowledgement list)
         tr: Duyuru kaydı (intranet yayını, e-posta, okundu listesi)
-    rubric:
-      0:
-        en: No AI policy, and AI is not addressed in any other approved policy.
-        tr: Yapay zekâ politikası yok ve AI başka hiçbir onaylı politikada ele alınmıyor.
-      1:
-        en: >
-          A policy or draft exists, but at least one of these is true: it is not approved by
-          top management or a body it delegated to; it does not name an accountable role; it
-          does not define how a new AI system is approved; there is no record that it was
-          communicated to staff.
-        tr: >
-          Politika ya da taslak var ama şunlardan en az biri geçerli: üst yönetim ya da
-          yetkilendirdiği bir kurul tarafından onaylanmamış; hesap verecek rolü belirtmiyor;
-          yeni bir AI sisteminin nasıl onaylanacağını tanımlamıyor; çalışanlara duyurulduğuna
-          dair kayıt yok.
-      2:
-        en: >
-          The policy is approved by top management or a delegated body, names the accountable
-          role, defines the approval route for new AI systems, references G-POL-02, and a
-          record shows it was communicated to all staff in scope.
-        tr: >
-          Politika üst yönetim ya da yetkilendirilmiş kurul tarafından onaylanmış, hesap
-          verecek rolü belirtiyor, yeni AI sistemleri için onay yolunu tanımlıyor, G-POL-02'ye
-          atıf yapıyor ve kapsamdaki tüm çalışanlara duyurulduğuna dair kayıt var.
-      3:
-        en: >
-          Meets 2, and the policy was reviewed within review_interval with a dated record
-          stating changes or confirming no change.
-        tr: >
-          2'yi karşılıyor ve politika review_interval içinde gözden geçirilmiş; değişiklikleri
-          ya da değişiklik olmadığını belirten tarihli kayıt var.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: A written AI policy exists, or AI is addressed in another approved policy.
+          tr: Yazılı bir yapay zekâ politikası var ya da AI onaylı başka bir politikada ele alınıyor.
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: binary
+        text:
+          en: The policy is approved by senior management or a board it authorised, with an approval record.
+          tr: Politika üst yönetim ya da yetkilendirdiği bir kurul tarafından onaylanmış, onay kaydı var.
+        terms:
+        - approval-record
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: The policy names the accountable role.
+          tr: Politika hesap verecek rolü adlandırıyor.
+        evidence: DOC
+        qs: true
+      - id: c4
+        kind: core
+        type: binary
+        text:
+          en: The policy defines the approval route for a new AI system.
+          tr: Politika yeni bir AI sisteminin onay yolunu tanımlıyor.
+        evidence: DOC
+        qs: true
+      - id: c5
+        kind: core
+        type: binary
+        text:
+          en: The policy refers to the acceptable use rules (G-POL-02).
+          tr: Politika kabul edilebilir kullanım kurallarına (G-POL-02) atıf yapıyor.
+        evidence: DOC
+        qs: false
+      - id: c6
+        kind: core
+        type: binary
+        text:
+          en: An announcement record to all in-scope staff exists.
+          tr: Kapsamdaki tüm çalışanlara duyuru kaydı var.
+        terms:
+        - announcement-record
+        evidence: DOC
+        qs: true
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: The policy was reviewed; the dated record (changes or "no change") is within review_interval.
+          tr: Politika gözden geçirilmiş; tarihli kaydı (değişiklikler ya da "değişiklik yok") review_interval
+            içinde.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
     review_interval: 12
     quick_scan: true
     qs_question:
@@ -224,35 +259,63 @@ items:
       - type: DOC
         en: Sanctioned tool list (G-POL-02) and procurement or project records, used for reconciliation
         tr: Karşılaştırma için onaylı araç listesi (G-POL-02) ve satın alma ya da proje kayıtları
-    rubric:
-      0:
-        en: No inventory of AI systems or use cases.
-        tr: AI sistemleri ya da kullanım senaryoları için envanter yok.
-      1:
-        en: >
-          An inventory exists but at least one of these is true: a required field is empty
-          for one or more entries; a system found in procurement records, the sanctioned tool
-          list or interviews is missing; it was not updated in the last 6 months.
-        tr: >
-          Envanter var ama şunlardan en az biri geçerli: bir ya da daha fazla kayıtta zorunlu
-          bir alan boş; satın alma kayıtlarında, onaylı araç listesinde ya da görüşmelerde
-          görülen bir sistem envanterde yok; son 6 ayda güncellenmemiş.
-      2:
-        en: >
-          Every entry has all required fields, no system found in procurement records, the
-          sanctioned tool list or interviews is missing, and the inventory was updated in the
-          last 6 months.
-        tr: >
-          Her kayıtta tüm zorunlu alanlar dolu; satın alma kayıtlarında, onaylı araç
-          listesinde ya da görüşmelerde görülen hiçbir sistem eksik değil; envanter son 6 ayda
-          güncellenmiş.
-      3:
-        en: >
-          Meets 2, and the inventory was reconciled against G-INV-02 traffic data within
-          review_interval, with a dated record of additions and removals.
-        tr: >
-          2'yi karşılıyor ve envanter review_interval içinde G-INV-02 trafik verileriyle
-          karşılaştırılmış; eklenen ve çıkarılan kayıtların tarihli kaydı var.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: An inventory of AI systems and use cases exists.
+          tr: AI sistemleri ve kullanım senaryoları envanteri var.
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of inventory entries with every mandatory field filled.
+          tr: Envanter kayıtlarından tüm zorunlu alanları dolu olanların oranı.
+        terms:
+        - inventory-fields
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of systems seen in purchase records, the sanctioned tool list (G-POL-02) or interviews that
+            are in the inventory.
+          tr: Satın alma kayıtlarında, onaylı araç listesinde (G-POL-02) ya da görüşmelerde görülen sistemlerden
+            envanterde bulunanların oranı.
+        evidence: DOC
+        qs: true
+      - id: c4
+        kind: core
+        type: date
+        threshold:
+          max_months: 6
+        text:
+          en: The last update date of the inventory is within the last 6 months.
+          tr: Envanterin son güncelleme tarihi son 6 ay içinde.
+        evidence: DOC
+        qs: true
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: The inventory was reconciled against G-INV-02 traffic data, with added and removed entries recorded;
+            the dated record is within review_interval.
+          tr: Envanter G-INV-02 trafik verisiyle karşılaştırılmış, eklenen ve çıkarılan kayıtlar yazılmış; tarihli
+            kaydı review_interval içinde.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
     review_interval: 6
     quick_scan: true
     qs_question:
@@ -301,35 +364,73 @@ items:
       - type: LOG
         en: Report or query result of AI service traffic by unit for a period of at least 30 days
         tr: En az 30 günlük dönem için birim bazında AI servis trafiği raporu ya da sorgu sonucu
-    rubric:
-      0:
-        en: Traffic to AI services cannot be identified, or the relevant logs are not kept.
-        tr: AI servislerine giden trafik tanımlanamıyor ya da ilgili kayıtlar tutulmuyor.
-      1:
-        en: >
-          Logs exist but at least one of these is true: retention is under 90 days; traffic
-          cannot be attributed to a unit or user group; no AI service domain list is
-          maintained; no report has ever been produced.
-        tr: >
-          Kayıtlar var ama şunlardan en az biri geçerli: saklama 90 günden kısa; trafik bir
-          birime ya da kullanıcı grubuna atfedilemiyor; AI servis alan adı listesi tutulmuyor;
-          hiç rapor üretilmemiş.
-      2:
-        en: >
-          Logs are retained for at least 90 days, traffic is attributable to a unit or user
-          group, the AI service domain list was updated in the last 6 months, and a report
-          covering at least 30 days can be produced on request.
-        tr: >
-          Kayıtlar en az 90 gün saklanıyor, trafik bir birime ya da kullanıcı grubuna
-          atfedilebiliyor, AI servis alan adı listesi son 6 ayda güncellenmiş ve talep
-          edildiğinde en az 30 günlük rapor üretilebiliyor.
-      3:
-        en: >
-          Meets 2, and reports are reviewed within review_interval; traffic to services not
-          on the sanctioned list (G-POL-02) triggers a recorded follow-up.
-        tr: >
-          2'yi karşılıyor; raporlar review_interval içinde gözden geçiriliyor ve onaylı
-          listede (G-POL-02) olmayan servislere giden trafik kayıtlı bir takip başlatıyor.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: Traffic to external AI services can be identified in DNS, proxy or firewall logs.
+          tr: Dış AI servislerine giden trafik DNS, proxy ya da firewall kayıtlarında tanımlanabiliyor.
+        evidence: CFG
+        qs: true
+      - id: c2
+        kind: core
+        type: count
+        threshold:
+          min: 90
+        text:
+          en: Retention period of these logs, in days.
+          tr: Bu kayıtların saklama süresi (gün).
+        evidence: CFG
+        qs: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: The traffic can be attributed to a unit or user group.
+          tr: Trafik bir birime ya da kullanıcı grubuna atfedilebiliyor.
+        evidence: LOG
+        qs: true
+      - id: c4
+        kind: core
+        type: date
+        threshold:
+          max_months: 6
+        text:
+          en: The last update date of the AI service domain list is within the last 6 months.
+          tr: AI servis alan adı listesinin son güncelleme tarihi son 6 ay içinde.
+        terms:
+        - ai-service-domain-list
+        evidence: DOC
+        qs: true
+      - id: c5
+        kind: core
+        type: binary
+        text:
+          en: A per-unit report covering at least 30 days can be produced on request.
+          tr: Talep edildiğinde birim bazında, en az 30 günü kapsayan rapor üretilebiliyor.
+        evidence: LOG
+        qs: true
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: The reports were reviewed; the dated record is within review_interval.
+          tr: Raporlar gözden geçirilmiş; tarihli kaydı review_interval içinde.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
+      - id: s2
+        kind: sustain
+        type: binary
+        text:
+          en: Traffic to a service not on the sanctioned list (G-POL-02) opens a recorded follow-up.
+          tr: Onaylı listede (G-POL-02) olmayan bir servise giden trafik kayıtlı bir takip başlatıyor.
+        evidence: DOC
+        qs: true
     review_interval: 3
     quick_scan: true
     qs_question:
@@ -379,35 +480,72 @@ items:
       - type: DOC
         en: Defined consultation points (e.g. new system, new data category, new provider) for DPO and security
         tr: DPO ve güvenlik için tanımlı danışma noktaları (ör. yeni sistem, yeni veri kategorisi, yeni sağlayıcı)
-    rubric:
-      0:
-        en: No named owners and no governance role.
-        tr: Adı belli sahip yok, yönetişim rolü yok.
-      1:
-        en: >
-          At least one of these is true: one or more inventoried systems have no named owner;
-          the governance role is not formally assigned; consultation points for DPO and
-          security are not defined.
-        tr: >
-          Şunlardan en az biri geçerli: envanterdeki bir ya da daha fazla sistemin adı belli
-          sahibi yok; yönetişim rolü resmî olarak atanmamış; DPO ve güvenlik için danışma
-          noktaları tanımlı değil.
-      2:
-        en: >
-          Every inventoried system has a named owner, the governance role is formally
-          assigned, consultation points are defined, and at least one record shows a
-          consultation took place (or none was triggered in the last 12 months, stated).
-        tr: >
-          Envanterdeki her sistemin adı belli sahibi var, yönetişim rolü resmî olarak
-          atanmış, danışma noktaları tanımlı ve en az bir danışmanın yapıldığına dair kayıt
-          var (ya da son 12 ayda tetiklenmediği belirtilmiş).
-      3:
-        en: >
-          Meets 2, and owners and role assignments were confirmed within review_interval,
-          with a dated record including changes after staff turnover.
-        tr: >
-          2'yi karşılıyor ve sahipler ile rol atamaları review_interval içinde teyit edilmiş;
-          personel değişikliği sonrası güncellemeleri de içeren tarihli kayıt var.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: At least one AI system has a named owner, or an AI governance role is assigned.
+          tr: En az bir AI sisteminin adı belli sahibi var ya da bir AI yönetişim rolü atanmış.
+        terms:
+        - named-owner
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of systems in the inventory (G-INV-01) with a named owner.
+          tr: Envanterdeki (G-INV-01) sistemlerden adı belli sahibi olanların oranı.
+        terms:
+        - named-owner
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: The AI governance role is formally assigned (appointment letter or job description).
+          tr: AI yönetişim rolü resmî olarak atanmış (atama yazısı ya da görev tanımı).
+        evidence: DOC
+        qs: true
+      - id: c4
+        kind: core
+        type: binary
+        text:
+          en: Consultation points for the DPO and security are defined.
+          tr: DPO ve güvenlik için danışma noktaları tanımlı.
+        terms:
+        - consultation-points
+        evidence: DOC
+        qs: true
+      - id: c5
+        kind: core
+        type: binary
+        text:
+          en: At least one consultation in the last 12 months is recorded, or a record states that none was
+            triggered.
+          tr: Son 12 ayda en az bir danışma kayıtlı ya da hiç tetiklenmediği kayıtla belirtilmiş.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: false
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: Owners and role assignments were confirmed, including updates after staff changes; the dated record
+            is within review_interval.
+          tr: Sahipler ve rol atamaları, personel değişikliği sonrası güncellemeler dahil teyit edilmiş; tarihli
+            kaydı review_interval içinde.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
     review_interval: 12
     quick_scan: true
     qs_question:
@@ -453,37 +591,84 @@ items:
       - type: DOC
         en: Defined re-assessment triggers (new model or provider, new data category, new user group, incident)
         tr: Tanımlı yeniden değerlendirme tetikleyicileri (yeni model ya da sağlayıcı, yeni veri kategorisi, yeni kullanıcı grubu, olay)
-    rubric:
-      0:
-        en: No risk assessment for any AI system.
-        tr: Hiçbir AI sistemi için risk değerlendirmesi yok.
-      1:
-        en: >
-          At least one of these is true: assessments exist for only some systems; there is no
-          written method; assessments do not address AI-specific risks (data leaving via
-          prompts, wrong or harmful output, unauthorised access through the model, provider
-          dependency); no re-assessment triggers are defined.
-        tr: >
-          Şunlardan en az biri geçerli: yalnız bazı sistemler için değerlendirme var; yazılı
-          yöntem yok; değerlendirmeler AI'ye özgü riskleri (prompt ile veri çıkışı, yanlış ya
-          da zararlı çıktı, model üzerinden yetkisiz erişim, sağlayıcı bağımlılığı) ele
-          almıyor; yeniden değerlendirme tetikleyicileri tanımlı değil.
-      2:
-        en: >
-          Every production system has a dated assessment made with the written method that
-          addresses the four AI-specific risk groups, with treatment decisions signed off by
-          the owner, and re-assessment triggers are defined.
-        tr: >
-          Canlıdaki her sistem için, yazılı yöntemle yapılmış, dört AI'ye özgü risk grubunu
-          ele alan, muamele kararları sahip tarafından onaylanmış tarihli bir değerlendirme var
-          ve yeniden değerlendirme tetikleyicileri tanımlı.
-      3:
-        en: >
-          Meets 2, and each assessment was repeated within review_interval or after each
-          trigger event, whichever is earlier, with records.
-        tr: >
-          2'yi karşılıyor ve her değerlendirme review_interval içinde ya da her tetikleyici
-          olaydan sonra (hangisi önce gelirse) tekrarlanmış, kayıtları var.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: At least one AI system has a written risk assessment.
+          tr: En az bir AI sistemi için yazılı risk değerlendirmesi var.
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: binary
+        text:
+          en: A written risk assessment method exists, with criteria, scales and acceptance rules.
+          tr: Kriterleri, ölçekleri ve kabul kuralını içeren yazılı bir risk değerlendirme yöntemi var.
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of live AI systems with a dated written risk assessment made with that method.
+          tr: Canlıdaki AI sistemlerinden bu yöntemle yapılmış tarihli yazılı risk değerlendirmesi olanların
+            oranı.
+        evidence: DOC
+        qs: true
+        sampling: true
+      - id: c4
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of assessments that address all four AI-specific risk groups.
+          tr: Değerlendirmelerden dört AI'ye özgü risk grubunun hepsini ele alanların oranı.
+        terms:
+        - ai-risk-groups
+        evidence: DOC
+        qs: true
+        sampling: true
+      - id: c5
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of assessments whose treatment decisions are approved by the system owner.
+          tr: Değerlendirmelerden muamele kararları sistem sahibince onaylanmış olanların oranı.
+        evidence: DOC
+        qs: false
+        sampling: true
+      - id: c6
+        kind: core
+        type: binary
+        text:
+          en: Reassessment triggers are defined.
+          tr: Yeniden değerlendirme tetikleyicileri tanımlı.
+        terms:
+        - reassessment-triggers
+        evidence: DOC
+        qs: true
+      - id: s1
+        kind: sustain
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of assessments repeated within review_interval and after each trigger event (whichever comes
+            first).
+          tr: Değerlendirmelerden review_interval içinde ve her tetikleyici olaydan sonra (hangisi önce gelirse)
+            tekrarlanmış olanların oranı.
+        terms:
+        - reassessment-triggers
+        evidence: DOC
+        qs: true
+        sampling: true
     review_interval: 12
     quick_scan: true
     qs_question:
@@ -668,35 +853,73 @@ items:
       - type: DOC
         en: Provider documents relied on (terms, data processing addendum, sub-processor list, data residency statement)
         tr: Dayanılan sağlayıcı belgeleri (koşullar, veri işleme eki, alt işleyen listesi, veri yerleşimi beyanı)
-    rubric:
-      0:
-        en: External AI services are used without any provider assessment.
-        tr: Dış AI servisleri hiçbir sağlayıcı değerlendirmesi olmadan kullanılıyor.
-      1:
-        en: >
-          At least one of these is true: only some providers are assessed; an assessment
-          omits one of the five topics; the assessment is dated after first use; the provider
-          documents relied on are not retained.
-        tr: >
-          Şunlardan en az biri geçerli: yalnız bazı sağlayıcılar değerlendirilmiş; bir
-          değerlendirme beş konudan birini atlıyor; değerlendirme ilk kullanımdan sonra
-          tarihli; dayanılan sağlayıcı belgeleri saklanmamış.
-      2:
-        en: >
-          Every provider used with organisational data has an assessment covering all five
-          topics, dated before first use, with the provider documents relied on retained.
-        tr: >
-          Kurum verisiyle kullanılan her sağlayıcının, beş konunun hepsini kapsayan, ilk
-          kullanımdan önce tarihli değerlendirmesi var ve dayanılan sağlayıcı belgeleri
-          saklanıyor.
-      3:
-        en: >
-          Meets 2, and each assessment was repeated within review_interval and after every
-          notified change of provider terms or sub-processors, with records.
-        tr: >
-          2'yi karşılıyor ve her değerlendirme review_interval içinde ve sağlayıcı
-          koşullarında ya da alt işleyenlerde bildirilen her değişiklikten sonra tekrarlanmış,
-          kayıtları var.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: At least one external AI provider used with organisation data has a written assessment.
+          tr: Kurum verisiyle kullanılan en az bir dış AI sağlayıcısı için yazılı değerlendirme var.
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of external AI providers used with organisation data that have a written assessment.
+          tr: Kurum verisiyle kullanılan dış AI sağlayıcılarından yazılı değerlendirmesi olanların oranı.
+        evidence: DOC
+        qs: true
+        sampling: true
+      - id: c3
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of assessments that cover all five topics.
+          tr: Değerlendirmelerden beş konunun hepsini kapsayanların oranı.
+        terms:
+        - supplier-topics
+        evidence: DOC
+        qs: true
+        sampling: true
+      - id: c4
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of assessments dated before the first use with organisation data.
+          tr: Değerlendirmelerden kurum verisiyle ilk kullanımdan önce tarihli olanların oranı.
+        evidence: DOC
+        qs: true
+        sampling: true
+      - id: c5
+        kind: core
+        type: binary
+        text:
+          en: The provider documents relied on (terms, data processing addendum, sub-processor list, residency
+            statement) are retained.
+          tr: Dayanılan sağlayıcı belgeleri (koşullar, veri işleme eki, alt işleyen listesi, veri yerleşimi
+            beyanı) saklanıyor.
+        evidence: DOC
+        qs: false
+      - id: s1
+        kind: sustain
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of assessments repeated within review_interval and after each notified change in provider
+            terms or sub-processors.
+          tr: Değerlendirmelerden review_interval içinde ve sağlayıcı koşullarında ya da alt işleyenlerde bildirilen
+            her değişiklikten sonra tekrarlanmış olanların oranı.
+        evidence: DOC
+        qs: true
+        sampling: true
     review_interval: 12
     quick_scan: true
     qs_question:
@@ -887,31 +1110,76 @@ items:
       - type: LOG
         en: Completion records with date per person; count of AI users from G-INV-01 for the denominator
         tr: Kişi başına tarihli tamamlama kayıtları; payda için G-INV-01'den AI kullanıcı sayısı
-    rubric:
-      0:
-        en: No AI literacy programme.
-        tr: Yapay zekâ okuryazarlık programı yok.
-      1:
-        en: >
-          A programme exists but at least one of these is true: it omits one of the three
-          topics; completion is not recorded; recorded completion is below 80% of AI users.
-        tr: >
-          Program var ama şunlardan en az biri geçerli: üç konudan birini atlıyor; tamamlama
-          kaydedilmiyor; kayıtlı tamamlama AI kullanıcılarının %80'inin altında.
-      2:
-        en: >
-          The programme covers the three topics and at least 80% of AI users have a recorded
-          completion; new users complete it within 60 days of access.
-        tr: >
-          Program üç konuyu kapsıyor ve AI kullanıcılarının en az %80'inin kayıtlı
-          tamamlaması var; yeni kullanıcılar erişimden sonraki 60 gün içinde tamamlıyor.
-      3:
-        en: >
-          Meets 2, content was updated within review_interval, and understanding is measured
-          (quiz or exercise) with results recorded.
-        tr: >
-          2'yi karşılıyor; içerik review_interval içinde güncellenmiş ve anlama ölçülüyor
-          (sınav ya da uygulama), sonuçlar kayıtlı.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: An AI literacy programme exists.
+          tr: Yapay zekâ okuryazarlık programı var.
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: binary
+        text:
+          en: The programme content covers the three topics.
+          tr: Program içeriği üç konuyu kapsıyor.
+        terms:
+        - literacy-topics
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: Completion is recorded per person with a date.
+          tr: Tamamlama kişi başına tarihli kayıt altında.
+        evidence: LOG
+        qs: true
+      - id: c4
+        kind: core
+        type: ratio
+        threshold:
+          min: 0.8
+        text:
+          en: Share of AI users with a recorded completion.
+          tr: AI kullanıcılarından kayıtlı tamamlaması olanların oranı.
+        terms:
+        - ai-user
+        evidence: LOG
+        qs: true
+      - id: c5
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of users who got access in the last 12 months and completed within 60 days of access.
+          tr: Son 12 ayda erişim alan kullanıcılardan erişimden sonraki 60 gün içinde tamamlayanların oranı.
+        terms:
+        - ai-user
+        evidence: LOG
+        qs: false
+        sampling: true
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: The last content update date is within review_interval.
+          tr: İçeriğin son güncelleme tarihi review_interval içinde.
+        evidence: DOC
+        qs: true
+      - id: s2
+        kind: sustain
+        type: binary
+        text:
+          en: Understanding is measured (quiz or exercise) and the results are recorded.
+          tr: Anlama ölçülüyor (sınav ya da uygulama) ve sonuçlar kayıtlı.
+        evidence: LOG
+        qs: true
     review_interval: 12
     quick_scan: true
     qs_question:
@@ -1021,35 +1289,82 @@ items:
       - type: TST
         en: Record of an exercise or a handled AI incident
         tr: Bir tatbikatın ya da ele alınmış bir AI olayının kaydı
-    rubric:
-      0:
-        en: AI incidents are not covered by any procedure.
-        tr: AI olayları hiçbir prosedürde ele alınmıyor.
-      1:
-        en: >
-          At least one of these is true: the procedure does not name the four AI incident
-          types; the reporting chain has no named roles; applicable notification deadlines
-          are missing; it is not linked to the general incident process.
-        tr: >
-          Şunlardan en az biri geçerli: prosedür dört AI olay türünü adlandırmıyor; raporlama
-          zincirinde adı belli roller yok; uygulanan bildirim süreleri eksik; genel olay
-          süreciyle bağlantılı değil.
-      2:
-        en: >
-          The procedure names the four incident types, the reporting chain with named roles
-          and the applicable deadlines, is linked to the general process, and an exercise or a
-          handled AI incident is recorded in the last 12 months.
-        tr: >
-          Prosedür dört olay türünü, adı belli rollerle raporlama zincirini ve uygulanan
-          süreleri tanımlıyor, genel süreçle bağlantılı ve son 12 ayda bir tatbikat ya da ele
-          alınmış bir AI olayı kayıtlı.
-      3:
-        en: >
-          Meets 2, and lessons from each exercise or incident are recorded with actions tracked
-          to closure, and the procedure was reviewed within review_interval.
-        tr: >
-          2'yi karşılıyor; her tatbikat ya da olaydan çıkan dersler kayıtlı, aksiyonlar
-          kapanışa kadar izleniyor ve prosedür review_interval içinde gözden geçirilmiş.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: AI incidents are addressed in an incident procedure (stand-alone or within the general procedure).
+          tr: AI olayları bir olay prosedüründe ele alınıyor (ayrı ya da genel prosedürün içinde).
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: binary
+        text:
+          en: The procedure names all four AI incident types.
+          tr: Prosedür dört AI olay türünün hepsini adlandırıyor.
+        terms:
+        - ai-incident-types
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: The reporting chain is defined with named roles.
+          tr: Raporlama zinciri adı belli rollerle tanımlı.
+        evidence: DOC
+        qs: true
+      - id: c4
+        kind: core
+        type: binary
+        text:
+          en: A table of the applicable notification deadlines exists.
+          tr: Uygulanan bildirim sürelerinin tablosu var.
+        terms:
+        - notification-deadlines
+        evidence: DOC
+        qs: true
+      - id: c5
+        kind: core
+        type: binary
+        text:
+          en: The procedure is linked to the general security incident process (common entry point or explicit
+            hand-over).
+          tr: Prosedür genel güvenlik olay süreciyle bağlantılı (ortak giriş noktası ya da açık devir adımı).
+        evidence: DOC
+        qs: false
+      - id: c6
+        kind: core
+        type: date
+        threshold:
+          max_months: 12
+        text:
+          en: Date of the latest drill or handled AI incident record is within the last 12 months.
+          tr: Son tatbikatın ya da ele alınmış AI olayı kaydının tarihi son 12 ay içinde.
+        evidence: TST
+        qs: true
+      - id: s1
+        kind: sustain
+        type: binary
+        text:
+          en: Lessons from each drill or incident are recorded and the actions are tracked to closure.
+          tr: Her tatbikat ya da olaydan çıkan dersler kayıtlı ve aksiyonlar kapanışa kadar izleniyor.
+        evidence: DOC
+        qs: true
+      - id: s2
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: The procedure was reviewed; the dated record is within review_interval.
+          tr: Prosedür gözden geçirilmiş; tarihli kaydı review_interval içinde.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
     review_interval: 12
     quick_scan: true
     qs_question:

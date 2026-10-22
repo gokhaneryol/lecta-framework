@@ -48,38 +48,74 @@ items:
       - type: DOC
         en: Approval record naming the owner
         tr: Sahibini adıyla gösteren onay kaydı
-    rubric:
-      0:
-        en: No documented list of personal data categories for the system.
-        tr: Sistem için yazılı bir kişisel veri kategori listesi yok.
-      1:
-        en: >
-          A list exists but at least one of these is true: it does not cover every in-scope
-          data source; it omits special categories; it omits locale-specific identifiers
-          relevant to the data (e.g. Turkish national ID, IBAN); no treatment is defined per
-          category; no named owner has approved it.
-        tr: >
-          Liste var ama şunlardan en az biri geçerli: kapsamdaki her veri kaynağını
-          kapsamıyor; özel nitelikli verileri içermiyor; veriyle ilgili yerel tanımlayıcıları
-          (ör. TCKN, IBAN) içermiyor; kategori başına muamele tanımlı değil; adı belli bir
-          sahip tarafından onaylanmamış.
-      2:
-        en: >
-          The list covers every in-scope data source, includes special categories and the
-          relevant locale-specific identifiers, defines a treatment per category, and is
-          approved by a named owner.
-        tr: >
-          Liste kapsamdaki her veri kaynağını kapsıyor, özel nitelikli verileri ve ilgili
-          yerel tanımlayıcıları içeriyor, kategori başına muamele tanımlıyor ve adı belli bir
-          sahip tarafından onaylanmış.
-      3:
-        en: >
-          Meets 2, and the list was reviewed within review_interval or after the last
-          addition of a data source, whichever is earlier, with a dated review record.
-        tr: >
-          2'yi karşılıyor ve liste review_interval içinde ya da son veri kaynağı
-          eklendikten sonra (hangisi önce gelirse) gözden geçirilmiş; tarihli gözden geçirme
-          kaydı var.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: A written list of personal data categories to detect exists for the system.
+          tr: Sistem için tespit edilecek kişisel veri kategorilerinin yazılı listesi var.
+        evidence: DOC
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of in-scope data sources covered by the list.
+          tr: Kapsamdaki veri kaynaklarından listede karşılığı olanların oranı.
+        terms:
+        - ingestion-path
+        evidence: DOC
+        qs: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: The list includes special-category personal data.
+          tr: Liste özel nitelikli kişisel verileri içeriyor.
+        terms:
+        - special-category
+        evidence: DOC
+        qs: true
+      - id: c4
+        kind: core
+        type: binary
+        text:
+          en: The list includes the relevant local identifiers (e.g. national ID, IBAN).
+          tr: Liste ilgili yerel tanımlayıcıları (ör. TCKN, IBAN) içeriyor.
+        evidence: DOC
+        qs: true
+      - id: c5
+        kind: core
+        type: binary
+        text:
+          en: A treatment is defined for every category; every "allow" has a written basis.
+          tr: Her kategori için muamele tanımlı; her "izin ver" için yazılı dayanak var.
+        terms:
+        - treatment
+        evidence: DOC
+        qs: true
+      - id: c6
+        kind: core
+        type: binary
+        text:
+          en: The list is approved by a named owner.
+          tr: Liste adı belli bir sahip tarafından onaylanmış.
+        evidence: DOC
+        qs: true
+      - id: s1
+        kind: sustain
+        type: binary
+        text:
+          en: The latest dated review is within review_interval and not earlier than the latest data source
+            addition.
+          tr: Son tarihli gözden geçirme review_interval içinde ve son veri kaynağı eklenmesinden önce değil.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
     review_interval: 12
     quick_scan: true
     qs_question:
@@ -465,35 +501,86 @@ items:
       - type: LOG
         en: Detection/treatment events from the last 30 days per channel
         tr: Kanal başına son 30 güne ait tespit/muamele kayıtları
-    rubric:
-      0:
-        en: Prompt content reaches the model with no automated check for personal data.
-        tr: Prompt içeriği kişisel veri için otomatik kontrol olmadan modele ulaşıyor.
-      1:
-        en: >
-          At least one of these is true: only some channels are covered; attachments are not
-          checked; the control detects and warns but does not apply the treatment; the user
-          can override it without a logged reason; no log evidence.
-        tr: >
-          Şunlardan en az biri geçerli: kanalların yalnız bir kısmı kapsanıyor; ekler kontrol
-          edilmiyor; kontrol tespit edip uyarıyor ama muameleyi uygulamıyor; kullanıcı kayıtlı
-          gerekçe olmadan atlatabiliyor; kayıt kanıtı yok.
-      2:
-        en: >
-          Every prompt channel, including attachments, applies the defined treatment before the
-          model call; any user override requires a logged reason; events from the last 30 days
-          exist for every channel used in that period.
-        tr: >
-          Ekler dahil her prompt kanalı model çağrısından önce tanımlı muameleyi uyguluyor;
-          kullanıcının her atlatması kayıtlı gerekçe gerektiriyor; o dönemde kullanılan her
-          kanal için son 30 güne ait kayıt var.
-      3:
-        en: >
-          Meets 2, and overrides and detections are reviewed within review_interval, with
-          actions recorded.
-        tr: >
-          2'yi karşılıyor; atlatmalar ve tespitler review_interval içinde gözden geçiriliyor,
-          aksiyonlar kayıtlı.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: At least one prompt channel has an automated personal data control before the model call.
+          tr: En az bir prompt kanalında model çağrısından önce otomatik kişisel veri kontrolü var.
+        terms:
+        - prompt-channel
+        evidence: CFG
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of prompt channels where the control runs before the model call.
+          tr: Prompt kanallarından kontrolün model çağrısından önce çalıştığı kanalların oranı.
+        terms:
+        - prompt-channel
+        evidence: CFG
+        qs: true
+        sampling: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: Attachments are checked as well as free text.
+          tr: Serbest metnin yanında ekler de kontrol ediliyor.
+        evidence: TST
+        qs: true
+      - id: c4
+        kind: core
+        type: binary
+        text:
+          en: The control applies the defined treatment (it does not only detect or warn).
+          tr: Kontrol tanımlı muameleyi uyguluyor (yalnız tespit edip uyarmıyor).
+        terms:
+        - treatment
+        evidence: TST
+        qs: true
+      - id: c5
+        kind: core
+        type: binary
+        text:
+          en: Every user bypass requires a recorded justification.
+          tr: Kullanıcının her atlatması kayıtlı gerekçe gerektiriyor.
+        terms:
+        - bypass
+        evidence: CFG
+        qs: true
+      - id: c6
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of channels used in the last 30 days that have detection/treatment log events from that
+            period.
+          tr: Son 30 günde kullanılan kanallardan o döneme ait tespit/muamele kaydı bulunanların oranı.
+        terms:
+        - prompt-channel
+        evidence: LOG
+        qs: false
+        sampling: true
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: Bypasses and detections were reviewed and actions recorded; the dated record is within review_interval.
+          tr: Atlatmalar ve tespitler gözden geçirilmiş, aksiyonlar yazılmış; tarihli kaydı review_interval
+            içinde.
+        terms:
+        - bypass
+        - dated-record
+        evidence: DOC
+        qs: true
     review_interval: 3
     quick_scan: true
     qs_question:

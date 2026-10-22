@@ -37,34 +37,71 @@ items:
       - type: TST
         en: Trace of three sampled stored items back to their log entries
         tr: Saklanan üç örnek öğenin kayıt girdilerine kadar izlenmesi
-    rubric:
-      0:
-        en: Ingestion is not logged.
-        tr: Veri girişi kaydedilmiyor.
-      1:
-        en: >
-          Ingestion is logged, but at least one of these is true: one of the four fields is
-          missing; some paths are not logged; system administrators can alter or delete
-          entries without detection; a sampled item cannot be traced.
-        tr: >
-          Veri girişi kaydediliyor ama şunlardan en az biri geçerli: dört alandan biri eksik;
-          bazı yollar kaydedilmiyor; sistem yöneticileri girdileri fark edilmeden değiştirip
-          silebiliyor; örnek bir öğe izlenemiyor.
-      2:
-        en: >
-          Every path logs the four fields, the log store is protected by at least one of the
-          listed mechanisms, and all three sampled items are traced to their entries.
-        tr: >
-          Her yol dört alanı kaydediyor, kayıt deposu listelenen mekanizmalardan en az biriyle
-          korunuyor ve üç örnek öğenin üçü de girdilerine kadar izleniyor.
-      3:
-        en: >
-          Meets 2, and log integrity is verified within review_interval (e.g. hash check or
-          gap detection) with a record, and log retention matches the defined retention period.
-        tr: >
-          2'yi karşılıyor; kayıt bütünlüğü review_interval içinde doğrulanıyor (ör. özet
-          kontrolü ya da boşluk tespiti) ve kaydı var; kayıt saklama süresi tanımlı süreyle
-          örtüşüyor.
+    checks:   # A2 — puan schema.md 5.5 kuralıyla hesaplanır
+      - id: c1
+        kind: exist
+        type: binary
+        text:
+          en: Data ingestion is logged on at least one ingestion path.
+          tr: En az bir giriş yolunda veri girişi kaydediliyor.
+        evidence: CFG
+        qs: true
+      - id: c2
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+        text:
+          en: Share of ingestion paths that log all four provenance fields.
+          tr: Giriş yollarından dört kaynak alanının hepsini kaydedenlerin oranı.
+        terms:
+        - provenance-fields
+        - path-inventory
+        evidence: CFG
+        qs: true
+        sampling: true
+      - id: c3
+        kind: core
+        type: binary
+        text:
+          en: The log store is protected.
+          tr: Kayıt deposu korumalı.
+        terms:
+        - protected-log-store
+        evidence: CFG
+        qs: true
+      - id: c4
+        kind: core
+        type: ratio
+        threshold:
+          min: 1.0
+          sample: 3
+        text:
+          en: Three sampled stored items are traced back to their log entries.
+          tr: Saklanan üç örnek öğe kayıt girdilerine kadar izleniyor.
+        evidence: TST
+        qs: false
+      - id: s1
+        kind: sustain
+        type: date
+        threshold:
+          max_months: review_interval
+        text:
+          en: Log integrity was verified (e.g. hash check or gap detection); the dated record is within review_interval.
+          tr: Kayıt bütünlüğü doğrulanmış (ör. özet kontrolü ya da boşluk tespiti); tarihli kaydı review_interval
+            içinde.
+        terms:
+        - dated-record
+        evidence: DOC
+        qs: true
+      - id: s2
+        kind: sustain
+        type: binary
+        text:
+          en: The log retention period matches the defined retention period.
+          tr: Kayıt saklama süresi tanımlı saklama süresiyle örtüşüyor.
+        evidence: CFG
+        qs: true
     review_interval: 3
     quick_scan: true
     qs_question:
