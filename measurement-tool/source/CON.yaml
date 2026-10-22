@@ -733,10 +733,8 @@ items:
         kind: sustain
         type: binary
         text:
-          en: Every provider removed from the approved list was blocked at the controlled point within 5 business
-            days, shown by records.
-          tr: Onaylı listeden çıkarılan her sağlayıcının kontrollü noktada 5 iş günü içinde engellendiği kayıtla
-            gösteriliyor.
+          en: Every provider removed from the approved list was blocked at the controlled point within 5 business days, shown by records. If no provider was removed in the period, a written blocking procedure with the 5 business day target is enough.
+          tr: Onaylı listeden çıkarılan her sağlayıcının kontrollü noktada 5 iş günü içinde engellendiği kayıtla gösteriliyor. Dönem içinde hiç sağlayıcı çıkarılmadıysa 5 iş günü hedefini içeren yazılı engelleme prosedürü yeterli.
         evidence: LOG
         qs: true
     review_interval: 3

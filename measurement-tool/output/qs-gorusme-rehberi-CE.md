@@ -346,7 +346,7 @@ Her kontrol için **E** (evet) / **H** (hayır) / **B** (bilmiyor). Sayı ya da 
 | c5 | temel | Dış modelleri çağırmak için kişisel hesap ya da kişisel API anahtarı kullanılmıyor. | E / H / B |
 | c6 | temel | Son 30 günün çağrıları sağlayıcı, uç nokta, çağıran sistem ve zamanla kayıtlı. | E / H / B |
 | s1 | sürdürme | Çağrı kayıtları G-SUP-01 ile karşılaştırılarak gözden geçirilmiş; tarihli kaydı 3 ay içinde. **[≤ 3 ay]** | E / H / B |
-| s2 | sürdürme | Onaylı listeden çıkarılan her sağlayıcının kontrollü noktada 5 iş günü içinde engellendiği kayıtla gösteriliyor. | E / H / B |
+| s2 | sürdürme | Onaylı listeden çıkarılan her sağlayıcının kontrollü noktada 5 iş günü içinde engellendiği kayıtla gösteriliyor. Dönem içinde hiç sağlayıcı çıkarılmadıysa 5 iş günü hedefini içeren yazılı engelleme prosedürü yeterli. | E / H / B |
 
 *Terimler:* **kontrollü nokta**: Dış model sağlayıcılarına yapılan tüm çağrıların geçtiği, bunlara izin verebilen, engelleyebilen ve kaydedebilen tek uygulama noktası: AI gateway, ileri proxy ya da çıkış firewall kuralları. · **tarihli kayıt**: Tarihi, işi kimin yaptığını, ne bulunduğunu ve sonuçtaki aksiyonu (ya da "bulgu yok") gösteren belge, kayıt talebi ya da log girdisi. Takvim daveti ya da sözlü beyan sayılmaz. · **kurum hesabı**: Kurumun sözleşme yaptığı, anahtarlarını kurumun verip geri aldığı sağlayıcı hesabı. Bir çalışanın kendi adına açtığı hesap, ücretini kurum ödese bile sayılmaz.
 
