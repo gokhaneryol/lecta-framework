@@ -1,0 +1,22 @@
+# Yerel: LECTA_USER=gokhan LECTA_DATA=~/Claude/Projects/Lecta/engagements-dev docker compose up
+# Commit etiketi: FRAMEWORK_COMMIT=$(git rev-parse --short HEAD) docker compose up --build
+services:
+  lecta-ui:
+    build:
+      context: ..
+      dockerfile: ui/Dockerfile
+      args:
+        FRAMEWORK_COMMIT: ${FRAMEWORK_COMMIT:-dev}
+    image: lecta-ui:${FRAMEWORK_COMMIT:-dev}
+    ports:
+      - "127.0.0.1:${LECTA_PORT:-8080}:8000"   # yalnız yerel arayüz; dışarıya Apache açar
+    environment:
+      LECTA_USER: ${LECTA_USER:-}
+      LECTA_TRUSTED_PROXIES: ${LECTA_TRUSTED_PROXIES:-127.0.0.1}
+    volumes:
+      - ${LECTA_DATA:?LECTA_DATA tanımlı olmalı (lecta-framework dışında bir dizin)}:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/saglik')"]
+      interval: 30s
+      timeout: 5s
+    restart: unless-stopped

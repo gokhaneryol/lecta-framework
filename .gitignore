@@ -3,3 +3,8 @@
 __pycache__/
 *.bak
 ~$*
+.pytest_cache/
+# değerlendirme verisi repoya girmez (ui/TASARIM.md K2)
+engagements*/
+measurement-tool/ui/data/
+.*.lock

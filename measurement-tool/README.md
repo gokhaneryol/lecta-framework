@@ -187,11 +187,13 @@ measurement-tool/
     G.yaml                      G bloğu (15 madde)
     CON.yaml HYG.yaml IDE.yaml TRA.yaml   matris maddeleri (14)
     terms.yaml                  kontrol metinlerindeki terimlerin tanımları
+    org_fields.yaml             kurumun tanımlayıcı alanları (sektör, çalışan bandı, AI kullanımı) — arayüz için
     _template.yaml              yeni madde için boş şablon
   tools/
     qs.py                       Quick Scan: rehber, puanlama CSV, seviye hesabı
     inceleme.py                 inceleme tablosu (xlsx), kararları okuma, rubric tablosu (md)
     kontrol.py                  ortak kütüphane: kontrol cevabından puan hesabı, rubric metni üretimi
+  ui/                           değerlendirme arayüzü (Flask + htmx; ui/README.md, ui/TASARIM.md)
   output/                       üretilen dosyalar (elle düzenlenmez)
   01-hucre-analizi.md           v0 çerçevenin 36 hücresinin ölçülebilirlik analizi
   02-g-blogu-basliklar.md       G bloğu özeti

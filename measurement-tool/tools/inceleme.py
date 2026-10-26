@@ -24,7 +24,7 @@ LAYERS = ['CON', 'HYG', 'IDE', 'BEH', 'TRA', 'ATT']
 def items():
     out = []
     for f in sorted(glob.glob(os.path.join(SRC, '*.yaml'))):
-        if os.path.basename(f) in ('meta.yaml', '_template.yaml', 'terms.yaml'):
+        if os.path.basename(f) in ('meta.yaml', '_template.yaml', 'terms.yaml', 'org_fields.yaml'):
             continue
         out += yaml.safe_load(open(f, encoding='utf-8'))['items']
     key = lambda i: (ORDER[i['block']], LAYERS.index(i['layer']) if i['block'] == 'matrix' else 0, i['id'])

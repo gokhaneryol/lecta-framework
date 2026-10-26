@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block baslik %}Lecta Değerlendirme{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='stil.css') }}">
+  <script src="{{ url_for('static', filename='htmx.min.js') }}" defer></script>
+</head>
+<body>
+  <header>
+    <a href="{{ url_for('degerlendirmeler') }}" class="marka">Lecta · Değerlendirme</a>
+    <span class="kullanici">{{ kullanici }}</span>
+  </header>
+  <main>{% block icerik %}{% endblock %}</main>
+  <footer>Framework {{ surum }} · commit <code>{{ commit }}</code></footer>
+</body>
+</html>

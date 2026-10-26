@@ -1,5 +1,14 @@
 # Sürüm notları
 
+## Yayımlanmamış
+
+**Değerlendirme arayüzü — adım 1 (iskelet ve hesap katmanı)**
+
+- `measurement-tool/ui/`: kararlar ve veri modeli (`TASARIM.md`, ADR-001), Flask + htmx iskeleti, Docker Compose, YAML dosya katmanı (atomik yazma, dosya kilidi, iyimser sürüm kontrolü), testler.
+- `qs.py`: seviye hesabı saf `hesapla(rows, ref_date)` fonksiyonuna ayrıldı, markdown `seviye_md()` ile üretiliyor; `seviye --ref-date`. Çıktılar önceki sürümle bayt bayt aynı (regresyon testi).
+- `qs.py` düzeltme: c1 = NA olan CSV'de `seviye` komutu çöküyordu.
+- `source/org_fields.yaml`: kurumun tanımlayıcı alanları (sektör, çalışan bandı, AI kullanım alanları) — taslak.
+
 ## v1.0-draft — Ekim 2026
 
 **Ölçüm aracı**
