@@ -1,0 +1,13 @@
+:root {
+  --zemin: #fafaf8; --metin: #1d1d1b; --soluk: #6b6b66; --cizgi: #e2e2dc; --vurgu: #1f4e79;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--zemin); color: var(--metin); display: flex; flex-direction: column; min-height: 100vh; }
+header { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--cizgi); }
+.marka { color: var(--vurgu); font-weight: 600; text-decoration: none; }
+.kullanici { color: var(--soluk); font-size: 0.9rem; }
+main { flex: 1; padding: 1.25rem; max-width: 72rem; width: 100%; margin: 0 auto; }
+h1 { font-size: 1.4rem; margin-top: 0; }
+.bos { color: var(--soluk); }
+footer { padding: 0.5rem 1.25rem; border-top: 1px solid var(--cizgi); color: var(--soluk); font-size: 0.8rem; }

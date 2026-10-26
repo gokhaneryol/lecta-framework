@@ -7,7 +7,8 @@ Komutlar:
   rehber   --profil CE|SOV [--out DOSYA]          Türkçe görüşme rehberi (md)
   puanlama --kurum AD --sistem "Ad:CE" [--sistem "Ad2:SOV"] [--out DOSYA]
                                                   Boş puanlama tablosu (csv)
-  seviye   PUAN.csv [--out DOSYA]                 Gösterge seviye + en kritik 5 risk (md)
+  seviye   PUAN.csv [--ref-date YYYY-AA-GG] [--out DOSYA]
+                                                  Gösterge seviye + en kritik 5 risk (md)
 
 Kurallar (schema.md 5.2–5.3, 03-quick-scan-kesiti.md):
   - Gösterge seviye yalnız kesitteki maddelerle, kapı kuralıyla hesaplanır; L1'in üstüne çıkmaz.
@@ -17,7 +18,7 @@ Kurallar (schema.md 5.2–5.3, 03-quick-scan-kesiti.md):
   - `checks` taşıyan maddelerde puan elle verilmez: CSV'de her QS kontrolü ayrı satırdır,
     `answer` sütunu E/H/B (NA yalnız c1'de) doldurulur, puan kontrol.py kuralıyla hesaplanır (schema.md 5.5).
 """
-import argparse, csv, glob, os, sys
+import argparse, csv, datetime as dt, glob, os, sys
 import yaml
 import kontrol
 
@@ -33,7 +34,7 @@ FIELDS = ['unit', 'unit_type', 'profile', 'item_id', 'check_id', 'title_tr', 'le
 def load_items():
     items = []
     for f in sorted(glob.glob(os.path.join(SRC, '*.yaml'))):
-        if os.path.basename(f) in ('meta.yaml', '_template.yaml', 'terms.yaml'):
+        if os.path.basename(f) in ('meta.yaml', '_template.yaml', 'terms.yaml', 'org_fields.yaml'):
             continue
         with open(f, encoding='utf-8') as fh:
             items += yaml.safe_load(fh)['items']
@@ -160,8 +161,9 @@ def expand(rows):
     return out
 
 
-def collapse(rows):
-    """Kontrol satırlarını madde satırına indirir; puanı kontrol.score ile hesaplar."""
+def collapse(rows, ref_date=None):
+    """Kontrol satırlarını madde satırına indirir; puanı kontrol.score ile hesaplar.
+    ref_date: tarih kontrollerinin değerlendirildiği gün (verilmezse bugün)."""
     byid = {i['id']: i for i in load_items()}
     out, groups = [], {}
     for r in rows:
@@ -178,11 +180,13 @@ def collapse(rows):
                 g[f] = (g[f] + ' ' if g[f] else '') + f"{r['check_id']}: {r[f].strip()}"
     for g in groups.values():
         i = byid[g['item_id']]
-        g['score'] = kontrol.score(i, g['answers'], qs=True)
-        miss = [c['id'] for c in i['checks'] if c.get('qs', True)
-                and not kontrol.check_met(c, g['answers'].get(c['id']), i)]
+        g['score'] = kontrol.score(i, g['answers'], qs=True, ref_date=ref_date)
         g['title_tr'] = t(i['title'])
-        if miss and g['score'] not in ('NA', 'NE'):
+        if g['score'] in ('NA', 'NE'):
+            continue        # c1 = NA ise kontrolleri karşılanma açısından okumak anlamsız
+        miss = [c['id'] for c in i['checks'] if c.get('qs', True)
+                and not kontrol.check_met(c, g['answers'].get(c['id']), i, ref_date)]
+        if miss:
             g['note'] = (g['note'] + ' · ' if g['note'] else '') + 'karşılanmayan: ' + ', '.join(miss)
     return out
 
@@ -211,9 +215,18 @@ def lvname(k):
     return 'L0 altı' if k < 0 else f'L{k}'
 
 
-def cmd_seviye(a):
-    with open(a.csv, encoding='utf-8') as fh:
-        rows = list(csv.DictReader(fh))
+def hesapla(rows, ref_date=None):
+    """Seviye hesabının saf çekirdeği; dosya okumaz, çıktı yazmaz. Arayüz de bunu çağırır.
+
+    rows: puanlama CSV'sinin satırları (dict). Girdi değiştirilmez.
+    Dönüş:
+      maddeler      madde satırları (collapse sonrası; puan hesaplanmış)
+      seviyeler     [{birim, profil, matris, g, raporlanan}]  (int; -1 = L0 altı)
+      riskler       geçmeyen maddeler, deterministik sırada (ilk 5'i "en kritik 5 risk")
+      bloklayanlar  {birim: [madde]}  raporlanan seviyenin bir üstünü engelleyen geçmeyen maddeler
+      bosluklar     boş kontrol cevabı ya da boş puan: ["ID/kontrol@birim", ...]
+    """
+    rows = [dict(r) for r in rows]
     for r in rows:
         for f in FIELDS:
             r.setdefault(f, '')
@@ -221,7 +234,7 @@ def cmd_seviye(a):
                 r[f] = ''
     blank = [r['item_id'] + '/' + r['check_id'] + '@' + r['unit'] for r in rows
              if r['check_id'].strip() and not r['answer'].strip()]
-    rows = collapse(rows)
+    rows = collapse(rows, ref_date)
     blank += [r['item_id'] + '@' + r['unit'] for r in rows if not r['score'].strip()]
     gov = [r for r in rows if r['unit_type'] == 'KURUM']
     sysunits = []
@@ -229,28 +242,27 @@ def cmd_seviye(a):
         if r['unit_type'] == 'SISTEM' and (r['unit'], r['profile']) not in sysunits:
             sysunits.append((r['unit'], r['profile']))
 
-    def g_level(p):
+    def g_lv(p):
         def lv(r):
             d = dict(x.split(':') for x in r['level'].split('/'))
             return LV[d[p]] if p in d else 99
-        return gate([r for r in gov if r['level'] and p in r['level']], lv)
+        return lv
 
-    L = ['# Quick Scan — Gösterge Seviye Hesabı\n',
-         f"*Kaynak: `{os.path.basename(a.csv)}` · `tools/qs.py seviye` ile üretildi*\n"]
-    if blank:
-        L.append(f'> ⚠️ Boş puan ({len(blank)}): ' + ', '.join(blank) + ' — boş puan NE, boş kontrol cevabı B (bilmiyor) gibi işlem görür.\n')
-    L.append('| Birim | Profil | Matris (gösterge) | G bloğu (gösterge) | **Raporlanan** |')
-    L.append('|---|---|---|---|---|')
+    def g_level(p):
+        return gate([r for r in gov if r['level'] and p in r['level']], g_lv(p))
+
+    seviyeler, bloklayanlar = [], {}
     for name, p in sysunits:
         sr = [r for r in rows if r['unit'] == name and r['unit_type'] == 'SISTEM']
         ms = gate(sr, lambda r: LV[r['level']])
         gs = g_level(p)
-        L.append(f'| {name} | {p} | {lvname(ms)} | {lvname(gs)} | **{lvname(min(ms, gs))}** |')
-    L.append('')
-    L.append(f"*Gösterge seviye beyana dayalıdır ve {len(gov)} kurum + sistem başına "
-             f"{len(rows)-len(gov) if not sysunits else len([r for r in rows if r['unit']==sysunits[0][0] and r['unit_type']=='SISTEM'])} "
-             "maddelik alt kümeyle hesaplanmıştır; L1'in üstünde seviye üretmez. "
-             "Doğrulanmış seviye için Detailed Scan (AS-02) gerekir.*\n")
+        rep = min(ms, gs)
+        seviyeler.append(dict(birim=name, profil=p, matris=ms, g=gs, raporlanan=rep))
+        k = rep + 1
+        bl = [] if k > QS_CAP else (
+            [r for r in gov if r['level'] and p in r['level'] and g_lv(p)(r) <= k and passed(r) is False]
+            + [r for r in sr if LV[r['level']] <= k and passed(r) is False])
+        bloklayanlar[name] = bl
 
     # En kritik 5 risk — deterministik sıralama
     def sc(r):
@@ -265,13 +277,42 @@ def cmd_seviye(a):
         return 0 if (ce and r['item_id'] in CE_CHAIN) else 1
     cand = [r for r in rows if passed(r) is False]
     cand.sort(key=lambda r: (sc(r), lvnum(r), chain(r), r['unit_type'] != 'KURUM', r['item_id']))
+    return dict(maddeler=rows, seviyeler=seviyeler, riskler=cand, bloklayanlar=bloklayanlar, bosluklar=blank)
+
+
+def seviye_md(h, kaynak):
+    """hesapla() sonucundan seviye raporu (md). kaynak: başlıkta görünen CSV dosya adı."""
+    rows, blank = h['maddeler'], h['bosluklar']
+    gov = [r for r in rows if r['unit_type'] == 'KURUM']
+    L = ['# Quick Scan — Gösterge Seviye Hesabı\n',
+         f"*Kaynak: `{kaynak}` · `tools/qs.py seviye` ile üretildi*\n"]
+    if blank:
+        L.append(f'> ⚠️ Boş puan ({len(blank)}): ' + ', '.join(blank) + ' — boş puan NE, boş kontrol cevabı B (bilmiyor) gibi işlem görür.\n')
+    L.append('| Birim | Profil | Matris (gösterge) | G bloğu (gösterge) | **Raporlanan** |')
+    L.append('|---|---|---|---|---|')
+    for s in h['seviyeler']:
+        L.append(f"| {s['birim']} | {s['profil']} | {lvname(s['matris'])} | {lvname(s['g'])} | **{lvname(s['raporlanan'])}** |")
+    L.append('')
+    first = h['seviyeler'][0]['birim'] if h['seviyeler'] else None
+    L.append(f"*Gösterge seviye beyana dayalıdır ve {len(gov)} kurum + sistem başına "
+             f"{len(rows)-len(gov) if first is None else len([r for r in rows if r['unit']==first and r['unit_type']=='SISTEM'])} "
+             "maddelik alt kümeyle hesaplanmıştır; L1'in üstünde seviye üretmez. "
+             "Doğrulanmış seviye için Detailed Scan (AS-02) gerekir.*\n")
+    cand = h['riskler']
     L.append('## En kritik 5 risk (sıralama kuralı: puan ↑ · seviye ↑ · CE zinciri önce · kurum önce · ID)\n')
     L.append('| # | Madde | Birim | Seviye | Puan | Not |\n|---|---|---|---|---|---|')
     for n, r in enumerate(cand[:5], 1):
         L.append(f"| {n} | {r['item_id']} · {r['title_tr']} | {r['unit']} | {r['level']} | "
                  f"{r['score'] or 'boş'} | {r['note']} |")
     L.append(f'\n*Geçmeyen madde sayısı: {len(cand)}. Tamamı memo ekindeki tabloda.*\n')
-    write(a.out, '\n'.join(L))
+    return '\n'.join(L)
+
+
+def cmd_seviye(a):
+    with open(a.csv, encoding='utf-8') as fh:
+        rows = list(csv.DictReader(fh))
+    ref = dt.date.fromisoformat(a.ref_date) if a.ref_date else None
+    write(a.out, seviye_md(hesapla(rows, ref), os.path.basename(a.csv)))
 
 
 def write(path, text):
@@ -290,6 +331,7 @@ def main():
     p = sp.add_parser('puanlama'); p.add_argument('--kurum', required=True)
     p.add_argument('--sistem', action='append', required=True); p.add_argument('--out')
     s = sp.add_parser('seviye'); s.add_argument('csv'); s.add_argument('--out')
+    s.add_argument('--ref-date', help='tarih kontrolleri için referans gün (YYYY-AA-GG); verilmezse bugün')
     a = ap.parse_args()
     {'rehber': cmd_rehber, 'puanlama': cmd_puanlama, 'seviye': cmd_seviye}[a.cmd](a)
 

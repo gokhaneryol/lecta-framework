@@ -1,0 +1,55 @@
+# Lecta ölçüm aracı — kurumun tanımlayıcı alanları (ui/TASARIM.md K5, §3)
+#
+# Yalnız başlık ve memo içindir; puanı ve seviyeyi etkilemez.
+# Ön koşul olguları (ISO 27001 vb.) burada değil, K7 ile source/facts.yaml'da tanımlanır.
+# Kod bir kez verilir, yeniden kullanılmaz; kaldırılan seçenek silinmez, `deprecated: true` olur.
+#
+# Durum: TASLAK — listeler Gökhan onayı bekliyor.
+
+status: draft
+
+fields:
+  sector:
+    label: {en: Sector, tr: Sektör}
+    multi: false
+    options:
+      - {code: gov-central, label: {en: Government (central), tr: Kamu (merkezi)}}
+      - {code: gov-local, label: {en: Government (local), tr: Kamu (yerel)}}
+      - {code: banking, label: {en: Banking, tr: Bankacılık}}
+      - {code: insurance, label: {en: Insurance, tr: Sigorta}}
+      - {code: fin-other, label: {en: Other finance (CMB), tr: Diğer finans (SPK)}}
+      - {code: energy, label: {en: Energy (EMRA), tr: Enerji (EPDK)}}
+      - {code: telecom, label: {en: Telecom (ICTA), tr: Telekom (BTK)}}
+      - {code: health, label: {en: Health, tr: Sağlık}}
+      - {code: edu-research, label: {en: Education and research, tr: Eğitim ve araştırma}}
+      - {code: defence, label: {en: Defence, tr: Savunma}}
+      - {code: manufacturing, label: {en: Manufacturing, tr: Üretim}}
+      - {code: retail, label: {en: Retail and e-commerce, tr: Perakende ve e-ticaret}}
+      - {code: transport, label: {en: Transport and logistics, tr: Ulaşım ve lojistik}}
+      - {code: legal-consulting, label: {en: Legal and consulting, tr: Hukuk ve danışmanlık}}
+      - {code: it, label: {en: IT and software, tr: Bilişim ve yazılım}}
+      - {code: other, label: {en: Other, tr: Diğer}}
+
+  employee_band:
+    label: {en: Employees, tr: Çalışan sayısı}
+    multi: false
+    options:
+      - {code: 1-49, label: {en: 1–49, tr: 1–49}}
+      - {code: 50-249, label: {en: 50–249, tr: 50–249}}
+      - {code: 250-999, label: {en: 250–999, tr: 250–999}}
+      - {code: 1000-4999, label: {en: 1,000–4,999, tr: 1.000–4.999}}
+      - {code: 5000+, label: {en: 5,000+, tr: 5.000+}}
+
+  ai_use:
+    label: {en: AI use areas, tr: AI kullanım alanları}
+    multi: true
+    options:
+      - {code: ext-assistant, label: {en: External general-purpose assistant, tr: Harici genel asistan}}
+      - {code: int-assistant, label: {en: Corporate assistant, tr: Kurumsal asistan}}
+      - {code: rag, label: {en: RAG / document search, tr: RAG / belge arama}}
+      - {code: code, label: {en: Coding assistant, tr: Kod asistanı}}
+      - {code: cs-bot, label: {en: Customer service chatbot, tr: Müşteri hizmetleri chatbot'u}}
+      - {code: doc-processing, label: {en: Document processing and extraction, tr: Belge işleme ve çıkarım}}
+      - {code: decision, label: {en: Decision support and scoring, tr: Karar destek ve skorlama}}
+      - {code: agents, label: {en: Agents and automation, tr: Ajan ve otomasyon}}
+      - {code: other, label: {en: Other, tr: Diğer}}

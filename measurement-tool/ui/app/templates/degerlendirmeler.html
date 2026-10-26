@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block icerik %}
+<h1>Değerlendirmeler</h1>
+{% if liste %}
+<ul class="liste">
+  {% for d in liste %}<li>{{ d }}</li>{% endfor %}
+</ul>
+{% else %}
+<p class="bos">Henüz değerlendirme yok.</p>
+{% endif %}
+{% endblock %}
