@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Lecta ölçüm aracı — inceleme paketi.
 
-  python3 inceleme.py uret [--durum draft] [--out ../output/inceleme-paketi.xlsx]
+  python3 inceleme.py uret --out ~/inceleme-paketi.xlsx [--durum draft]   (yalnız toplu inceleme turunda; repoya girmez)
       Kaynaktaki maddelerden okuma/inceleme tablosu üretir (TR öncelikli, EN yan sütunlarda).
-  python3 inceleme.py oku ../output/inceleme-paketi.xlsx
+  python3 inceleme.py oku ~/inceleme-paketi.xlsx
       Doldurulmuş "Karar" ve "Yorum" sütunlarını listeler (YAML'a işlenmek üzere).
   python3 inceleme.py tablo [--out ../output/madde-rubric-tablosu.md]
       Tüm maddelerin TR rubric tablosunu markdown olarak üretir.
@@ -135,7 +135,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sp = ap.add_subparsers(dest='cmd', required=True)
     u = sp.add_parser('uret'); u.add_argument('--durum', default=None)
-    u.add_argument('--out', default=os.path.join(HERE, '..', 'output', 'inceleme-paketi.xlsx'))
+    u.add_argument('--out', required=True, help='repo dışı bir yol önerilir; output/*.xlsx git dışıdır')
     o = sp.add_parser('oku'); o.add_argument('xlsx')
     t = sp.add_parser('tablo'); t.add_argument('--out', default=os.path.join(HERE, '..', 'output', 'madde-rubric-tablosu.md'))
     a = ap.parse_args()

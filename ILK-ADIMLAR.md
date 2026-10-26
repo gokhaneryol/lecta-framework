@@ -22,7 +22,7 @@ Lecta Sovereign AI Control Framework'ün ölçüm aracı ve şablon kütüphanes
 
 | # | Konu | Nerede | Nasıl |
 | --- | --- | --- | --- |
-| 1 | **Rubric'lerin netliği.** İkinci değerlendirici gözüyle: aynı kanıta bakan iki kişi aynı puanı verir mi? Özellikle 1 ile 2 arasındaki çizgi. Kanıt beklentisi gerçekçi mi? | `measurement-tool/output/inceleme-paketi.xlsx` | Sarı "Karar" (Onay / Düzelt / Sil / Tartışalım) ve "Yorum" sütunları |
+| 1 | **Rubric'lerin netliği.** İkinci değerlendirici gözüyle: aynı kanıta bakan iki kişi aynı puanı verir mi? Rubric artık evet/hayır kontrollerden ve sabit kuraldan oluşuyor (`schema.md` 5.5); kontroller ve terimler yeterince net mi? Kanıt beklentisi gerçekçi mi? | `measurement-tool/output/madde-rubric-tablosu.md` | GitHub'da issue ya da PR yorumu; toplu turda istersen xlsx üretilir |
 | 2 | **Kanıt ve kayıt tarafı.** Kayıt bütünlüğü (TRA-ING-01), sağlayıcı ve sözleşme maddeleri (G-SUP-01…03), olay prosedürü (G-INC-01). Forensics ve güven hizmetleri deneyimiyle en çok değer katacağın yerler | aynı tablo | aynı |
 | 3 | **Şablonlar.** Bir kurumun bunları doldururken nerede takılacağı; eksik ya da fazla alanlar | `templates/docx/` | Word'de yorum ya da kısa bir not |
 | 4 | **Katalog önerileri K-1…K-6.** Kataloğa işlenmesi; K-5 ve K-6 7545 ile EU AI Act satırlarındaki doğrulanmış bilgiler | `measurement-tool/katalog-onerileri.md` | Katalog master'ında |

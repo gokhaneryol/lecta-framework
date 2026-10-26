@@ -119,7 +119,7 @@ Her maddenin rubric'i bu iskeleti sayılabilir kontrollerle doldurur (aşağıda
 
 İki tarama aynı ID'leri kullandığı için Quick Scan sonucu Detailed Scan'e kayıpsız taşınır.
 
-Tüm maddeler ve rubric'ler: [`output/madde-rubric-tablosu.md`](output/madde-rubric-tablosu.md) · kanıt, eşleme ve doğrulama senaryolarıyla: [`output/inceleme-paketi.xlsx`](output/inceleme-paketi.xlsx).
+Tüm maddeler ve rubric'ler: [`output/madde-rubric-tablosu.md`](output/madde-rubric-tablosu.md).
 
 ## Quick Scan nasıl yürütülür
 
@@ -190,7 +190,7 @@ measurement-tool/
     _template.yaml              yeni madde için boş şablon
   tools/
     qs.py                       Quick Scan: rehber, puanlama CSV, seviye hesabı
-    inceleme.py                 inceleme tablosu (xlsx), kararları okuma, rubric tablosu (md)
+    inceleme.py                 rubric tablosu (md); toplu inceleme turunda xlsx üretme ve kararları okuma
     kontrol.py                  ortak kütüphane: kontrol cevabından puan hesabı, rubric metni üretimi
   output/                       üretilen dosyalar (elle düzenlenmez)
   01-hucre-analizi.md           v0 çerçevenin 36 hücresinin ölçülebilirlik analizi
@@ -216,8 +216,8 @@ archive/
 | Görüşme rehberi | `python3 qs.py rehber --profil CE --out ../output/qs-gorusme-rehberi-CE.md` |
 | Boş puanlama tablosu | `python3 qs.py puanlama --kurum "Kurum" --sistem "Asistan:CE" --sistem "RAG:SOV" --out kurum-qs.csv` |
 | Gösterge seviye + 5 risk | `python3 qs.py seviye kurum-qs.csv --out kurum-seviye.md` |
-| Madde inceleme tablosu | `python3 inceleme.py uret --out ../output/inceleme-paketi.xlsx` |
-| İncelemedeki kararları okumak | `python3 inceleme.py oku ../output/inceleme-paketi.xlsx` |
+| Madde inceleme tablosu (yalnız toplu inceleme turunda) | `python3 inceleme.py uret --out ~/inceleme-paketi.xlsx` |
+| İncelemedeki kararları okumak | `python3 inceleme.py oku ~/inceleme-paketi.xlsx` |
 | Rubric tablosu (md) | `python3 inceleme.py tablo` |
 | Şablonların Word sürümü (`templates/tools/` içinden) | `python3 docx_uret.py` ya da tek şablon: `python3 docx_uret.py TPL-04` |
 
@@ -225,7 +225,7 @@ archive/
 
 1. **Yeni madde:** `_template.yaml` kopyalanır ve ilgili katman dosyasına eklenir. Durumu `draft` olur.
 2. **Değişiklik:** Bir alanın EN ve TR metni aynı anda güncellenir. Madde metni değişirse ID değişmez. Madde kaldırılırsa `deprecated` + `replaced_by` ile dosyada kalır.
-3. **İnceleme:** `inceleme.py uret` ile xlsx üretilir. Okuyan, "Karar" (Onay / Düzelt / Sil / Tartışalım) ve "Yorum" sütunlarını doldurur. Kararlar YAML'a işlenir; onaylananlar `approved` olur.
+3. **İnceleme:** Tekil değişiklikler PR üzerinden incelenir. Toplu inceleme turunda (ör. Aşama 3'te yeni maddeler) `inceleme.py uret` ile xlsx üretilir; dosya repoya girmez. Okuyan, "Karar" (Onay / Düzelt / Sil / Tartışalım) ve "Yorum" sütunlarını doldurur. Kararlar YAML'a işlenir; onaylananlar `approved` olur.
 4. **Kayıt:** Her değişiklikte `meta.yaml` değişiklik kaydına bir satır eklenir. Repoya her değişiklik ayrı bir dal ve Pull Request ile girer.
 5. **Bağlantılı dosyalar:** Bir G maddesi değişirse ona bağlı şablon aynı PR'da güncellenir; rehberler, tablolar ve Word dosyaları yeniden üretilir.
 6. **Katalog:** Katalog master'ı ayrı yürütülür; bu çalışmada düzenlenmez. Katalogda değişmesi gerekenler `katalog-onerileri.md` dosyasında toplanır.
