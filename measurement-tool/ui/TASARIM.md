@@ -14,7 +14,7 @@ Quick Scan bugün CSV doldurularak yürütülüyor (`qs.py puanlama` → elle E/
 | K1 | Barındırma | **donut üzerinde ayrı bir Docker container.** Uygulama `127.0.0.1`'e bağlanır, önünde Apache reverse proxy ve erişim katmanı. Geliştirme yerelde aynı compose dosyasıyla. Veri diskte şimdilik şifrelenmez (bilinçli kabul, §7) |
 | K2 | Kurum verisi | **Her değerlendirme ayrı bir private GitHub reposu** (şablon repodan). Saklama süresi dolunca repo silinir. `lecta-framework` müşteri verisi içermez. Notlara kişi adı değil rol yazılır |
 | K3 | Kapsam | Akış **yalnız QS**. Veri modeli AS-02 alanlarını (oran/tarih/sayı cevabı, örneklem, kanıt listesi, `verified`) baştan taşır; ekranları sonra gelir |
-| K4 | Skip | "Sonra döneceğim" demek. Kapanışta eksikler listesi gösterilir; onaylanınca dışa aktarmada **B** ve notunda "atlandı" olarak çıkar. QS'de c1 = H olursa kalan kontroller otomatik "atlandı (c1=H)" durumuna geçer ama düzenlenebilir kalır. c1 = NA olursa kalanlar kapanır ve `na_reason` zorunlu olur |
+| K4 | Skip | "Sonra döneceğim" demek. Kapanışta eksikler listesi gösterilir; onaylanınca dışa aktarmada **B** ve notunda "atlandı" olarak çıkar. QS'de c1 = H olursa kalan kontrollerin hepsi (cevaplı olanlar dahil) "atlandı (c1=H)" olarak kapanır; c1 atlanırsa kalanlar da "atlandı" olur. c1 = NA olursa kalanlar kapanır ve `na_reason` zorunlu olur. Kapanan kontrollerin kayıtlı cevapları silinmez, c1 E ya da B olunca geri gelir (saha denemesi, Gökhan, 27 Ekim) |
 | K5 | Meta veri | İki katman. **Tanımlayıcı alanlar** (ad, logo, sektör, çalışan bandı, AI kullanım alanları) yalnız başlık ve memo içindir; listeler sabittir ve kodlarıyla `source/org_fields.yaml`'da tutulur. **Ön koşul olguları** (27001 vb.) framework'te tanımlanır (`source/facts.yaml`, K7) ve maddeler bunlara atıf yapar. İkinci katman K7 YAML'a girmeden arayüze eklenmez |
 | K6 | İkinci değerlendirici | Madde düzeyinde "katılıyorum / katılmıyorum + yorum". Akış sıralı: değerlendirici kaydı incelemeye gönderir, gözden geçiren açar. Uyuşmazlıklar listelenir (Aşama 6 kalibrasyonunun girdisi) |
 | K7 | Puan | **A2 olduğu gibi kalır.** Yargıyı değerlendirici verir: her kontrole E/H/B (c1'e NA). Madde puanı, seviye ve risk sırası bir karar değil, **durum tespitidir**; `kontrol.py` ve `qs.py`'nin kodu çağrılarak gösterilir. Puan alanı elle düzenlenmez; port yapılmaz |
@@ -97,7 +97,7 @@ HYG-ING-02:
 
 - **Kontrol durumu:** `bos` · `cevaplandi` · `atlandi`. Madde durumu kontrollerden ve nottan türetilir: `bos` → `not-alindi` (notu var, cevabı eksik) → `tamam`.
 - **Saklanmaz, her seferinde hesaplanır:** madde puanı, seviye, risk sırası.
-- **Otomatik atlama saklanmaz** (K4): c1 = H iken cevapsız kontroller ekranda "atlandı (c1=H)" görünür ama dosyaya `durum: atlandi` yazılmaz; c1 değişince geri alınacak bir şey kalmaz. Kullanıcının "Atla" dediği kontrol `durum: atlandi` olarak saklanır. c1 = NA iken diğer kontrollerin saklı değerleri korunur, ekranda kapalıdır (27 Ekim).
+- **Otomatik kapanma saklanmaz** (K4): c1 = H/NA/atlandı iken diğer kontroller ekranda kapalı görünür, dosyaya ayrı bir durum yazılmaz ve kayıtlı cevapları korunur. Kullanıcının "Atla" dediği kontrol `durum: atlandi` olarak saklanır. Kapalı kontrollerin CSV'ye nasıl çıkacağı (B mi, kayıtlı cevap mı) adım 5'te kararlaştırılır ❓ (27 Ekim).
 - **Kanıt referansı** QS'de serbest metindir (`EK-04; EK-05`); `kanit: [{ref: EK-04}, …]` olarak saklanır, `tur` AS-02'de eklenir.
 
 ### 4.5 CSV'ye dönüşüm

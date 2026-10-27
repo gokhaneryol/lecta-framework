@@ -72,36 +72,46 @@ def tamamla(madde, blok):
     return b
 
 
-def c1_cevabi(blok):
-    return (blok['kontroller'].get('c1') or {}).get('cevap')
+def c1_durumu(blok):
+    k = blok['kontroller'].get('c1') or {}
+    return k.get('cevap'), k.get('durum')
+
+
+def c1_kapatir(blok):
+    """c1 diğer kontrolleri kapatıyor mu? Neden: 'H' | 'NA' | 'atlandi' | None (K4).
+
+    c1 = H: madde 0, diğerleri "atlandı (c1=H)". c1 = NA: madde NA, diğerleri kapalı, gerekçe zorunlu.
+    c1 atlandı: varlık bilinmeden diğerleri sorulmaz, onlar da "atlandı". Kapalı kontrollerin
+    kayıtlı cevapları silinmez; c1 E ya da B olunca geri gelir.
+    """
+    k = blok['kontroller'].get('c1') or {}
+    if k.get('cevap') in ('H', NA):
+        return k['cevap']
+    if not k.get('cevap') and k.get('durum') == 'atlandi':
+        return 'atlandi'
+    return None
 
 
 def etkin_durumlar(madde, blok):
-    """{kontrol: bos | cevaplandi | atlandi | otomatik-atlandi | kapali} — ekranda görünen durum."""
-    c1 = c1_cevabi(blok)
-    out = {}
-    for c in qs_kontrolleri(madde):
-        k = blok['kontroller'][c['id']]
-        if c['kind'] == 'exist':
-            out[c['id']] = k['durum']
-        elif c1 == NA:
-            out[c['id']] = 'kapali'
-        elif k['durum'] in ('bos', 'atlandi') and c1 == 'H':
-            out[c['id']] = 'otomatik-atlandi'
-        else:
-            out[c['id']] = k['durum']
-    return out
+    """{kontrol: bos | cevaplandi | atlandi | kapali-H | kapali-NA | kapali-atlandi} — ekranda görünen durum."""
+    neden = c1_kapatir(blok)
+    return {c['id']: (f'kapali-{neden}' if neden and c['kind'] != 'exist' else blok['kontroller'][c['id']]['durum'])
+            for c in qs_kontrolleri(madde)}
 
 
 def madde_durumu(madde, blok):
     """bos → not-alindi (bir şey girilmiş, cevap eksik) → tamam; kullanıcı atladıysa atlandi."""
     if blok is None:
         return 'bos'
-    c1 = c1_cevabi(blok)
-    etkin = etkin_durumlar(madde, blok)
-    if c1 == NA:
+    neden = c1_kapatir(blok)
+    if neden == NA:
         return 'tamam' if (blok.get('na_reason') or '').strip() else 'not-alindi'
-    if all(d in ('cevaplandi', 'otomatik-atlandi') for d in etkin.values()):
+    if neden == 'H':
+        return 'tamam'
+    if neden == 'atlandi':
+        return 'atlandi'
+    etkin = etkin_durumlar(madde, blok)
+    if all(d == 'cevaplandi' for d in etkin.values()):
         return 'tamam'
     if 'atlandi' in etkin.values():
         return 'atlandi'
@@ -125,14 +135,18 @@ class Gecersiz(ValueError):
 
 
 def formdan(madde, eski, form):
-    """Formdaki madde alanlarından yeni blok. c1 = NA iken diğer kontroller formda kapalıdır
-    (gönderilmez); saklı değerleri korunur."""
+    """Formdaki madde alanlarından yeni blok.
+
+    Bir kontrol yalnız alanları formda gönderilmişse güncellenir (not_<id> her açık satırda vardır).
+    Kapalı satırlar tarayıcıda devre dışıdır ve gönderilmez: c1 = H/NA/atlandı iken ve c1'i açan
+    istekte bile. Böylece kayıtlı cevapları silinmez. na_reason da yalnız formdaysa güncellenir.
+    """
     blok = tamamla(madde, eski)
     blok['gorusme_notu'] = str(form.get('gorusme_notu', '')).strip('\n')[:20000]
-    c1_yeni = form.get('cevap_c1') or None
-    for c in qs_kontrolleri(madde):
+    kontroller = sorted(qs_kontrolleri(madde), key=lambda c: c['kind'] != 'exist')      # önce c1
+    for c in kontroller:
         cid, k = c['id'], blok['kontroller'][c['id']]
-        if c1_yeni == NA and c['kind'] != 'exist':
+        if f'not_{cid}' not in form or (c['kind'] != 'exist' and c1_kapatir(blok)):
             continue
         cevap = form.get(f'cevap_{cid}') or None
         if cevap is not None and cevap not in CEVAPLAR and not (cevap == NA and c['kind'] == 'exist'):
@@ -141,7 +155,8 @@ def formdan(madde, eski, form):
         k['durum'] = 'cevaplandi' if cevap else ('atlandi' if k['durum'] == 'atlandi' else 'bos')
         k['not'] = str(form.get(f'not_{cid}', '')).strip()[:2000]
         k['kanit'] = [dict(ref=r.strip()) for r in str(form.get(f'kanit_{cid}', '')).split(';') if r.strip()][:20]
-    blok['na_reason'] = (str(form.get('na_reason', '')).strip()[:500] or None) if c1_yeni == NA else None
+    if c1_kapatir(blok) == NA and 'na_reason' in form:
+        blok['na_reason'] = str(form.get('na_reason', '')).strip()[:500] or None
     return blok
 
 
@@ -160,8 +175,10 @@ def kontrol_satirlari(madde, blok):
     out = []
     for c in qs_kontrolleri(madde):
         k = blok['kontroller'][c['id']]
+        kapali = etkin[c['id']].startswith('kapali')
         out.append(dict(id=c['id'], tur=kontrol.KIND[c['kind']]['tr'], metin=kontrol.check_line(c, madde),
-                        varlik=c['kind'] == 'exist', cevap=k.get('cevap'), durum=etkin[c['id']],
+                        varlik=c['kind'] == 'exist', durum=etkin[c['id']], kapali=kapali,
+                        cevap=None if kapali else k.get('cevap'), kayitli=k.get('cevap') if kapali else None,
                         **{'not': k.get('not') or ''}, kanit='; '.join(x['ref'] for x in k.get('kanit') or [])))
     return out
 

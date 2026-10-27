@@ -37,8 +37,18 @@ def surum(d, birim, mid):
     return parca_surumu((veri or {}).get(mid))
 
 
-def gonder(c, d, birim, mid, **alan):
-    return c.post(f'/d/{DID}/m/{birim}/{mid}', data=dict(dict(surum=surum(d, birim, mid), gorusme_notu=''), **alan))
+def gonder(c, d, birim, mid, kapali=(), **alan):
+    """Tarayıcı gibi gönderir: açık her kontrol satırının not/kanıt alanı formda bulunur (boş da olsa);
+    kapali verilen kontroller (devre dışı satırlar) hiç gönderilmez."""
+    dg = d.oku(DID, 'degerlendirme.yaml')[0]
+    m = next(m for b in gorusme.birimler(dg) if b['id'] == birim for m, _ in b['maddeler'] if m['id'] == mid)
+    veri = dict(surum=surum(d, birim, mid), gorusme_notu='')
+    for k in gorusme.qs_kontrolleri(m):
+        if k['id'] not in kapali:
+            veri.setdefault(f"not_{k['id']}", '')
+            veri.setdefault(f"kanit_{k['id']}", '')
+    veri.update(alan)
+    return c.post(f'/d/{DID}/m/{birim}/{mid}', data=veri)
 
 
 def blok(d, birim, mid):
@@ -78,8 +88,9 @@ def test_uctan_uca_qs_akisi_ve_puan_esitligi(ortam, ad):
     # sayfa yeniden açıldığında girilenler yerinde (tarayıcı kapatılıp açılınca veri kaybı yok)
     (birim, mid), alan = next((k, v) for k, v in gruplar.items() if any(x.startswith('cevap_') for x in v))
     html = c.get(f'/d/{DID}/m/{birim}/{mid}').get_data(as_text=True)
+    kapali = alan.get('cevap_c1') in ('H', 'NA')         # K4: c1 = H/NA diğerlerini kapatır
     for k, v in alan.items():
-        if k.startswith('cevap_') and not ('cevap_c1' in alan and alan['cevap_c1'] == 'NA' and k != 'cevap_c1'):
+        if k.startswith('cevap_') and (k == 'cevap_c1' or not kapali):
             assert re.search(rf'name="{k}" value="{v}" checked', html), k
 
 
@@ -101,16 +112,35 @@ def test_madde_ekrani_metni_yamldan_gosterir(ortam):
         assert t['ad'] in html
 
 
-def test_c1_hayir_digerlerini_otomatik_atlar_ve_madde_tamam(ortam):
+def test_c1_hayir_cevapli_olanlar_dahil_hepsini_kapatir(ortam):
+    """Saha bulgusu (27 Ekim): c1 E iken cevaplanan c2/c3, c1 H olunca da kapanmalı."""
     c, d = ortam
     birim, m, _ = ilk(d)
+    gonder(c, d, birim, m['id'], cevap_c1='E', cevap_c2='E', cevap_c3='H')
     html = gonder(c, d, birim, m['id'], cevap_c1='H').get_data(as_text=True)
-    assert 'atlandı (c1=H)' in html and 'madde puanı: <strong>0</strong>' in html
-    assert 'durum-tamam' in html
-    # otomatik atlama saklanmaz: c1 E'ye dönünce diğerleri yine boş
-    assert all(k['durum'] == 'bos' for cid, k in blok(d, birim, m['id'])['kontroller'].items() if cid != 'c1')
-    html = gonder(c, d, birim, m['id'], cevap_c1='E').get_data(as_text=True)
-    assert 'atlandı (c1=H)' not in html and 'durum-not-alindi' in html
+    assert html.count('atlandı (c1=H)') == len(gorusme.qs_kontrolleri(m)) - 1
+    assert 'kayıtlı cevap: E' in html and 'madde puanı: <strong>0</strong>' in html
+    assert 'id="madde-durum" class="rozet madde-durum durum-tamam"' in html
+    assert re.search(r'id="k-c2"[^>]*hx-swap-oob="true">\s*<fieldset disabled', html)
+    # kayıtlı cevaplar silinmez; c1 E'ye dönünce geri gelir
+    k = blok(d, birim, m['id'])['kontroller']
+    assert (k['c2']['cevap'], k['c3']['cevap']) == ('E', 'H')
+    # tarayıcıdaki gibi: c1'i E yapan istekte diğer satırlar hâlâ kapalı, gönderilmez
+    digerleri = [x['id'] for x in gorusme.qs_kontrolleri(m) if x['id'] != 'c1']
+    html = gonder(c, d, birim, m['id'], kapali=digerleri, cevap_c1='E').get_data(as_text=True)
+    assert 'atlandı (c1=H)' not in html and 'name="cevap_c2" value="E" checked' in html
+    assert 'name="cevap_c3" value="H" checked' in html
+
+
+def test_c1_atlaninca_digerleri_de_atlandi(ortam):
+    c, d = ortam
+    birim, m, _ = ilk(d)
+    gonder(c, d, birim, m['id'], cevap_c2='H')
+    html = c.post(f'/d/{DID}/m/{birim}/{m["id"]}/atla', data=dict(surum=surum(d, birim, m['id']), kontrol='c1')).get_data(as_text=True)
+    assert html.count('atlandı (c1 atlandı)') == len(gorusme.qs_kontrolleri(m)) - 1
+    assert 'durum-atlandi' in html
+    html = gonder(c, d, birim, m['id'], cevap_c1='E', cevap_c2='H').get_data(as_text=True)
+    assert 'c1 atlandı' not in html
 
 
 def test_c1_na_digerlerini_kapatir_gerekce_zorunlu(ortam):
@@ -161,7 +191,7 @@ def test_madde_duzeyinde_cakisma(ortam):
     birim, m, m2 = ilk(d)
     eski = surum(d, birim, m['id'])
     gonder(c, d, birim, m['id'], cevap_c1='E')
-    r = c.post(f'/d/{DID}/m/{birim}/{m["id"]}', data=dict(surum=eski, cevap_c1='H'))
+    r = c.post(f'/d/{DID}/m/{birim}/{m["id"]}', data=dict(surum=eski, cevap_c1='H', not_c1=''))
     assert 'başka biri tarafından değiştirildi' in r.get_data(as_text=True)
     assert blok(d, birim, m['id'])['kontroller']['c1']['cevap'] == 'E'
     # aynı dosyadaki başka madde etkilenmez
@@ -229,7 +259,7 @@ def test_kapanis_kaydi_kendi_kaydiyla_cakismaz(ortam):
     birim, m, _ = ilk(d)
     eski = surum(d, birim, m['id'])
     gonder(c, d, birim, m['id'], cevap_c1='E')                          # yoldaki otomatik kayıt
-    r = c.post(f'/d/{DID}/m/{birim}/{m["id"]}', data=dict(surum=eski, kapanis='1', cevap_c1='E', gorusme_notu='son not'))
+    r = c.post(f'/d/{DID}/m/{birim}/{m["id"]}', data=dict(surum=eski, kapanis='1', cevap_c1='E', not_c1='', gorusme_notu='son not'))
     assert 'Kaydedildi' in r.get_data(as_text=True)
     assert blok(d, birim, m['id'])['gorusme_notu'] == 'son not'
 
@@ -243,8 +273,8 @@ def test_kapanis_kaydi_baskasinin_degisikligini_ezmez(tmp_path):
     c.post(f'/d/{DID}/sistem', data=dict(surum=d.surum(DID, 'degerlendirme.yaml'), ad='Asistan', profil='CE'), **ac('gokhan'))
     birim, m, _ = ilk(d)
     eski = surum(d, birim, m['id'])
-    c.post(f'/d/{DID}/m/{birim}/{m["id"]}', data=dict(surum=eski, cevap_c1='H'), **ac('ayhan'))
-    r = c.post(f'/d/{DID}/m/{birim}/{m["id"]}', data=dict(surum=eski, kapanis='1', cevap_c1='E'), **ac('gokhan'))
+    c.post(f'/d/{DID}/m/{birim}/{m["id"]}', data=dict(surum=eski, cevap_c1='H', not_c1=''), **ac('ayhan'))
+    r = c.post(f'/d/{DID}/m/{birim}/{m["id"]}', data=dict(surum=eski, kapanis='1', cevap_c1='E', not_c1=''), **ac('gokhan'))
     assert 'başka biri tarafından değiştirildi' in r.get_data(as_text=True)
     assert blok(d, birim, m['id'])['kontroller']['c1']['cevap'] == 'H'
 
@@ -268,3 +298,20 @@ def test_otomatik_kayit_formlarinda_required_yok(ortam):
     c, d = ortam
     html = c.get(f'/d/{DID}/').get_data(as_text=True)
     assert ' required' not in html
+
+
+def test_na_gerekcesi_c1_altinda_ve_silinince_eksik(ortam):
+    c, d = ortam
+    birim, m, _ = ilk(d)
+    html = gonder(c, d, birim, m['id'], cevap_c1='NA').get_data(as_text=True)
+    sayfa = c.get(f'/d/{DID}/m/{birim}/{m["id"]}').get_data(as_text=True)
+    assert sayfa.index('id="na"') < sayfa.index('id="k-c2"')            # c1 satırının içinde, c2'den önce
+    gonder(c, d, birim, m['id'], cevap_c1='NA', na_reason='Süreç yok')
+    assert gorusme.madde_durumu(m, gorusme.tamamla(m, blok(d, birim, m['id']))) == 'tamam'
+    html = gonder(c, d, birim, m['id'], cevap_c1='NA', na_reason='').get_data(as_text=True)
+    assert 'durum-not-alindi' in html and 'id="na-uyari"' in html and 'tamamlanmış sayılmaz' in html
+    assert 'id="na" hx-swap-oob' not in html            # yazarken gerekçe alanı yeniden çizilmez
+    # c1 NA'dan çıkınca gerekçe silinmez, geri dönünce yerinde
+    gonder(c, d, birim, m['id'], cevap_c1='NA', na_reason='Süreç yok')
+    gonder(c, d, birim, m['id'], cevap_c1='E')
+    assert blok(d, birim, m['id'])['na_reason'] == 'Süreç yok'

@@ -23,6 +23,7 @@
       <div class="baslik-satir">
         <h1>{{ madde.id }} · {{ metin(madde.title) }}</h1>
         <span class="rozet">{{ birim.ad }} · {{ seviye }}</span>
+        {% with durum=durumlar[(birim.id, madde.id)], oob=False %}{% include '_madde_durum.html' %}{% endwith %}
       </div>
       <p class="soru">{{ metin(madde.qs_question) }}</p>
       <details><summary>Derinleştirme ve uygulanabilirlik</summary>
@@ -40,7 +41,6 @@
         <div class="kontroller">
           {% for s in satirlar %}{% with oob=False %}{% include '_kontrol.html' %}{% endwith %}{% endfor %}
         </div>
-        {% with oob=False %}{% include '_na.html' %}{% endwith %}
       </fieldset>
     </form>
 

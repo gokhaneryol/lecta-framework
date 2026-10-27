@@ -141,14 +141,18 @@ def _yanit(did, b, eski, yeni, veri, mesaj, satirlar_yenile):
                         durum=gorusme.madde_durumu(madde, blok), durum_etiket=gorusme.DURUM_ETIKET,
                         aktif=True),
         render_template('_varlik.html', digerleri=varlik(did, b['birim']['id']), oob=True),
+        render_template('_madde_durum.html', durum=gorusme.madde_durumu(madde, blok),
+                        durum_etiket=gorusme.DURUM_ETIKET, oob=True),
     ]
     for s in satirlar:
         if s['id'] in satirlar_yenile:
-            parcalar.append(render_template('_kontrol.html', s=s, oob=True, duzenlenebilir=True))
+            parcalar.append(render_template('_kontrol.html', s=s, blok=blok, oob=True, duzenlenebilir=True))
         else:
             parcalar.append(render_template('_rozet.html', s=s, oob=True))
-    if satirlar_yenile:
-        parcalar.append(render_template('_na.html', blok=blok, oob=True, duzenlenebilir=True))
+    if satirlar_yenile:            # c1 değişti: gerekçe alanı açılır/kapanır
+        parcalar.append(render_template('_na.html', blok=blok, oob=True))
+    elif gorusme.c1_kapatir(blok) == gorusme.NA:     # yazarken alan yeniden çizilmez, yalnız uyarı
+        parcalar.append(render_template('_na_uyari.html', blok=blok, oob=True))
     return ''.join(parcalar)
 
 
@@ -167,8 +171,8 @@ def kaydet(did, birim, madde_id):
         return _hata(str(e))
     except Cakisma:
         return _hata('Bu madde o arada başka biri tarafından değiştirildi. Sayfayı yenileyin; son değişikliğiniz kaydedilmedi.')
-    c1_degisti = gorusme.c1_cevabi(gorusme.tamamla(b['madde'], eski)) != gorusme.c1_cevabi(gorusme.tamamla(b['madde'], yeni))
-    yenile = [c['id'] for c in gorusme.qs_kontrolleri(b['madde']) if c['kind'] != 'exist'] if c1_degisti else []
+    c1_degisti = gorusme.c1_durumu(gorusme.tamamla(b['madde'], eski)) != gorusme.c1_durumu(gorusme.tamamla(b['madde'], yeni))
+    yenile = _bagimlilar(b['madde']) if c1_degisti else []
     return _yanit(did, b, eski, yeni, veri, 'Kaydedildi ' + kayit.simdi()[11:19], yenile)
 
 
@@ -189,4 +193,11 @@ def atla(did, birim, madde_id):
         r = make_response('')
         r.headers['HX-Redirect'] = madde_url(b['sonraki'], did)
         return r
-    return _yanit(did, b, eski, yeni, veri, f'{kid} atlandı; kapanışta eksikler listesinde görünecek', [kid])
+    # c1 atlanınca diğerleri de kapanır (K4): hepsi yeniden çizilir
+    yenile = [kid] + (_bagimlilar(b['madde']) if kid == 'c1' else [])
+    return _yanit(did, b, eski, yeni, veri, f'{kid} atlandı; kapanışta eksikler listesinde görünecek', yenile)
+
+
+def _bagimlilar(madde):
+    """c1'e bağlı (varlık dışı) kontroller."""
+    return [c['id'] for c in gorusme.qs_kontrolleri(madde) if c['kind'] != 'exist']

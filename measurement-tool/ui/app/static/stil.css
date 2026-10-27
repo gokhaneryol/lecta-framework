@@ -58,11 +58,10 @@ main.genis { max-width: 100rem; }
 .madde-listesi h4 { margin: 0.75rem 0 0.25rem; font-size: 0.85rem; }
 .madde-listesi ol { list-style: none; margin: 0; padding: 0; }
 .nav-madde a { display: block; padding: 0.15rem 0.4rem; border-radius: 4px; text-decoration: none; color: var(--metin); }
-.nav-madde.aktif a { background: var(--vurgu); color: #fff; }
+.nav-madde.aktif a { background: #e3ebf3; font-weight: 600; box-shadow: inset 3px 0 0 var(--vurgu); }
 .nav-madde .isaret { display: inline-block; width: 1rem; }
 .nav-madde.durum-tamam .isaret { color: #2e7d32; }
 .nav-madde.durum-atlandi .isaret, .nav-madde.durum-not-alindi .isaret { color: #b7791f; }
-.nav-madde.aktif .isaret { color: #fff; }
 .madde h1 { font-size: 1.2rem; }
 .soru { font-size: 1.05rem; background: #fff; border-left: 3px solid var(--vurgu); padding: 0.6rem 0.8rem; }
 details { margin-bottom: 1rem; font-size: 0.9rem; }
@@ -70,7 +69,7 @@ details { margin-bottom: 1rem; font-size: 0.9rem; }
 .not-alani textarea, .na-gerekce textarea { font: inherit; padding: 0.5rem; border: 1px solid var(--cizgi); border-radius: 4px; }
 .kontrol { background: #fff; border: 1px solid var(--cizgi); border-radius: 6px; padding: 0.6rem 0.75rem; margin-bottom: 0.6rem; }
 .kontrol.etkin { border-color: var(--vurgu); box-shadow: 0 0 0 2px rgba(31, 78, 121, 0.15); }
-.kontrol.durum-kapali, .kontrol.durum-otomatik-atlandi { opacity: 0.6; }
+.kontrol.durum-kapali-H, .kontrol.durum-kapali-NA, .kontrol.durum-kapali-atlandi { opacity: 0.55; }
 .kontrol-ust { display: flex; gap: 0.5rem; align-items: baseline; flex-wrap: wrap; }
 .kontrol-id { font-family: ui-monospace, monospace; font-weight: 600; }
 .kontrol-tur { font-size: 0.75rem; color: var(--soluk); text-transform: uppercase; }
@@ -96,3 +95,5 @@ kbd { border: 1px solid var(--cizgi); border-bottom-width: 2px; border-radius: 3
 .terimler dd { margin: 0 0 0.75rem; color: var(--metin); }
 @media (max-width: 1100px) { .gorusme { grid-template-columns: 11rem minmax(0, 1fr); } .terimler { grid-column: 1 / -1; position: static; } }
 @media (max-width: 720px) { .gorusme { grid-template-columns: minmax(0, 1fr); } .madde-listesi { position: static; max-height: 12rem; } .kontrol-alt { grid-template-columns: minmax(0, 1fr); } }
+.madde-durum.durum-tamam { background: #e2f1e4; color: #1e5b22; }
+.madde-durum.durum-not-alindi, .madde-durum.durum-atlandi { background: #fbf0d9; color: #7a4f0a; }
