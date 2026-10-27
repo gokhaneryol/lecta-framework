@@ -1,0 +1,33 @@
+# donut kurulumu: /srv/lecta-ui/compose.yaml olarak kopyalanır (deploy/gonder.sh).
+# src/ = measurement-tool'un git archive'ı; FRAMEWORK_COMMIT .env dosyasında.
+name: lecta-ui
+services:
+  lecta-ui:
+    build:
+      context: src
+      dockerfile: ui/Dockerfile
+      args:
+        FRAMEWORK_COMMIT: ${FRAMEWORK_COMMIT:?FRAMEWORK_COMMIT tanımlı olmalı}
+    image: lecta-ui:${FRAMEWORK_COMMIT}
+    ports:
+      - "127.0.0.1:8090:8000"          # yalnız Apache erişir
+    environment:
+      # docker-proxy istekleri ağ geçidinden iletir; X-Remote-User yalnız oradan kabul edilir
+      LECTA_TRUSTED_PROXIES: 172.30.0.1
+    volumes:
+      - /srv/lecta-ui/data:/data
+    networks: [lecta]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/saglik')"]
+      interval: 30s
+      timeout: 5s
+    restart: unless-stopped
+
+networks:
+  lecta:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+          gateway: 172.30.0.1

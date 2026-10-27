@@ -6,6 +6,7 @@ LABEL org.opencontainers.image.title="lecta-ui" \
       org.opencontainers.image.revision="${FRAMEWORK_COMMIT}"
 ENV LECTA_FRAMEWORK_COMMIT="${FRAMEWORK_COMMIT}" \
     LECTA_DATA=/data \
+    HOME=/tmp \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
@@ -17,7 +18,9 @@ COPY source source
 COPY tools tools
 COPY ui/app ui/app
 
-RUN useradd --uid 1000 --no-create-home lecta && mkdir -p /data && chown lecta /data
+# uid 1000 donut'ta vpnkul; çakışmasın diye ayrı uid. Sunucudaki /data dizini bu uid'e ait olur.
+ARG LECTA_UID=10001
+RUN useradd --uid "${LECTA_UID}" --no-create-home lecta && mkdir -p /data && chown lecta /data
 USER lecta
 EXPOSE 8000
 # Tek worker + thread'ler (TASARIM.md §5.3); dosya kilitleri süreçler arası da çalışır

@@ -1,0 +1,7 @@
+// --- Lecta UI: Let's Encrypt DNS-01 (yalnız bu ad dinamik; deepwake.tech bölgesi statik kalır) ---
+include "/etc/bind/lecta-acme.key";
+zone "_acme-challenge.lecta-frui.deepwake.tech" {
+    type master;
+    file "/var/lib/bind/db._acme-challenge.lecta-frui.deepwake.tech";
+    update-policy { grant lecta-acme. name _acme-challenge.lecta-frui.deepwake.tech. TXT; };
+};
