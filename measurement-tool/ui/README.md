@@ -23,7 +23,11 @@ LECTA_USER=gokhan LECTA_DATA=/tmp/lecta-dev flask --app app:create_app run
 
 - Yerelde `LECTA_USER`.
 - Sunucuda Apache'nin doğruladığı kullanıcı `X-Remote-User` başlığıyla gelir; başlığa yalnız `LECTA_TRUSTED_PROXIES` adreslerinden (varsayılan `127.0.0.1`) gelen istekte güvenilir. `LECTA_USER` sunucuda **tanımlanmaz**.
-- Not (adım 2): container köprü ağında çalışırsa istek kaynağı Docker ağ geçidi adresi olur. Kurulumda ya `network_mode: host` + `127.0.0.1` dinleme ya da ağ geçidi adresinin `LECTA_TRUSTED_PROXIES`'e yazılması seçilir.
+- Sunucuda container köprü ağında çalışır; istek kaynağı Docker ağ geçidi olduğu için `LECTA_TRUSTED_PROXIES=172.30.0.1` (`deploy/compose.donut.yaml`).
+
+## Sunucu (donut)
+
+Kurulum, güncelleme ve geri alma: [`deploy/KURULUM.md`](deploy/KURULUM.md).
 
 ## Testler
 

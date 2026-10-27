@@ -1,0 +1,5 @@
+
+; Lecta değerlendirme arayüzü — yalnız VPN içinden erişilir
+lecta-frui                 IN A  10.11.12.1
+_acme-challenge.lecta-frui IN NS ns1.eryol.com.
+_acme-challenge.lecta-frui IN NS ns2.eryol.com.

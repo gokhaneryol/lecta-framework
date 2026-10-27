@@ -1,0 +1,4 @@
+$TTL 60
+@   IN SOA ns1.eryol.com. admin.eryol.com. ( 1 3600 600 86400 60 )
+@   IN NS ns1.eryol.com.
+@   IN NS ns2.eryol.com.
