@@ -14,6 +14,7 @@ services:
     environment:
       # docker-proxy istekleri ağ geçidinden iletir; X-Remote-User yalnız oradan kabul edilir
       LECTA_TRUSTED_PROXIES: 172.30.0.1
+      LECTA_KULLANICILAR: gokhan,ayhan        # htpasswd kullanıcılarıyla aynı
     volumes:
       - /srv/lecta-ui/data:/data
     networks: [lecta]

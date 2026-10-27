@@ -1,10 +1,22 @@
 {% extends 'base.html' %}
 {% block icerik %}
-<h1>Değerlendirmeler</h1>
+<div class="baslik-satir">
+  <h1>Değerlendirmeler</h1>
+  <a class="dugme" href="{{ url_for('ekran.yeni') }}">Yeni değerlendirme</a>
+</div>
 {% if liste %}
-<ul class="liste">
-  {% for d in liste %}<li>{{ d }}</li>{% endfor %}
-</ul>
+<table class="tablo">
+  <thead><tr><th>Değerlendirme</th><th>Kurum</th><th>Servis</th><th>Referans tarih</th><th>Sistem</th><th>Değerlendirici</th><th>Durum</th></tr></thead>
+  <tbody>
+  {% for d in liste %}
+    <tr>
+      <td><a href="{{ url_for('ekran.kapsam', did=d.id) }}">{{ d.id }}</a></td>
+      <td>{{ d.kurum }}</td><td>{{ d.servis }}</td><td>{{ d.ref_date }}</td>
+      <td>{{ d.sistem }}</td><td>{{ d.degerlendirici }}</td><td><span class="rozet">{{ d.durum }}</span></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
 {% else %}
 <p class="bos">Henüz değerlendirme yok.</p>
 {% endif %}

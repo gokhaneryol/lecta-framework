@@ -13,6 +13,7 @@ services:
     environment:
       LECTA_USER: ${LECTA_USER:-}
       LECTA_TRUSTED_PROXIES: ${LECTA_TRUSTED_PROXIES:-127.0.0.1}
+      LECTA_KULLANICILAR: ${LECTA_KULLANICILAR:-gokhan,ayhan}
     volumes:
       - ${LECTA_DATA:?LECTA_DATA tanımlı olmalı (lecta-framework dışında bir dizin)}:/data
     healthcheck:

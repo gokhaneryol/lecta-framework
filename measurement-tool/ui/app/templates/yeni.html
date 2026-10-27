@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block baslik %}Yeni değerlendirme · Lecta{% endblock %}
+{% block icerik %}
+<h1>Yeni değerlendirme</h1>
+{% if hatalar %}<div class="uyari hata" role="alert">{% for h in hatalar %}<p>{{ h }}</p>{% endfor %}</div>{% endif %}
+<form method="post" class="form">
+  <label>Kurumun tam adı <input name="ad_tam" value="{{ form.get('ad_tam', '') }}" required maxlength="200" autofocus></label>
+  <label>Kısa ad <input name="ad_kisa" value="{{ form.get('ad_kisa', '') }}" required maxlength="60" placeholder="ör. Örnek Banka">
+    <small>Rapor başlıklarında kullanılır. Değerlendirme kimliği bundan üretilir: <code>Örnek Banka → ornek-banka-2026-as01</code></small></label>
+  <label>Servis
+    <select name="servis">{% for s in servisler %}<option {% if form.get('servis') == s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select>
+  </label>
+  <label>Referans tarih <input type="date" name="ref_date" value="{{ form.get('ref_date', '') }}" required>
+    <small>Görüşme günü. Tarih kontrolleri bu güne göre değerlendirilir.</small></label>
+  <label>Gözden geçiren
+    {% if gozden %}
+    <select name="gozden_geciren"><option value="">— sonra seçilecek —</option>
+      {% for k in gozden %}<option {% if form.get('gozden_geciren') == k %}selected{% endif %}>{{ k }}</option>{% endfor %}
+    </select>
+    {% else %}
+    <input name="gozden_geciren" value="{{ form.get('gozden_geciren', '') }}" maxlength="40" placeholder="ör. ayhan">
+    {% endif %}
+    <small>Değerlendirici: {{ kullanici }}</small></label>
+  <p class="not">Bu değerlendirmenin dosyaları müşteri verisidir; notlarda kişi adı değil rol yazın.</p>
+  <button class="dugme" type="submit">Aç</button>
+</form>
+{% endblock %}

@@ -35,6 +35,8 @@ Her kod iki dilli etiket taşır (`{en, tr}`). Kod bir kez verilir, yeniden kull
 
 ### 4.1 Değerlendirme reposu
 
+Kurum kimliği (`kurum-kisa`) elle yazılmaz, kısa addan üretilir: `Örnek Banka` → `ornek-banka`; Türkçe harfler sadeleşir. Aynı kimlik o yıl varsa `-2`, `-3` eklenir (Gökhan, 27 Ekim).
+
 ```
 <kurum-kisa>-<yyyy>-<servis>/        # ör. ornek-2026-as01 — private GitHub repo
   kurum.yaml
@@ -139,11 +141,11 @@ Madde sırası `qs_items()` sırasıdır (seviye, sonra ID; 16 Ekim K8 açık). 
 ### 5.4 Donut kurulumu
 
 - Container 127.0.0.1:`<port>`'u dinler; Apache vhost reverse proxy yapar, TLS certbot ile.
-- **Erişim:** ❓ önerilen: VPN/sabit IP kısıtı (depo.eryol.com'daki desen) **ve** Apache kimlik doğrulaması (htpasswd, TLS üstünde). Ayhan'a bir VPN profili verilir.
+- **Erişim:** ✅ VPN kısıtı (`Require ip 10.11.12.0/24`) **ve** Apache kimlik doğrulaması (htpasswd, bcrypt). Ad VPN adresine çözüldüğü için TLS Let's Encrypt DNS-01 ile (yalnız `_acme-challenge.lecta-frui` dinamik alt bölge). Ayhan'a bir VPN profili verilir (Gökhan, 27 Ekim). Ayrıntı: `ui/deploy/KURULUM.md`
 - **Volume:** `/srv/lecta-ui/data` → container'da `/data`; değerlendirme repoları burada.
 - **Framework sürümü:** imaj belirli bir commit'ten build edilir. Açık bir değerlendirmenin `framework.commit`'i imajınkinden farklıysa ekranda uyarı çıkar ve CSV başlığına iki commit de yazılır.
 - **Git:** v1'de uygulama değerlendirme reposuna yerel commit atar (kapanışta ve "anlık görüntü" düğmesiyle). GitHub'a push elle yapılır; repo başına deploy key ile otomatik push sonraki adım ❓.
-- Alan adı ❓ (ör. `lecta-ui.eryol.com`).
+- Alan adı ✅ `lecta-frui.deepwake.tech` (Gökhan, 27 Ekim).
 
 ## 6. Test verisi
 

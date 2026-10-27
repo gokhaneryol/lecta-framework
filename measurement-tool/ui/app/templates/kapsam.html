@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block baslik %}{{ kurum.ad.kisa }} · {{ dg.id }} · Lecta{% endblock %}
+{% block icerik %}
+<input type="hidden" id="kurum-surum" name="surum" value="{{ kurum_s }}">
+<input type="hidden" id="dg-surum" name="surum" value="{{ dg_s }}">
+<p class="yol"><a href="{{ url_for('ekran.degerlendirmeler') }}">Değerlendirmeler</a> / {{ dg.id }}</p>
+<div class="baslik-satir">
+  <h1>{{ kurum.ad.tam }}</h1>
+  <span class="rozet">{{ dg.servis }} · {{ dg.durum }}</span>
+</div>
+{% if commit_uyari %}
+<div class="uyari" role="alert">Bu değerlendirme framework <code>{{ dg.framework.commit }}</code> ile açıldı; arayüz <code>{{ commit }}</code> sürümünde. Madde ve kontrol metinleri farklı olabilir; CSV başlığına iki commit de yazılacak.</div>
+{% endif %}
+{% if not duzenlenebilir %}<div class="uyari">Değerlendirme {{ dg.durum }} durumunda; kurum ve kapsam salt okunur.</div>{% endif %}
+
+<section class="kart" id="kurum-kart">
+  <div class="baslik-satir"><h2>Kurum</h2><span id="kurum-durum" class="durum" role="status"></span></div>
+  <div class="iki-sutun">
+    <form id="kurum-form" class="form" hx-sync="#kurum-kart:queue all" hx-post="{{ url_for('ekran.kurum_kaydet', did=dg.id) }}" hx-trigger="change" hx-swap="none" hx-include="#kurum-surum">
+      <fieldset {% if not duzenlenebilir %}disabled{% endif %}>
+        <label>Tam ad <input name="ad_tam" value="{{ kurum.ad.tam }}" required maxlength="200"></label>
+        <label>Kısa ad <input name="ad_kisa" value="{{ kurum.ad.kisa }}" required maxlength="60"></label>
+        {% for ad, a in alanlar.items() %}
+          {% if a.multi %}
+          <fieldset class="secenekler"><legend>{{ a.label.tr }}</legend>
+            {% for o in a.options if not o.deprecated %}
+            <label class="secenek"><input type="checkbox" name="{{ ad }}" value="{{ o.code }}" {% if o.code in (kurum[ad] or []) %}checked{% endif %}> {{ o.label.tr }}</label>
+            {% endfor %}
+          </fieldset>
+          {% else %}
+          <label>{{ a.label.tr }}
+            <select name="{{ ad }}"><option value="">—</option>
+              {% for o in a.options if not o.deprecated %}<option value="{{ o.code }}" {% if kurum[ad] == o.code %}selected{% endif %}>{{ o.label.tr }}</option>{% endfor %}
+            </select>
+          </label>
+          {% endif %}
+        {% endfor %}
+        <label>Görüşme katılımcıları (rol, virgülle)
+          <input name="iletisim" value="{{ kurum.iletisim | map(attribute='rol') | join(', ') }}" placeholder="ör. CISO, BT Müdürü">
+          <small>Kişi adı yazmayın; yalnız rol.</small>
+        </label>
+      </fieldset>
+    </form>
+    <div>
+      {% with did=dg.id %}{% include '_logo.html' %}{% endwith %}
+      {% if duzenlenebilir %}
+      <form hx-sync="#kurum-kart:queue all" hx-post="{{ url_for('ekran.logo_yukle', did=dg.id) }}" hx-trigger="change" hx-swap="none" hx-encoding="multipart/form-data">
+        <label>Logo (PNG, en çok 512 KB) <input type="file" name="logo" accept="image/png"></label>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="kart" id="kapsam-kart">
+  <div class="baslik-satir"><h2>Kapsam</h2><span id="kapsam-durum" class="durum" role="status"></span></div>
+  <form class="form satir" hx-sync="#kapsam-kart:queue all" hx-post="{{ url_for('ekran.ayar_kaydet', did=dg.id) }}" hx-trigger="change" hx-swap="none" hx-include="#dg-surum">
+    <fieldset {% if not duzenlenebilir %}disabled{% endif %}>
+      <label>Referans tarih <input type="date" name="ref_date" value="{{ dg.ref_date }}" required></label>
+      <label>Değerlendirici <input value="{{ dg.degerlendirici }}" disabled></label>
+      <label>Gözden geçiren
+        {% if gozden %}
+        <select name="gozden_geciren"><option value="">— sonra seçilecek —</option>
+          {% for k in gozden %}<option {% if dg.gozden_geciren == k %}selected{% endif %}>{{ k }}</option>{% endfor %}
+        </select>
+        {% else %}<input name="gozden_geciren" value="{{ dg.gozden_geciren }}" maxlength="40">{% endif %}
+      </label>
+    </fieldset>
+  </form>
+  {% include '_sistemler.html' %}
+  <p class="kucuk">Framework {{ dg.framework.surum }} · açılış commit'i <code>{{ dg.framework.commit }}</code></p>
+</section>
+{% endblock %}

@@ -19,6 +19,10 @@ pip install -r requirements-dev.txt
 LECTA_USER=gokhan LECTA_DATA=/tmp/lecta-dev flask --app app:create_app run
 ```
 
+## Kayıt
+
+Her alan değiştiğinde htmx ile kaydedilir; yanıt yalnız sürüm alanını ve "Kaydedildi" satırını günceller (odak kaybolmaz). Aynı dosyayı yazan istekler sıraya girer (`hx-sync`); dosya başka bir oturumda değiştiyse kayıt reddedilir ve sayfayı yenileme mesajı çıkar.
+
 ## Kimlik
 
 - Yerelde `LECTA_USER`.
@@ -39,14 +43,19 @@ pytest
 - `test_qs_regresyon.py`: `qs.py rehber`, `puanlama` ve `seviye` çıktıları `tests/golden/` ile bayt bayt aynı olmalı. `qs.py`'de her değişiklikten sonra çalıştırılır.
 - `test_depo.py`: atomik yazma, dosya kilidi, sürüm çakışması.
 - `test_uygulama.py`: kimlik, boş liste sayfası, `org_fields.yaml`.
+- `test_kapsam.py`: değerlendirme açma, kurum ve kapsam ekranları; fixture kurumun arayüzle oluşturulması (adım 3 kabulü).
 
 ## Dosyalar
 
 ```
-app/__init__.py     Flask uygulaması, kimlik
+app/__init__.py     Flask uygulaması, kimlik, başka siteden POST engeli
+app/rotalar.py      ekranlar: değerlendirme listesi, yeni değerlendirme, kurum ve kapsam
+app/kayit.py        değerlendirme dizini: açma (şablon + git init), kurum/sistem doğrulama
+app/sablon/         yeni değerlendirme dizininin şablonu (.gitignore, README)
 app/depo.py         YAML dosya katmanı: atomik yazma, kilit, sürüm kontrolü
 app/framework.py    source/ ve tools/ için tek giriş
 app/static/         htmx 2.0.4 (repoda; CDN yok), stil
 fixtures/qs/        sentetik puanlama CSV'leri (Örnek Kurum, CE + SOV)
+fixtures/ornek-2026-as01/  arayüzle oluşturulan sentetik değerlendirme (kabul testi beklentisi)
 tests/golden/       regresyon testinin beklenen çıktıları
 ```

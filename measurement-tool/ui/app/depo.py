@@ -84,21 +84,30 @@ class Depo:
             mevcut = YOK if mevcut is None else _ozet(mevcut)
             if beklenen is not None and beklenen != mevcut:
                 raise Cakisma(p, beklenen, mevcut)
-            d, ad = os.path.split(p)
-            fd, gecici = tempfile.mkstemp(dir=d, prefix=f'.{ad}.', suffix='.tmp')
-            try:
-                with os.fdopen(fd, 'wb') as fh:
-                    fh.write(b)
-                    fh.flush()
-                    os.fsync(fh.fileno())
-                os.replace(gecici, p)
-            except BaseException:
-                with contextlib.suppress(FileNotFoundError):
-                    os.unlink(gecici)
-                raise
-            dfd = os.open(d, os.O_RDONLY)
-            try:
-                os.fsync(dfd)
-            finally:
-                os.close(dfd)
+            _atomik(p, b)
         return _ozet(b)
+
+    def yaz_ham(self, b, *parcalar):
+        """İkili dosyayı (ör. logo) kilit altında atomik yazar; sürüm kontrolü yapmaz."""
+        with self.kilit(*parcalar) as p:
+            _atomik(p, b)
+
+
+def _atomik(p, b):
+    d, ad = os.path.split(p)
+    fd, gecici = tempfile.mkstemp(dir=d, prefix=f'.{ad}.', suffix='.tmp')
+    try:
+        with os.fdopen(fd, 'wb') as fh:
+            fh.write(b)
+            fh.flush()
+            os.fsync(fh.fileno())
+        os.replace(gecici, p)
+    except BaseException:
+        with contextlib.suppress(FileNotFoundError):
+            os.unlink(gecici)
+        raise
+    dfd = os.open(d, os.O_RDONLY)
+    try:
+        os.fsync(dfd)
+    finally:
+        os.close(dfd)
