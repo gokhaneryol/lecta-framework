@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block baslik %}Kapanış · {{ dg.id }} · Lecta{% endblock %}
+{% block icerik %}
+<p class="yol"><a href="{{ url_for('ekran.degerlendirmeler') }}">Değerlendirmeler</a> / {{ dg.id }}</p>
+<h1>{{ kurum.ad.tam }}</h1>
+{% include '_sekmeler.html' %}
+<section class="kart">
+  <h2>Kapanış</h2>
+  {% if hata %}<div class="uyari hata" role="alert">{{ hata }}</div>{% endif %}
+  {% if dg.durum != 'taslak' %}
+  <p>Değerlendirme {{ dg.durum }} durumunda; kapanış yapıldı. <a href="{{ url_for('kapanis.inceleme', did=dg.id) }}">İncelemeye git</a>.</p>
+  {% else %}
+  {% if eksikler %}
+  <p><strong>{{ eksikler | length }} madde tamamlanmadı.</strong> Onaylarsanız bu maddelerdeki boş ve atlanan kontroller CSV'ye <strong>B</strong> (bilmiyor) ve notunda "atlandı" olarak çıkar.</p>
+  <table class="tablo">
+    <thead><tr><th>Birim</th><th>Madde</th><th>Durum</th><th>Ayrıntı</th></tr></thead>
+    <tbody>
+    {% for e in eksikler %}
+      <tr><td>{{ e.birim.ad }}</td>
+          <td><a href="{{ url_for('gorusme.madde', did=dg.id, birim=e.birim.id, madde_id=e.madde.id) }}">{{ e.madde.id }}</a></td>
+          <td><span class="rozet madde-durum durum-{{ e.durum }}">{{ durum_etiket[e.durum] }}</span></td>
+          <td>{{ e.ayrinti }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p><strong>Bütün maddeler tamam.</strong></p>
+  {% endif %}
+  <p>Gözden geçiren: <strong>{{ dg.gozden_geciren or '— seçilmedi' }}</strong>{% if not dg.gozden_geciren %} · <a href="{{ url_for('ekran.kapsam', did=dg.id) }}">kapsam ekranında seçin</a>{% endif %}</p>
+  {% if yetkili %}
+  <form method="post" class="madde-alt">
+    <button class="dugme" type="submit">Onayla ve incelemeye gönder</button>
+    <small>Gönderince kurum, kapsam ve cevaplar değiştirilemez; gözden geçiren geri gönderirse yeniden açılır.</small>
+  </form>
+  {% else %}
+  <p class="kucuk">İncelemeye yalnız değerlendirici ({{ dg.degerlendirici }}) gönderir.</p>
+  {% endif %}
+  {% endif %}
+</section>
+{% endblock %}

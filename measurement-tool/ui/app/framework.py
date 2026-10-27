@@ -37,3 +37,15 @@ def qs_maddeleri(profil):
 @functools.lru_cache(maxsize=1)
 def terimler():
     return kontrol.terms()
+
+
+@functools.lru_cache(maxsize=1)
+def maddeler():
+    """{madde_id: madde} — bütün maddeler (qs.load_items)."""
+    return {m['id']: m for m in qs.load_items()}
+
+
+def commit():
+    """Arayüzün çalıştığı imajın framework commit'i."""
+    from flask import current_app
+    return current_app.config['LECTA_FRAMEWORK_COMMIT']
