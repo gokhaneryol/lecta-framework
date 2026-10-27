@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block baslik %}{{ madde.id }} · {{ birim.ad }} · {{ dg.id }} · Lecta{% endblock %}
+{% block govde_sinif %}genis{% endblock %}
+{% block icerik %}
+<input type="hidden" id="m-surum" name="surum" value="{{ surum }}">
+<p class="yol"><a href="{{ url_for('ekran.degerlendirmeler') }}">Değerlendirmeler</a> /
+  <a href="{{ url_for('ekran.kapsam', did=dg.id) }}">{{ dg.id }}</a> / {{ birim.ad }} / {{ madde.id }}</p>
+<div class="gorusme">
+  <nav class="madde-listesi" aria-label="Maddeler">
+    {% for bb in birimler %}
+    <h4>{{ bb.ad }} <small>{{ bb.profiller | join('/') }}</small></h4>
+    <ol>
+      {% for m, lv in bb.maddeler %}
+        {% with birim=bb, durum=durumlar[(bb.id, m.id)], aktif=(bb.id == birim.id and m.id == madde.id), oob=False %}{% include '_nav_madde.html' %}{% endwith %}
+      {% endfor %}
+    </ol>
+    {% endfor %}
+  </nav>
+
+  <article class="madde">
+    {% include '_varlik.html' %}
+    <header>
+      <div class="baslik-satir">
+        <h1>{{ madde.id }} · {{ metin(madde.title) }}</h1>
+        <span class="rozet">{{ birim.ad }} · {{ seviye }}</span>
+        {% with durum=durumlar[(birim.id, madde.id)], oob=False %}{% include '_madde_durum.html' %}{% endwith %}
+      </div>
+      <p class="soru">{{ metin(madde.qs_question) }}</p>
+      <details><summary>Derinleştirme ve uygulanabilirlik</summary>
+        <p><strong>Derinleştirme:</strong> {{ metin(madde.question) }}</p>
+        <p><strong>Uygulanabilirlik:</strong> {{ metin(madde.applicability) }}</p>
+      </details>
+    </header>
+
+    <form id="madde-form" hx-post="{{ url_for('gorusme.kaydet', did=dg.id, birim=birim.id, madde_id=madde.id) }}"
+          hx-trigger="change, keyup delay:800ms, kaydet" hx-swap="none" hx-include="#m-surum" hx-sync="#madde-form:queue all">
+      <fieldset {% if not duzenlenebilir %}disabled{% endif %}>
+        <label class="not-alani">Görüşme notu <small>(ham not; CSV'ye girmez, memo girdisidir · kişi adı değil rol)</small>
+          <textarea name="gorusme_notu" id="gorusme-notu" rows="4">{{ blok.gorusme_notu }}</textarea>
+        </label>
+        <div class="kontroller">
+          {% for s in satirlar %}{% with oob=False %}{% include '_kontrol.html' %}{% endwith %}{% endfor %}
+        </div>
+      </fieldset>
+    </form>
+
+    {% with oob=False %}{% include '_tespit.html' %}{% endwith %}
+
+    <div class="madde-alt">
+      <a class="dugme ikincil" href="{{ onceki_url }}" id="onceki">← Önceki</a>
+      {% if duzenlenebilir %}
+      <button class="dugme ikincil" type="button" hx-post="{{ url_for('gorusme.atla', did=dg.id, birim=birim.id, madde_id=madde.id) }}"
+              hx-include="#m-surum" hx-sync="#madde-form:queue all" title="Cevaplanmamış kontroller 'sonra döneceğim' olur">Maddeyi atla</button>
+      {% endif %}
+      <a class="dugme" href="{{ sonraki_url }}" id="sonraki">Sonraki →</a>
+      <span id="m-durum" class="durum" role="status"></span>
+    </div>
+    <p class="kisayol">Kısayollar: <kbd>j</kbd>/<kbd>k</kbd> kontrol seç · <kbd>e</kbd> <kbd>h</kbd> <kbd>b</kbd> <kbd>n</kbd> cevap (n = NA, yalnız c1) · <kbd>s</kbd> kontrolü atla · <kbd>g</kbd> görüşme notu · <kbd>[</kbd>/<kbd>]</kbd> önceki/sonraki madde · <kbd>Esc</kbd> metin alanından çık</p>
+  </article>
+
+  <aside class="terimler">
+    <h3>Terimler</h3>
+    {% for t in terimler %}<dl><dt>{{ t.ad }}</dt><dd>{{ t.tanim }}</dd></dl>{% else %}<p class="bos">Bu maddede tanımlı terim yok.</p>{% endfor %}
+    {% set as02 = madde.checks | selectattr('qs', 'sameas', false) | map(attribute='id') | list %}
+    {% if as02 %}<p class="kucuk">QS'de sorulmaz, AS-02'de bakılır: {{ as02 | join(', ') }}</p>{% endif %}
+  </aside>
+</div>
+<script src="{{ url_for('static', filename='klavye.js') }}" defer></script>
+{% endblock %}

@@ -1,0 +1,2 @@
+{% set ad = {'bos': '', 'cevaplandi': '', 'atlandi': 'atlandı — sonra dönülecek', 'kapali-H': 'atlandı (c1=H)', 'kapali-NA': 'kapalı (c1=NA)', 'kapali-atlandi': 'atlandı (c1 atlandı)'} %}
+<span class="rozet kontrol-rozet{% if not ad[s.durum] %} gizli{% endif %}" id="rozet-{{ s.id }}"{% if oob %} hx-swap-oob="true"{% endif %}>{{ ad[s.durum] }}{% if s.kayitli %} · kayıtlı cevap: {{ s.kayitli }}{% endif %}</span>

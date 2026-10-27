@@ -29,6 +29,13 @@ def _ozet(b):
     return hashlib.sha256(b).hexdigest()
 
 
+def parca_surumu(veri):
+    """Bir dosyanın içindeki tek bir parçanın (ör. bir madde) sürümü; parça yoksa YOK."""
+    if veri is None:
+        return YOK
+    return _ozet(yaml.safe_dump(veri, allow_unicode=True, sort_keys=True).encode('utf-8'))
+
+
 def _ham(yol):
     try:
         with open(yol, 'rb') as fh:
@@ -86,6 +93,15 @@ class Depo:
                 raise Cakisma(p, beklenen, mevcut)
             _atomik(p, b)
         return _ozet(b)
+
+    def degistir(self, fn, *parcalar):
+        """Kilit altında oku → fn(veri) → atomik yaz. fn yeni veriyi döndürür ya da istisna atar
+        (o zaman dosya değişmez). Parça düzeyinde sürüm kontrolü fn içinde yapılır. Dönüş: yeni veri."""
+        with self.kilit(*parcalar) as p:
+            b = _ham(p)
+            yeni = fn(None if b is None else yaml.safe_load(b.decode('utf-8')))
+            _atomik(p, yaml.safe_dump(yeni, allow_unicode=True, sort_keys=False, default_flow_style=False).encode('utf-8'))
+        return yeni
 
     def yaz_ham(self, b, *parcalar):
         """İkili dosyayı (ör. logo) kilit altında atomik yazar; sürüm kontrolü yapmaz."""

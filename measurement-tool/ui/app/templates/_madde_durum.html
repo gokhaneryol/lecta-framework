@@ -1,0 +1,2 @@
+{% set isaret = {'bos': '○', 'not-alindi': '◐', 'atlandi': '↷', 'tamam': '●'} %}
+<span id="madde-durum" class="rozet madde-durum durum-{{ durum }}"{% if oob %} hx-swap-oob="true"{% endif %}>{{ isaret[durum] }} {{ durum_etiket[durum] }}</span>

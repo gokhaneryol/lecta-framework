@@ -24,3 +24,16 @@ def surum():
 def org_fields():
     with open(os.path.join(kontrol.SRC, 'org_fields.yaml'), encoding='utf-8') as fh:
         return yaml.safe_load(fh)['fields']
+
+
+# Kaynak imajla birlikte sabittir; her istekte YAML'ı yeniden okumamak için önbellek.
+# Dönen nesneler paylaşılır: çağıran değiştirmez.
+@functools.lru_cache(maxsize=4)
+def qs_maddeleri(profil):
+    """qs.qs_items(profil) → (G maddeleri, matris maddeleri), aynı sırayla."""
+    return qs.qs_items(profil)
+
+
+@functools.lru_cache(maxsize=1)
+def terimler():
+    return kontrol.terms()

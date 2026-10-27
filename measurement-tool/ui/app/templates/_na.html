@@ -1,0 +1,10 @@
+{# Tarayıcıda required YOK: htmx form doğrulaması başarısız olursa sonraki kayıtları sessizce engeller.
+   Zorunluluk sunucuda: gerekçesiz NA maddesi "eksik" kalır. #}
+<div id="na"{% if oob %} hx-swap-oob="true"{% endif %}>
+  {% if blok.kontroller.c1 and blok.kontroller.c1.cevap == 'NA' %}
+  <label class="na-gerekce">Uygulanmama gerekçesi (zorunlu; uygulanabilirlik ölçütüne dayanın)
+    <textarea name="na_reason" rows="2" maxlength="500">{{ blok.na_reason or '' }}</textarea>
+  </label>
+  {% with oob=False %}{% include '_na_uyari.html' %}{% endwith %}
+  {% endif %}
+</div>

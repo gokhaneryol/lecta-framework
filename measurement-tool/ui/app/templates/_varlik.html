@@ -1,0 +1,3 @@
+<div id="varlik"{% if oob %} hx-swap-oob="true"{% endif %}>
+  {% if digerleri %}<div class="uyari">Bu birimde şu an {{ digerleri | join(', ') }} de çalışıyor. Aynı maddeyi birlikte düzenlemeyin; çakışan kayıt reddedilir.</div>{% endif %}
+</div>
