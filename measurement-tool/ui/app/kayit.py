@@ -41,7 +41,7 @@ def kimlik_uret(metin):
     return s[:30].strip('-')
 
 
-ETIKET = dict(kurum_id='Kurum kimliği', ad_tam='Tam ad', ad_kisa='Kısa ad', ad='Ad', aciklama='Açıklama',
+ETIKET = dict(ad_tam='Tam ad', ad_kisa='Kısa ad', ad='Ad', aciklama='Açıklama',
               saglayici='Sağlayıcı', gozden_geciren='Gözden geçiren', sector='Sektör',
               employee_band='Çalışan sayısı', ai_use='AI kullanım alanları', iletisim='Görüşme katılımcıları')
 
@@ -71,25 +71,30 @@ def liste(depo):
 
 # ------------------------------------------------------------------ açma
 def ac(depo, form, kullanici, commit, kullanicilar=()):
-    """Yeni değerlendirme dizini: şablon + kurum.yaml + degerlendirme.yaml + git init. Dönüş: id."""
-    kisa_id = _metin(form, 'kurum_id', True, 30).lower()
-    if not KIMLIK.match(kisa_id):
-        raise Hata('Kurum kimliği yalnız küçük harf, rakam ve tire içerebilir (ör. ornek, ornek-banka)')
-    if re.search(r'-(19|20)\d\d$', kisa_id) or re.search(r'-as\d\d$', kisa_id):
-        raise Hata('Kurum kimliğine yıl ya da servis yazmayın; ikisi de otomatik eklenir (ornek → ornek-2026-as01)')
+    """Yeni değerlendirme dizini: şablon + kurum.yaml + degerlendirme.yaml + git init. Dönüş: id.
+
+    Kurum kimliği kısa addan üretilir (Örnek Banka → ornek-banka); değerlendirme kimliği
+    <kurum>-<yıl>-<servis>. Aynı kimlik varsa kuruma -2, -3 … eklenir.
+    """
     tam = _metin(form, 'ad_tam', True)
     kisa = _metin(form, 'ad_kisa', True, 60)
+    temel = re.sub(r'-(as\d\d|(19|20)\d\d)$', '', re.sub(r'-(as\d\d|(19|20)\d\d)$', '', kimlik_uret(kisa)))
+    if not temel:
+        raise Hata('Kısa addan kimlik üretilemedi; en az bir harf ya da rakam içermeli')
     servis = form.get('servis', 'AS-01')
     if servis not in SERVIS:
         raise Hata(f'Servis desteklenmiyor: {servis}')
     ref = _tarih(form.get('ref_date', ''))
     gozden = _gozden_geciren(form, kullanici, kullanicilar)
+    kisa_id, n = temel, 2
+    while os.path.exists(depo.yol(f'{kisa_id}-{ref.year}-{SERVIS[servis]}')):
+        kisa_id, n = f'{temel}-{n}', n + 1
     did = f'{kisa_id}-{ref.year}-{SERVIS[servis]}'
     hedef = depo.yol(did)
-    if os.path.exists(hedef):
-        raise Hata(f'{did} zaten var')
-
-    shutil.copytree(SABLON, hedef)
+    try:
+        shutil.copytree(SABLON, hedef)
+    except FileExistsError:
+        raise Hata(f'{did} aynı anda başka biri tarafından açıldı; tekrar deneyin')
     try:
         depo.yaz(dict(id=kisa_id, ad=dict(tam=tam, kisa=kisa), logo=None, sector=None, employee_band=None,
                       ai_use=[], olgular={}, iletisim=[]),

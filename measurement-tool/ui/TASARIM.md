@@ -35,6 +35,8 @@ Her kod iki dilli etiket taşır (`{en, tr}`). Kod bir kez verilir, yeniden kull
 
 ### 4.1 Değerlendirme reposu
 
+Kurum kimliği (`kurum-kisa`) elle yazılmaz, kısa addan üretilir: `Örnek Banka` → `ornek-banka`; Türkçe harfler sadeleşir. Aynı kimlik o yıl varsa `-2`, `-3` eklenir (Gökhan, 27 Ekim).
+
 ```
 <kurum-kisa>-<yyyy>-<servis>/        # ör. ornek-2026-as01 — private GitHub repo
   kurum.yaml

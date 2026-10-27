@@ -31,7 +31,7 @@ def ortam(tmp_path):
 
 
 def ac(c, **ek):
-    veri = dict(kurum_id='ornek', ad_tam='Örnek Kurum A.Ş.', ad_kisa='Örnek', servis='AS-01',
+    veri = dict(ad_tam='Örnek Kurum A.Ş.', ad_kisa='Örnek', servis='AS-01',
                 ref_date='2026-11-05', gozden_geciren='ayhan')
     veri.update(ek)
     return c.post('/yeni', data=veri)
@@ -90,15 +90,13 @@ def test_listede_gorunur(ortam):
 
 
 @pytest.mark.parametrize('ek, mesaj', [
-    (dict(kurum_id='Örnek Kurum'), 'Kurum kimliği'),
+    (dict(ad_kisa='—'), 'kimlik üretilemedi'),
     (dict(ad_tam=''), 'Tam ad boş olamaz'),
     (dict(ref_date='05.11.2026'), 'YYYY-AA-GG'),
     (dict(gozden_geciren='gokhan'), 'farklı biri'),
     (dict(gozden_geciren='gökhan'), 'listeden seçilmeli (ayhan)'),
     (dict(gozden_geciren='veli'), 'listeden seçilmeli'),
     (dict(servis='AS-02'), 'desteklenmiyor'),
-    (dict(kurum_id='ornek-2026'), 'otomatik eklenir'),
-    (dict(kurum_id='ornek-as01'), 'otomatik eklenir'),
 ])
 def test_yeni_dogrulama(ortam, tmp_path, ek, mesaj):
     c, _ = ortam
@@ -107,10 +105,13 @@ def test_yeni_dogrulama(ortam, tmp_path, ek, mesaj):
     assert os.listdir(tmp_path) == []
 
 
-def test_ayni_degerlendirme_iki_kez_acilmaz(ortam):
-    c, _ = ortam
-    ac(c)
-    assert 'zaten var' in ac(c).get_data(as_text=True)
+def test_kimlik_kisa_addan_uretilir_cakisirsa_numaralanir(ortam, tmp_path):
+    c, d = ortam
+    assert ac(c).headers['Location'].endswith('/d/ornek-2026-as01/')
+    assert ac(c).headers['Location'].endswith('/d/ornek-2-2026-as01/')
+    assert d.oku('ornek-2-2026-as01', 'kurum.yaml')[0]['id'] == 'ornek-2'
+    r = ac(c, ad_tam='Şişli Çağrı Ölçüm A.Ş.', ad_kisa='Şişli Çağrı 2026')
+    assert r.headers['Location'].endswith('/d/sisli-cagri-2026-as01/')
 
 
 def test_gecersiz_kod_kaydedilmez(ortam):
