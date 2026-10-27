@@ -97,6 +97,8 @@ def test_listede_gorunur(ortam):
     (dict(gozden_geciren='gökhan'), 'listeden seçilmeli (ayhan)'),
     (dict(gozden_geciren='veli'), 'listeden seçilmeli'),
     (dict(servis='AS-02'), 'desteklenmiyor'),
+    (dict(kurum_id='ornek-2026'), 'otomatik eklenir'),
+    (dict(kurum_id='ornek-as01'), 'otomatik eklenir'),
 ])
 def test_yeni_dogrulama(ortam, tmp_path, ek, mesaj):
     c, _ = ortam
@@ -227,3 +229,11 @@ def test_kullanici_listesi_yoksa_metin_alani_ve_acik_mesaj(tmp_path):
     assert '<input name="gozden_geciren"' in c.get('/yeni').get_data(as_text=True)
     r = ac(c, gozden_geciren='gökhan')
     assert 'Türkçe karakter yok' in r.get_data(as_text=True)
+
+
+def test_kapsam_ekrani_sonraki_adimi_soyler(ortam):
+    c, d = ortam
+    ac(c)
+    assert 'en az bir sistem ekleyin' in c.get(f'/d/{DID}/').get_data(as_text=True)
+    html = sistem_ekle(c, d, 'Asistan').get_data(as_text=True)
+    assert 'Kurum ve kapsam hazır' in html and 'Görüşmeye başla' in html

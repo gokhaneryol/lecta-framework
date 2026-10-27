@@ -37,4 +37,13 @@
     </fieldset>
   </form>
   {% endif %}
+  <div class="sonraki">
+    {% if dg.sistemler %}
+    <p><strong>Kurum ve kapsam hazır.</strong> Bu ekrandaki her değişiklik anında kaydedilir; ayrıca kaydetmeniz gerekmez.</p>
+    {% else %}
+    <p><strong>Görüşmeye başlamak için en az bir sistem ekleyin.</strong> Bu ekrandaki her değişiklik anında kaydedilir.</p>
+    {% endif %}
+    <button class="dugme" type="button" disabled title="Madde ekranları yapım aşamasında (talimat adım 4)">Görüşmeye başla →</button>
+    <small>Görüşme (madde) ekranları henüz yapım aşamasında.</small>
+  </div>
 </section>

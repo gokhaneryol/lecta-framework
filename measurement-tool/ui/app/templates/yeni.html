@@ -6,7 +6,7 @@
 <form method="post" class="form">
   <label>Kurum kimliği
     <input name="kurum_id" value="{{ form.get('kurum_id', '') }}" required pattern="[a-z0-9]+(-[a-z0-9]+)*" maxlength="30" autofocus>
-    <small>Küçük harf, rakam ve tire. Değerlendirme kimliği bundan üretilir: <code>kimlik-yıl-as01</code></small>
+    <small>Yalnız kurumun kısa kimliği: küçük harf, rakam ve tire (ör. <code>ornek</code>). Yıl ve servis otomatik eklenir: <code>ornek-2026-as01</code></small>
   </label>
   <label>Kurumun tam adı <input name="ad_tam" value="{{ form.get('ad_tam', '') }}" required maxlength="200"></label>
   <label>Kısa ad <input name="ad_kisa" value="{{ form.get('ad_kisa', '') }}" required maxlength="60"></label>

@@ -75,6 +75,8 @@ def ac(depo, form, kullanici, commit, kullanicilar=()):
     kisa_id = _metin(form, 'kurum_id', True, 30).lower()
     if not KIMLIK.match(kisa_id):
         raise Hata('Kurum kimliği yalnız küçük harf, rakam ve tire içerebilir (ör. ornek, ornek-banka)')
+    if re.search(r'-(19|20)\d\d$', kisa_id) or re.search(r'-as\d\d$', kisa_id):
+        raise Hata('Kurum kimliğine yıl ya da servis yazmayın; ikisi de otomatik eklenir (ornek → ornek-2026-as01)')
     tam = _metin(form, 'ad_tam', True)
     kisa = _metin(form, 'ad_kisa', True, 60)
     servis = form.get('servis', 'AS-01')
