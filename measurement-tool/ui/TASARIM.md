@@ -97,7 +97,7 @@ HYG-ING-02:
 
 - **Kontrol durumu:** `bos` · `cevaplandi` · `atlandi`. Madde durumu kontrollerden ve nottan türetilir: `bos` → `not-alindi` (notu var, cevabı eksik) → `tamam`.
 - **Saklanmaz, her seferinde hesaplanır:** madde puanı, seviye, risk sırası.
-- **Otomatik kapanma saklanmaz** (K4): c1 = H/NA/atlandı iken diğer kontroller ekranda kapalı görünür, dosyaya ayrı bir durum yazılmaz ve kayıtlı cevapları korunur. Kullanıcının "Atla" dediği kontrol `durum: atlandi` olarak saklanır. Kapalı kontrollerin CSV'ye nasıl çıkacağı (B mi, kayıtlı cevap mı) adım 5'te kararlaştırılır ❓ (27 Ekim).
+- **Otomatik kapanma saklanmaz** (K4): c1 = H/NA/atlandı iken diğer kontroller ekranda kapalı görünür, dosyaya ayrı bir durum yazılmaz ve kayıtlı cevapları korunur. Kullanıcının "Atla" dediği kontrol `durum: atlandi` olarak saklanır. Kapalı kontroller CSV'ye c1'in değeriyle çıkar (§4.5) ✅ (Gökhan, 27 Ekim).
 - **Kanıt referansı** QS'de serbest metindir (`EK-04; EK-05`); `kanit: [{ref: EK-04}, …]` olarak saklanır, `tur` AS-02'de eklenir.
 
 ### 4.5 CSV'ye dönüşüm
@@ -106,12 +106,13 @@ HYG-ING-02:
 
 | CSV alanı | Kaynak |
 |---|---|
-| `answer` | `cevap`; `atlandi` ya da `bos` ise kapanışta `B` |
+| `answer` | `cevap`; `atlandi` ya da `bos` ise kapanışta `B`. c1 diğerlerini kapattıysa (H / NA / atlandı) kapalı kontroller **c1'in değeriyle** çıkar: H → H, NA → NA, atlandı → B; kapalı satırdaki kayıtlı cevap yazılmaz (Gökhan, 27 Ekim) |
 | `note` | kontrol notu; atlandıysa "atlandı" eklenir. Görüşme notu CSV'ye girmez, memo girdisine girer |
 | `na_reason` | maddenin `na_reason`'ı, c1 satırına |
 | `evidence_ref` | `kanit` listesi, `;` ile birleştirilmiş |
 | `assessor` / `reviewer` | `degerlendirme.yaml`'dan; maddenin bütün satırlarına aynı değer |
 | `score` | boş (betik hesaplar) |
+| `unit` | KURUM satırlarında kurumun kısa adı, sistem satırlarında sistem adı (sistem adları benzersiz) |
 
 **Kabul testi:** Aynı cevaplarla elle doldurulmuş CSV ve arayüzün ürettiği CSV, `qs.py seviye`'den **bayt bayt aynı** çıktıyı vermeli.
 
@@ -129,7 +130,7 @@ HYG-ING-02:
 2. **Kurum ve kapsam:** tanımlayıcı alanlar, logo, sistemler ve profilleri.
 3. **Madde ekranı:** başta `qs_question`; açılır alanlarda derinleştirme sorusu ve uygulanabilirlik. Ardından görüşme notu, kontroller (E/H/B, c1'de NA), kontrol notu, kanıt referansı; yan panelde terimler. Altta tespit satırı: "Bu cevaplarla madde puanı: 1 — karşılanmayan: c3" (düzenlenemez). Atla / önceki / sonraki düğmeleri; solda durum işaretli madde listesi.
 4. **Kapanış:** eksikler listesi (atlanan, boş, notu olup cevabı eksik) → onay → `incelemede`.
-5. **İnceleme:** madde başına katılıyorum / katılmıyorum + yorum; uyuşmazlık listesi → `kapali`.
+5. **İnceleme:** madde başına katılıyorum / katılmıyorum + yorum; uyuşmazlık listesi → `kapali` ya da değerlendiriciye geri gönder (`taslak`). Karar, maddenin o anki içeriğinin özetini saklar; madde sonra değişirse "sonra değişti" işareti çıkar. Kapanışı yalnız değerlendirici, inceleme kararlarını ve kapatmayı yalnız gözden geçiren yapar (27 Ekim).
 6. **Sonuç:** sistem başına matris / G / raporlanan seviye, seviyeyi bloklayan maddeler, en kritik 5 risk; `cikti/qs.csv` ve `cikti/seviye.md` üretimi.
 
 Madde sırası `qs_items()` sırasıdır (seviye, sonra ID; 16 Ekim K8 açık). Arayüz dili TR.
@@ -145,7 +146,7 @@ Madde sırası `qs_items()` sırasıdır (seviye, sonra ID; 16 Ekim K8 açık). 
 - Container 127.0.0.1:`<port>`'u dinler; Apache vhost reverse proxy yapar, TLS certbot ile.
 - **Erişim:** ✅ VPN kısıtı (`Require ip 10.11.12.0/24`) **ve** Apache kimlik doğrulaması (htpasswd, bcrypt). Ad VPN adresine çözüldüğü için TLS Let's Encrypt DNS-01 ile (yalnız `_acme-challenge.lecta-frui` dinamik alt bölge). Ayhan'a bir VPN profili verilir (Gökhan, 27 Ekim). Ayrıntı: `ui/deploy/KURULUM.md`
 - **Volume:** `/srv/lecta-ui/data` → container'da `/data`; değerlendirme repoları burada.
-- **Framework sürümü:** imaj belirli bir commit'ten build edilir. Açık bir değerlendirmenin `framework.commit`'i imajınkinden farklıysa ekranda uyarı çıkar ve CSV başlığına iki commit de yazılır.
+- **Framework sürümü:** imaj belirli bir commit'ten build edilir. Açık bir değerlendirmenin `framework.commit`'i imajınkinden farklıysa ekranda uyarı çıkar; iki commit de `cikti/kaynak.yaml`'a yazılır. CSV'ye başlık satırı eklenmez, çünkü `qs.py seviye` okumasını bozar (27 Ekim).
 - **Git:** v1'de uygulama değerlendirme reposuna yerel commit atar (kapanışta ve "anlık görüntü" düğmesiyle). GitHub'a push elle yapılır; repo başına deploy key ile otomatik push sonraki adım ❓.
 - Alan adı ✅ `lecta-frui.deepwake.tech` (Gökhan, 27 Ekim).
 

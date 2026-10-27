@@ -112,6 +112,35 @@ def cmd_rehber(a):
 
 
 # ------------------------------------------------------------------ puanlama
+def puanlama_satirlari(kurum, systems):
+    """Boş puanlama tablosunun satırları (kontrol başına bir satır). Arayüz de bunu kullanır.
+    systems: [(ad, 'CE'|'SOV')], en çok 2."""
+    rows = []
+    # G maddeleri: kurum başına bir kez; kullanılan profillerin hepsi için seviye yazılır
+    profs = sorted({p for _, p in systems})
+    gov_ids = {}
+    for p in profs:
+        for i in qs_items(p)[0]:
+            gov_ids.setdefault(i['id'], (i, {}))[1][p] = i['level'][p]
+    for iid, (i, lv) in sorted(gov_ids.items(), key=lambda kv: kv[0]):
+        rows.append(dict(unit=kurum, unit_type='KURUM', profile='/'.join(lv),
+                         item_id=iid, title_tr=t(i['title']),
+                         level='/'.join(f'{p}:{v}' for p, v in lv.items()), basis='declared'))
+    for name, p in systems:
+        for i in qs_items(p)[1]:
+            rows.append(dict(unit=name, unit_type='SISTEM', profile=p, item_id=i['id'],
+                             title_tr=t(i['title']), level=i['level'][p], basis='declared'))
+    return expand(rows)
+
+
+def csv_yaz(rows, fh):
+    """Puanlama CSV'si: FIELDS sırası, eksik alan boş. fh newline='' ile açılmış olmalı."""
+    w = csv.DictWriter(fh, fieldnames=FIELDS)
+    w.writeheader()
+    for r in rows:
+        w.writerow({k: r.get(k, '') for k in FIELDS})
+
+
 def cmd_puanlama(a):
     systems = []
     for s in a.sistem:
@@ -121,27 +150,9 @@ def cmd_puanlama(a):
         systems.append((name, prof))
     if len(systems) > 2:
         sys.exit("Quick Scan'de en çok 2 sistem (03-quick-scan-kesiti.md).")
-    rows = []
-    # G maddeleri: kurum başına bir kez; kullanılan profillerin hepsi için seviye yazılır
-    profs = sorted({p for _, p in systems})
-    gov_ids = {}
-    for p in profs:
-        for i in qs_items(p)[0]:
-            gov_ids.setdefault(i['id'], (i, {}))[1][p] = i['level'][p]
-    for iid, (i, lv) in sorted(gov_ids.items(), key=lambda kv: kv[0]):
-        rows.append(dict(unit=a.kurum, unit_type='KURUM', profile='/'.join(lv),
-                         item_id=iid, title_tr=t(i['title']),
-                         level='/'.join(f'{p}:{v}' for p, v in lv.items()), basis='declared'))
-    for name, p in systems:
-        for i in qs_items(p)[1]:
-            rows.append(dict(unit=name, unit_type='SISTEM', profile=p, item_id=i['id'],
-                             title_tr=t(i['title']), level=i['level'][p], basis='declared'))
-    rows = expand(rows)
+    rows = puanlama_satirlari(a.kurum, systems)
     out = open(a.out, 'w', newline='', encoding='utf-8') if a.out else sys.stdout
-    w = csv.DictWriter(out, fieldnames=FIELDS)
-    w.writeheader()
-    for r in rows:
-        w.writerow({k: r.get(k, '') for k in FIELDS})
+    csv_yaz(rows, out)
     if a.out:
         out.close(); print(f'yazıldı: {a.out} ({len(rows)} satır)')
 

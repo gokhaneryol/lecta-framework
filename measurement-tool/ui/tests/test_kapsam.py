@@ -137,7 +137,8 @@ def test_qsde_en_cok_iki_sistem_ve_kimlik_cakismasi(ortam):
     c, d = ortam
     ac(c)
     sistem_ekle(c, d, 'Asistan')
-    sistem_ekle(c, d, 'Asistan', 'SOV')
+    assert 'zaten var' in sistem_ekle(c, d, 'asistan', 'SOV').get_data(as_text=True)   # ad CSV'de birim anahtarı
+    sistem_ekle(c, d, 'Asistan!', 'SOV')
     assert [s['id'] for s in d.oku(DID, 'degerlendirme.yaml')[0]['sistemler']] == ['asistan', 'asistan-2']
     assert "en çok 2 sistem" in sistem_ekle(c, d, 'Üçüncü').get_data(as_text=True)
 
