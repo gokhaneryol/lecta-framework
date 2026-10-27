@@ -70,7 +70,7 @@ def liste(depo):
 
 
 # ------------------------------------------------------------------ açma
-def ac(depo, form, kullanici, commit):
+def ac(depo, form, kullanici, commit, kullanicilar=()):
     """Yeni değerlendirme dizini: şablon + kurum.yaml + degerlendirme.yaml + git init. Dönüş: id."""
     kisa_id = _metin(form, 'kurum_id', True, 30).lower()
     if not KIMLIK.match(kisa_id):
@@ -81,7 +81,7 @@ def ac(depo, form, kullanici, commit):
     if servis not in SERVIS:
         raise Hata(f'Servis desteklenmiyor: {servis}')
     ref = _tarih(form.get('ref_date', ''))
-    gozden = _gozden_geciren(form, kullanici)
+    gozden = _gozden_geciren(form, kullanici, kullanicilar)
     did = f'{kisa_id}-{ref.year}-{SERVIS[servis]}'
     hedef = depo.yol(did)
     if os.path.exists(hedef):
@@ -122,12 +122,21 @@ def _tarih(v):
         raise Hata('Referans tarih YYYY-AA-GG biçiminde olmalı')
 
 
-def _gozden_geciren(form, kullanici):
-    g = _metin(form, 'gozden_geciren', en_cok=40).lower()
-    if g and not KIMLIK.match(g):
-        raise Hata('Gözden geçiren kullanıcı kimliği geçersiz')
-    if g and g == kullanici:
+def gozden_gecirenler(kullanicilar, degerlendirici):
+    """Gözden geçiren olarak seçilebilecek kullanıcılar: değerlendirici dışındakiler (K6)."""
+    return [k for k in kullanicilar if k != degerlendirici]
+
+
+def _gozden_geciren(form, degerlendirici, kullanicilar):
+    g = _metin(form, 'gozden_geciren', en_cok=40)
+    if not g:
+        return ''
+    if g == degerlendirici:
         raise Hata('Gözden geçiren, değerlendiriciden farklı biri olmalı')
+    if kullanicilar and g not in kullanicilar:
+        raise Hata(f"Gözden geçiren listeden seçilmeli ({', '.join(gozden_gecirenler(kullanicilar, degerlendirici))})")
+    if not KIMLIK.match(g):
+        raise Hata(f'Gözden geçiren bir kullanıcı kimliği olmalı (küçük harf, Türkçe karakter yok; ör. ayhan): {g}')
     return g
 
 
@@ -177,11 +186,11 @@ def logo_dogrula(b):
 
 
 # ------------------------------------------------------------------ kapsam
-def ayar_guncelle(dg, form, kullanici):
+def ayar_guncelle(dg, form, kullanicilar=()):
     _taslak(dg)
     yeni = dict(dg)
     yeni['ref_date'] = _tarih(form.get('ref_date', ''))
-    yeni['gozden_geciren'] = _gozden_geciren(form, dg['degerlendirici'])
+    yeni['gozden_geciren'] = _gozden_geciren(form, dg['degerlendirici'], kullanicilar)
     return yeni
 
 

@@ -58,7 +58,13 @@
     <fieldset {% if not duzenlenebilir %}disabled{% endif %}>
       <label>Referans tarih <input type="date" name="ref_date" value="{{ dg.ref_date }}" required></label>
       <label>Değerlendirici <input value="{{ dg.degerlendirici }}" disabled></label>
-      <label>Gözden geçiren <input name="gozden_geciren" value="{{ dg.gozden_geciren }}" maxlength="40"></label>
+      <label>Gözden geçiren
+        {% if gozden %}
+        <select name="gozden_geciren"><option value="">— sonra seçilecek —</option>
+          {% for k in gozden %}<option {% if dg.gozden_geciren == k %}selected{% endif %}>{{ k }}</option>{% endfor %}
+        </select>
+        {% else %}<input name="gozden_geciren" value="{{ dg.gozden_geciren }}" maxlength="40">{% endif %}
+      </label>
     </fieldset>
   </form>
   {% include '_sistemler.html' %}

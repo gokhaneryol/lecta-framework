@@ -24,6 +24,10 @@ def commit():
     return current_app.config['LECTA_FRAMEWORK_COMMIT']
 
 
+def kullanicilar():
+    return [k.strip() for k in current_app.config['LECTA_KULLANICILAR'].split(',') if k.strip()]
+
+
 def yukle(did):
     if not kayit.KIMLIK.match(did):
         abort(404)
@@ -63,11 +67,12 @@ def yeni():
     hatalar = []
     if request.method == 'POST':
         try:
-            did = kayit.ac(depo(), request.form, g.kullanici, commit())
+            did = kayit.ac(depo(), request.form, g.kullanici, commit(), kullanicilar())
             return redirect(url_for('ekran.kapsam', did=did), code=303)
         except kayit.Hata as e:
             hatalar = e.mesajlar
-    return render_template('yeni.html', form=form, hatalar=hatalar, servisler=list(kayit.SERVIS))
+    return render_template('yeni.html', form=form, hatalar=hatalar, servisler=list(kayit.SERVIS),
+                           gozden=kayit.gozden_gecirenler(kullanicilar(), g.kullanici))
 
 
 # ------------------------------------------------------------------ kurum ve kapsam
@@ -78,6 +83,7 @@ def kapsam(did):
     return render_template('kapsam.html', dg=dg, dg_s=dg_s, kurum=kurum, kurum_s=kurum_s,
                            alanlar=framework.org_fields(), duzenlenebilir=kayit.duzenlenebilir(dg),
                            commit_uyari=uyari, en_cok=kayit.QS_EN_COK_SISTEM,
+                           gozden=kayit.gozden_gecirenler(kullanicilar(), dg['degerlendirici']),
                            cevapli={s['id'] for s in dg['sistemler'] if cevap_var(did, s['id'])})
 
 
@@ -142,7 +148,7 @@ def _dg_yaz(did, fn):
 
 @bp.post('/d/<did>/ayar')
 def ayar_kaydet(did):
-    hata, s = _dg_yaz(did, lambda dg: kayit.ayar_guncelle(dg, request.form, g.kullanici))
+    hata, s = _dg_yaz(did, lambda dg: kayit.ayar_guncelle(dg, request.form, kullanicilar()))
     return hata or render_template('_surum.html', id='dg-surum', surum=s) + kaydedildi('kapsam-durum')
 
 

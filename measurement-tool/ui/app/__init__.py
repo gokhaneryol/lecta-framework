@@ -5,6 +5,7 @@ Ortam değişkenleri:
   LECTA_USER              yerel geliştirmede kullanıcı kimliği; tanımlıysa başlığa bakılmaz
   LECTA_TRUSTED_PROXIES   X-Remote-User başlığına güvenilen adresler, virgülle (varsayılan 127.0.0.1)
   LECTA_FRAMEWORK_COMMIT  imajın build edildiği framework commit'i (ekranın altında gösterilir)
+  LECTA_KULLANICILAR      arayüz kullanıcıları, virgülle (gözden geçiren seçimi; htpasswd ile aynı adlar)
 """
 import os
 
@@ -21,6 +22,7 @@ def create_app(ayar=None):
         LECTA_USER=os.environ.get('LECTA_USER', '').strip(),
         LECTA_TRUSTED_PROXIES=os.environ.get('LECTA_TRUSTED_PROXIES', '127.0.0.1'),
         LECTA_FRAMEWORK_COMMIT=os.environ.get('LECTA_FRAMEWORK_COMMIT', 'dev'),
+        LECTA_KULLANICILAR=os.environ.get('LECTA_KULLANICILAR', ''),
         MAX_CONTENT_LENGTH=1024 * 1024,
     )
     app.config.update(ayar or {})

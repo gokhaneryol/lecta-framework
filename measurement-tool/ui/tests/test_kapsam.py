@@ -25,7 +25,8 @@ def png(w=4, h=2):
 
 @pytest.fixture
 def ortam(tmp_path):
-    app = create_app(dict(LECTA_DATA=str(tmp_path), LECTA_USER='gokhan', LECTA_FRAMEWORK_COMMIT='abc1234', TESTING=True))
+    app = create_app(dict(LECTA_DATA=str(tmp_path), LECTA_USER='gokhan', LECTA_FRAMEWORK_COMMIT='abc1234',
+                          LECTA_KULLANICILAR='gokhan,ayhan', TESTING=True))
     return app.test_client(), Depo(tmp_path)
 
 
@@ -93,6 +94,8 @@ def test_listede_gorunur(ortam):
     (dict(ad_tam=''), 'Tam ad boş olamaz'),
     (dict(ref_date='05.11.2026'), 'YYYY-AA-GG'),
     (dict(gozden_geciren='gokhan'), 'farklı biri'),
+    (dict(gozden_geciren='gökhan'), 'listeden seçilmeli (ayhan)'),
+    (dict(gozden_geciren='veli'), 'listeden seçilmeli'),
     (dict(servis='AS-02'), 'desteklenmiyor'),
 ])
 def test_yeni_dogrulama(ortam, tmp_path, ek, mesaj):
@@ -210,3 +213,17 @@ def test_framework_commit_farki_uyarisi(tmp_path):
     b = create_app(dict(LECTA_DATA=str(tmp_path), LECTA_USER='gokhan', LECTA_FRAMEWORK_COMMIT='def5678', TESTING=True))
     html = b.test_client().get(f'/d/{DID}/').get_data(as_text=True)
     assert 'abc1234' in html and 'def5678' in html and 'Madde ve kontrol metinleri farklı olabilir' in html
+
+
+def test_gozden_geciren_menusu_degerlendiriciyi_icermez(ortam):
+    c, _ = ortam
+    html = c.get('/yeni').get_data(as_text=True)
+    assert '<select name="gozden_geciren">' in html and '<option >ayhan</option>' in html
+    assert '<option >gokhan</option>' not in html
+
+
+def test_kullanici_listesi_yoksa_metin_alani_ve_acik_mesaj(tmp_path):
+    c = create_app(dict(LECTA_DATA=str(tmp_path), LECTA_USER='gokhan', TESTING=True)).test_client()
+    assert '<input name="gozden_geciren"' in c.get('/yeni').get_data(as_text=True)
+    r = ac(c, gozden_geciren='gökhan')
+    assert 'Türkçe karakter yok' in r.get_data(as_text=True)

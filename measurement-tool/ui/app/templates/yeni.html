@@ -15,7 +15,14 @@
   </label>
   <label>Referans tarih <input type="date" name="ref_date" value="{{ form.get('ref_date', '') }}" required>
     <small>Görüşme günü. Tarih kontrolleri bu güne göre değerlendirilir.</small></label>
-  <label>Gözden geçiren <input name="gozden_geciren" value="{{ form.get('gozden_geciren', '') }}" maxlength="40" placeholder="ör. ayhan">
+  <label>Gözden geçiren
+    {% if gozden %}
+    <select name="gozden_geciren"><option value="">— sonra seçilecek —</option>
+      {% for k in gozden %}<option {% if form.get('gozden_geciren') == k %}selected{% endif %}>{{ k }}</option>{% endfor %}
+    </select>
+    {% else %}
+    <input name="gozden_geciren" value="{{ form.get('gozden_geciren', '') }}" maxlength="40" placeholder="ör. ayhan">
+    {% endif %}
     <small>Değerlendirici: {{ kullanici }}</small></label>
   <p class="not">Bu değerlendirmenin dosyaları müşteri verisidir; notlarda kişi adı değil rol yazın.</p>
   <button class="dugme" type="submit">Aç</button>

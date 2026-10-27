@@ -71,6 +71,8 @@ chown root:www-data /etc/apache2/lecta-ui.htpasswd && chmod 640 /etc/apache2/lec
 
 Ayhan sonra: `htpasswd -B /etc/apache2/lecta-ui.htpasswd ayhan` (`-c` olmadan).
 
+Kullanıcı adları ASCII küçük harf olur (`gokhan`, `ayhan`). Yeni kullanıcı eklenince `deploy/compose.donut.yaml`'daki `LECTA_KULLANICILAR` listesine de eklenir (gözden geçiren menüsü buradan gelir) ve `gonder.sh` çalıştırılır.
+
 ## 5. Apache
 
 ```
