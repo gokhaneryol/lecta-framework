@@ -6,6 +6,7 @@ LABEL org.opencontainers.image.title="lecta-ui" \
       org.opencontainers.image.revision="${FRAMEWORK_COMMIT}"
 ENV LECTA_FRAMEWORK_COMMIT="${FRAMEWORK_COMMIT}" \
     LECTA_DATA=/data \
+    HOME=/tmp \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
