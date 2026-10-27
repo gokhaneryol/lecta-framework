@@ -1,0 +1,8 @@
+<p id="tespit" class="tespit"{% if oob %} hx-swap-oob="true"{% endif %} aria-live="polite">
+  Bu cevaplarla madde puanı: <strong>{{ tespit.puan }}</strong>
+  {% if tespit.puan == 'NE' %}— değerlendirilemedi (c1 boş ya da bilmiyor)
+  {% elif tespit.puan == 'NA' %}— uygulanmaz, seviye hesabına girmez
+  {% elif tespit.karsilanmayan %}— karşılanmayan: {{ tespit.karsilanmayan | join(', ') }}
+  {% else %}— tüm kontroller karşılanıyor{% endif %}
+  <small>(durum tespiti; elle değiştirilemez)</small>
+</p>

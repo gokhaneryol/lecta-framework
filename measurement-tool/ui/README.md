@@ -44,6 +44,7 @@ pytest
 - `test_depo.py`: atomik yazma, dosya kilidi, sürüm çakışması.
 - `test_uygulama.py`: kimlik, boş liste sayfası, `org_fields.yaml`.
 - `test_kapsam.py`: değerlendirme açma, kurum ve kapsam ekranları; fixture kurumun arayüzle oluşturulması (adım 3 kabulü).
+- `test_gorusme.py`: `fixtures/qs/*.csv` cevapları arayüzden girilir, her maddenin tespiti `qs.hesapla()` puanıyla aynı olmalı; skip ve NA kuralları, madde düzeyinde çakışma (adım 4 kabulü).
 
 ## Dosyalar
 
@@ -51,6 +52,9 @@ pytest
 app/__init__.py     Flask uygulaması, kimlik, başka siteden POST engeli
 app/rotalar.py      ekranlar: değerlendirme listesi, yeni değerlendirme, kurum ve kapsam
 app/kayit.py        değerlendirme dizini: açma (şablon + git init), kurum/sistem doğrulama
+app/gorusme.py      görüşme: birimler, madde cevapları, skip kuralları (K4), madde durumu, tespit (kontrol.py ile)
+app/gorusme_ekran.py madde ekranları, madde düzeyinde sürüm kontrolü, aynı birimde başka kullanıcı uyarısı
+app/static/klavye.js klavye kısayolları; sayfa kapanırken kaydedilmemiş değişikliği gönderir
 app/sablon/         yeni değerlendirme dizininin şablonu (.gitignore, README)
 app/depo.py         YAML dosya katmanı: atomik yazma, kilit, sürüm kontrolü
 app/framework.py    source/ ve tools/ için tek giriş

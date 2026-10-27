@@ -43,7 +43,11 @@
     {% else %}
     <p><strong>Görüşmeye başlamak için en az bir sistem ekleyin.</strong> Bu ekrandaki her değişiklik anında kaydedilir.</p>
     {% endif %}
-    <button class="dugme" type="button" disabled title="Madde ekranları yapım aşamasında (talimat adım 4)">Görüşmeye başla →</button>
-    <small>Görüşme (madde) ekranları henüz yapım aşamasında.</small>
+    {% if dg.sistemler %}
+    <a class="dugme" href="{{ url_for('gorusme.baslat', did=dg.id) }}">Görüşmeye başla →</a>
+    <small>İlk tamamlanmamış maddeden açılır. Kurum (G bloğu) maddeleri önce gelir.</small>
+    {% else %}
+    <button class="dugme" type="button" disabled>Görüşmeye başla →</button>
+    {% endif %}
   </div>
 </section>

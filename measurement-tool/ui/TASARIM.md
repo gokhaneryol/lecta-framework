@@ -97,6 +97,8 @@ HYG-ING-02:
 
 - **Kontrol durumu:** `bos` · `cevaplandi` · `atlandi`. Madde durumu kontrollerden ve nottan türetilir: `bos` → `not-alindi` (notu var, cevabı eksik) → `tamam`.
 - **Saklanmaz, her seferinde hesaplanır:** madde puanı, seviye, risk sırası.
+- **Otomatik atlama saklanmaz** (K4): c1 = H iken cevapsız kontroller ekranda "atlandı (c1=H)" görünür ama dosyaya `durum: atlandi` yazılmaz; c1 değişince geri alınacak bir şey kalmaz. Kullanıcının "Atla" dediği kontrol `durum: atlandi` olarak saklanır. c1 = NA iken diğer kontrollerin saklı değerleri korunur, ekranda kapalıdır (27 Ekim).
+- **Kanıt referansı** QS'de serbest metindir (`EK-04; EK-05`); `kanit: [{ref: EK-04}, …]` olarak saklanır, `tur` AS-02'de eklenir.
 
 ### 4.5 CSV'ye dönüşüm
 
@@ -135,7 +137,7 @@ Madde sırası `qs_items()` sırasıdır (seviye, sonra ID; 16 Ekim K8 açık). 
 ### 5.3 Kimlik ve eşzamanlılık
 
 - **Kimlik:** Apache'nin doğruladığı kullanıcı `X-Remote-User` başlığıyla gelir. Bu başlığa yalnız `127.0.0.1`'den gelen istekte güvenilir. Yerelde kimlik `LECTA_USER` ortam değişkeninden okunur.
-- **Yazma:** dosya başına kilit (`fcntl`) + iyimser sürüm kontrolü. Form dosyanın hash'ini taşır; dosya o arada değiştiyse kayıt reddedilir ve "başkası değiştirdi, yenile" mesajı gösterilir. Aynı birimde başka kullanıcı varsa ekranda uyarı çıkar.
+- **Yazma:** dosya başına kilit (`fcntl`) + iyimser sürüm kontrolü. Cevap dosyalarında sürüm **madde düzeyindedir**: aynı birimde farklı maddeleri düzenleyen iki kişi çakışmaz. Sayfa kapanırken gönderilen son kayıt, madde en son aynı kullanıcı tarafından değiştirildiyse reddedilmez (27 Ekim). Form dosyanın hash'ini taşır; dosya o arada değiştiyse kayıt reddedilir ve "başkası değiştirdi, yenile" mesajı gösterilir. Aynı birimde başka kullanıcı varsa ekranda uyarı çıkar.
 - gunicorn tek worker + thread'lerle çalışır.
 
 ### 5.4 Donut kurulumu

@@ -12,7 +12,7 @@
     <a href="{{ url_for('ekran.degerlendirmeler') }}" class="marka">Lecta · Değerlendirme</a>
     <span class="kullanici">{{ kullanici }}</span>
   </header>
-  <main>{% block icerik %}{% endblock %}</main>
+  <main class="{% block govde_sinif %}{% endblock %}">{% block icerik %}{% endblock %}</main>
   <footer>Framework {{ surum }} · commit <code>{{ commit }}</code></footer>
 </body>
 </html>

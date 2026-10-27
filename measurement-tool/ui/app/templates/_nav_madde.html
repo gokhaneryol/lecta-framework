@@ -1,0 +1,5 @@
+{% set isaret = {'bos': '○', 'not-alindi': '◐', 'atlandi': '↷', 'tamam': '●'} %}
+<li id="nav-{{ birim.id }}-{{ m.id }}" class="nav-madde durum-{{ durum }}{% if aktif %} aktif{% endif %}"{% if oob %} hx-swap-oob="true"{% endif %}>
+  <a href="{{ url_for('gorusme.madde', did=did, birim=birim.id, madde_id=m.id) }}" title="{{ durum_etiket[durum] }}"{% if aktif %} aria-current="page"{% endif %}>
+    <span class="isaret" aria-label="{{ durum_etiket[durum] }}">{{ isaret[durum] }}</span> {{ m.id }}</a>
+</li>

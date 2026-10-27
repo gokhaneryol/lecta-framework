@@ -1,0 +1,22 @@
+<div class="kontrol durum-{{ s.durum }}" id="k-{{ s.id }}" data-kontrol="{{ s.id }}"{% if oob %} hx-swap-oob="true"{% endif %}>
+  <fieldset {% if s.durum == 'kapali' or not duzenlenebilir %}disabled{% endif %}>
+    <div class="kontrol-ust">
+      <span class="kontrol-id">{{ s.id }}</span><span class="kontrol-tur">{{ s.tur }}</span>
+      <span class="kontrol-metin">{{ s.metin | kalin }}</span>
+      {% include '_rozet.html' %}
+    </div>
+    <div class="cevaplar" role="radiogroup" aria-label="{{ s.id }} cevabı">
+      {% for v, ad in [('E', 'Evet'), ('H', 'Hayır'), ('B', 'Bilmiyor')] + ([('NA', 'Uygulanmaz')] if s.varlik else []) %}
+      <label class="cevap cevap-{{ v }}"><input type="radio" name="cevap_{{ s.id }}" value="{{ v }}" {% if s.cevap == v %}checked{% endif %}> {{ v }} <small>{{ ad }}</small></label>
+      {% endfor %}
+      {% if duzenlenebilir and s.durum != 'kapali' %}
+      <button type="button" class="dugme ikincil kucuk-dugme atla" hx-post="{{ url_for('gorusme.atla', **request.view_args) }}"
+              hx-vals='{"kontrol": "{{ s.id }}"}' hx-include="#m-surum" hx-sync="#madde-form:queue all" hx-swap="none">Atla</button>
+      {% endif %}
+    </div>
+    <div class="kontrol-alt">
+      <input name="not_{{ s.id }}" value="{{ s.not }}" placeholder="Kontrol notu" aria-label="{{ s.id }} notu" maxlength="2000">
+      <input name="kanit_{{ s.id }}" value="{{ s.kanit }}" placeholder="Kanıt referansı (ör. EK-04; EK-05)" aria-label="{{ s.id }} kanıt" maxlength="400">
+    </div>
+  </fieldset>
+</div>
