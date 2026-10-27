@@ -4,7 +4,7 @@
   <form class="sistem" hx-sync="#kapsam-kart:queue all" hx-post="{{ url_for('ekran.sistem_kaydet', did=dg.id, sid=s.id) }}" hx-trigger="change" hx-swap="none" hx-include="#dg-surum">
     <fieldset {% if not duzenlenebilir %}disabled{% endif %}>
       <legend><code>{{ s.id }}</code>{% if s.id in cevapli %} <span class="rozet">cevap var</span>{% endif %}</legend>
-      <label>Ad <input name="ad" value="{{ s.ad }}" required maxlength="80"></label>
+      <label>Ad <input name="ad" value="{{ s.ad }}" maxlength="80"></label>
       <label>Profil
         <select name="profil" {% if s.id in cevapli %}disabled{% endif %}>
           <option value="CE" {% if s.profil == 'CE' %}selected{% endif %}>CE · Controlled External</option>
@@ -27,7 +27,7 @@
   <form class="sistem yeni" hx-sync="#kapsam-kart:queue all" hx-post="{{ url_for('ekran.sistem_ekle', did=dg.id) }}" hx-swap="none" hx-include="#dg-surum">
     <fieldset>
       <legend>Sistem ekle</legend>
-      <label>Ad <input name="ad" required maxlength="80" placeholder="ör. Kurumsal Asistan"></label>
+      <label>Ad <input name="ad" maxlength="80" placeholder="ör. Kurumsal Asistan"></label>
       <label>Profil
         <select name="profil"><option value="CE">CE · Controlled External</option><option value="SOV">SOV · Sovereign</option></select>
       </label>

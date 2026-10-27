@@ -247,3 +247,24 @@ def test_kapanis_kaydi_baskasinin_degisikligini_ezmez(tmp_path):
     r = c.post(f'/d/{DID}/m/{birim}/{m["id"]}', data=dict(surum=eski, kapanis='1', cevap_c1='E'), **ac('gokhan'))
     assert 'başka biri tarafından değiştirildi' in r.get_data(as_text=True)
     assert blok(d, birim, m['id'])['kontroller']['c1']['cevap'] == 'H'
+
+
+def test_madde_formunda_tarayici_dogrulamasi_yok(ortam):
+    """htmx, form geçersizse isteği hiç göndermez: c1=NA iken boş zorunlu alan, sonraki tüm
+    kayıtları sessizce engelliyordu (saha denemesi, 27 Ekim). Formda required/pattern olmamalı."""
+    c, d = ortam
+    birim, m, _ = ilk(d)
+    gonder(c, d, birim, m['id'], cevap_c1='NA')
+    html = c.get(f'/d/{DID}/m/{birim}/{m["id"]}').get_data(as_text=True)
+    form = html[html.index('<form id="madde-form"'):html.index('</form>', html.index('<form id="madde-form"'))]
+    assert 'name="na_reason"' in form
+    assert ' required' not in form and 'pattern=' not in form
+    # NA'dan başka cevaba dönünce kapalı kontroller yeniden açılır
+    r = gonder(c, d, birim, m['id'], cevap_c1='B').get_data(as_text=True)
+    assert 'durum-kapali' not in r and 'id="na" hx-swap-oob="true"' in r
+
+
+def test_otomatik_kayit_formlarinda_required_yok(ortam):
+    c, d = ortam
+    html = c.get(f'/d/{DID}/').get_data(as_text=True)
+    assert ' required' not in html

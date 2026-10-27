@@ -18,8 +18,8 @@
   <div class="iki-sutun">
     <form id="kurum-form" class="form" hx-sync="#kurum-kart:queue all" hx-post="{{ url_for('ekran.kurum_kaydet', did=dg.id) }}" hx-trigger="change" hx-swap="none" hx-include="#kurum-surum">
       <fieldset {% if not duzenlenebilir %}disabled{% endif %}>
-        <label>Tam ad <input name="ad_tam" value="{{ kurum.ad.tam }}" required maxlength="200"></label>
-        <label>Kısa ad <input name="ad_kisa" value="{{ kurum.ad.kisa }}" required maxlength="60"></label>
+        <label>Tam ad <input name="ad_tam" value="{{ kurum.ad.tam }}" maxlength="200"></label>
+        <label>Kısa ad <input name="ad_kisa" value="{{ kurum.ad.kisa }}" maxlength="60"></label>
         {% for ad, a in alanlar.items() %}
           {% if a.multi %}
           <fieldset class="secenekler"><legend>{{ a.label.tr }}</legend>
@@ -56,7 +56,7 @@
   <div class="baslik-satir"><h2>Kapsam</h2><span id="kapsam-durum" class="durum" role="status"></span></div>
   <form class="form satir" hx-sync="#kapsam-kart:queue all" hx-post="{{ url_for('ekran.ayar_kaydet', did=dg.id) }}" hx-trigger="change" hx-swap="none" hx-include="#dg-surum">
     <fieldset {% if not duzenlenebilir %}disabled{% endif %}>
-      <label>Referans tarih <input type="date" name="ref_date" value="{{ dg.ref_date }}" required></label>
+      <label>Referans tarih <input type="date" name="ref_date" value="{{ dg.ref_date }}"></label>
       <label>Değerlendirici <input value="{{ dg.degerlendirici }}" disabled></label>
       <label>Gözden geçiren
         {% if gozden %}
