@@ -8,9 +8,9 @@ Ortam değişkenleri:
 """
 import os
 
-from flask import Flask, abort, g, render_template, request
+from flask import Flask, abort, g, request
 
-from . import framework
+from . import framework, rotalar
 from .depo import Depo
 
 
@@ -21,6 +21,7 @@ def create_app(ayar=None):
         LECTA_USER=os.environ.get('LECTA_USER', '').strip(),
         LECTA_TRUSTED_PROXIES=os.environ.get('LECTA_TRUSTED_PROXIES', '127.0.0.1'),
         LECTA_FRAMEWORK_COMMIT=os.environ.get('LECTA_FRAMEWORK_COMMIT', 'dev'),
+        MAX_CONTENT_LENGTH=1024 * 1024,
     )
     app.config.update(ayar or {})
     if not app.config['LECTA_DATA']:
@@ -46,15 +47,15 @@ def create_app(ayar=None):
         return dict(kullanici=g.get('kullanici'), commit=app.config['LECTA_FRAMEWORK_COMMIT'],
                     surum=framework.surum())
 
+    @app.before_request
+    def baska_siteden_yazma_yok():
+        # Basic auth kimliği tarayıcıda saklanır; başka bir siteden gönderilen form onu taşıyabilir (CSRF)
+        if request.method == 'POST' and request.headers.get('Sec-Fetch-Site', 'same-origin') not in ('same-origin', 'none'):
+            abort(403)
+
     @app.get('/saglik')
     def saglik():
         return 'ok'
 
-    @app.get('/')
-    def degerlendirmeler():
-        kok = app.extensions['depo'].kok
-        liste = sorted(d for d in os.listdir(kok)
-                       if os.path.isfile(os.path.join(kok, d, 'degerlendirme.yaml')))
-        return render_template('degerlendirmeler.html', liste=liste)
-
+    app.register_blueprint(rotalar.bp)
     return app

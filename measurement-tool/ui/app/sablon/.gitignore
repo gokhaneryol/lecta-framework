@@ -1,0 +1,3 @@
+# Lecta arayüzünün çalışma dosyaları
+.*.lock
+.*.tmp

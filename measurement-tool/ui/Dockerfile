@@ -11,6 +11,8 @@ ENV LECTA_FRAMEWORK_COMMIT="${FRAMEWORK_COMMIT}" \
     PYTHONUNBUFFERED=1
 
 WORKDIR /app/measurement-tool
+# Yeni değerlendirme dizini git deposu olarak açılır (TASARIM.md §5.4)
+RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /var/lib/apt/lists/*
 COPY ui/requirements.txt ui/requirements.txt
 RUN pip install --no-cache-dir -r ui/requirements.txt
 

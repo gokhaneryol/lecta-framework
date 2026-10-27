@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block baslik %}Yeni değerlendirme · Lecta{% endblock %}
+{% block icerik %}
+<h1>Yeni değerlendirme</h1>
+{% if hatalar %}<div class="uyari hata" role="alert">{% for h in hatalar %}<p>{{ h }}</p>{% endfor %}</div>{% endif %}
+<form method="post" class="form">
+  <label>Kurum kimliği
+    <input name="kurum_id" value="{{ form.get('kurum_id', '') }}" required pattern="[a-z0-9]+(-[a-z0-9]+)*" maxlength="30" autofocus>
+    <small>Küçük harf, rakam ve tire. Değerlendirme kimliği bundan üretilir: <code>kimlik-yıl-as01</code></small>
+  </label>
+  <label>Kurumun tam adı <input name="ad_tam" value="{{ form.get('ad_tam', '') }}" required maxlength="200"></label>
+  <label>Kısa ad <input name="ad_kisa" value="{{ form.get('ad_kisa', '') }}" required maxlength="60"></label>
+  <label>Servis
+    <select name="servis">{% for s in servisler %}<option {% if form.get('servis') == s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select>
+  </label>
+  <label>Referans tarih <input type="date" name="ref_date" value="{{ form.get('ref_date', '') }}" required>
+    <small>Görüşme günü. Tarih kontrolleri bu güne göre değerlendirilir.</small></label>
+  <label>Gözden geçiren <input name="gozden_geciren" value="{{ form.get('gozden_geciren', '') }}" maxlength="40" placeholder="ör. ayhan">
+    <small>Değerlendirici: {{ kullanici }}</small></label>
+  <p class="not">Bu değerlendirmenin dosyaları müşteri verisidir; notlarda kişi adı değil rol yazın.</p>
+  <button class="dugme" type="submit">Aç</button>
+</form>
+{% endblock %}

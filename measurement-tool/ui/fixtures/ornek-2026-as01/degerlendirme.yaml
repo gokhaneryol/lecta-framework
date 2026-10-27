@@ -1,0 +1,25 @@
+id: ornek-2026-as01
+servis: AS-01
+framework:
+  surum: v1.0-draft
+  commit: abc1234
+ref_date: 2026-11-05
+durum: taslak
+degerlendirici: gokhan
+gozden_geciren: ayhan
+sistemler:
+- id: kurumsal-asistan
+  ad: Kurumsal Asistan
+  profil: CE
+  aciklama: ''
+  saglayici: ''
+- id: belge-arama
+  ad: Belge Arama
+  profil: SOV
+  aciklama: ''
+  saglayici: ''
+oturum_notu: ''
+olaylar:
+- ne: acildi
+  kim: gokhan
+  zaman: '2026-11-05T10:02:00+03:00'

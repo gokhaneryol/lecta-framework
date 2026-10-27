@@ -1,0 +1,40 @@
+<section id="sistemler"{% if oob %} hx-swap-oob="true"{% endif %}>
+  <h3>Sistemler <small>({{ dg.sistemler | length }}/{{ en_cok }})</small></h3>
+  {% for s in dg.sistemler %}
+  <form class="sistem" hx-sync="#kapsam-kart:queue all" hx-post="{{ url_for('ekran.sistem_kaydet', did=dg.id, sid=s.id) }}" hx-trigger="change" hx-swap="none" hx-include="#dg-surum">
+    <fieldset {% if not duzenlenebilir %}disabled{% endif %}>
+      <legend><code>{{ s.id }}</code>{% if s.id in cevapli %} <span class="rozet">cevap var</span>{% endif %}</legend>
+      <label>Ad <input name="ad" value="{{ s.ad }}" required maxlength="80"></label>
+      <label>Profil
+        <select name="profil" {% if s.id in cevapli %}disabled{% endif %}>
+          <option value="CE" {% if s.profil == 'CE' %}selected{% endif %}>CE · Controlled External</option>
+          <option value="SOV" {% if s.profil == 'SOV' %}selected{% endif %}>SOV · Sovereign</option>
+        </select>
+        {% if s.id in cevapli %}<input type="hidden" name="profil" value="{{ s.profil }}">{% endif %}
+      </label>
+      <label>Sağlayıcı <input name="saglayici" value="{{ s.saglayici }}" maxlength="120" placeholder="ör. barındırma, model sağlayıcısı"></label>
+      <label class="genis">Açıklama <textarea name="aciklama" rows="2" maxlength="500">{{ s.aciklama }}</textarea></label>
+      {% if s.id not in cevapli %}
+      <button type="button" class="dugme ikincil" hx-sync="#kapsam-kart:queue all" hx-post="{{ url_for('ekran.sistem_sil', did=dg.id, sid=s.id) }}"
+              hx-include="#dg-surum" hx-swap="none" hx-confirm="{{ s.ad }} silinsin mi?">Sil</button>
+      {% endif %}
+    </fieldset>
+  </form>
+  {% else %}
+  <p class="bos">Henüz sistem yok. Quick Scan en az bir sistemle yapılır.</p>
+  {% endfor %}
+  {% if duzenlenebilir and dg.sistemler | length < en_cok %}
+  <form class="sistem yeni" hx-sync="#kapsam-kart:queue all" hx-post="{{ url_for('ekran.sistem_ekle', did=dg.id) }}" hx-swap="none" hx-include="#dg-surum">
+    <fieldset>
+      <legend>Sistem ekle</legend>
+      <label>Ad <input name="ad" required maxlength="80" placeholder="ör. Kurumsal Asistan"></label>
+      <label>Profil
+        <select name="profil"><option value="CE">CE · Controlled External</option><option value="SOV">SOV · Sovereign</option></select>
+      </label>
+      <label>Sağlayıcı <input name="saglayici" maxlength="120"></label>
+      <label class="genis">Açıklama <textarea name="aciklama" rows="2" maxlength="500"></textarea></label>
+      <button class="dugme" type="submit">Ekle</button>
+    </fieldset>
+  </form>
+  {% endif %}
+</section>

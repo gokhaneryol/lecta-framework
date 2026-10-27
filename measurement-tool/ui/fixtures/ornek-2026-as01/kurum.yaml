@@ -1,0 +1,13 @@
+id: ornek
+ad:
+  tam: Örnek Kurum A.Ş.
+  kisa: Örnek
+logo: logo.png
+sector: banking
+employee_band: 1000-4999
+ai_use:
+- ext-assistant
+- rag
+olgular: {}
+iletisim:
+- rol: CISO

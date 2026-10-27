@@ -17,7 +17,7 @@ def test_bos_liste_sayfasi(tmp_path):
 
 def test_degerlendirme_dizini_listelenir(tmp_path):
     (tmp_path / 'ornek-2026-as01').mkdir()
-    (tmp_path / 'ornek-2026-as01' / 'degerlendirme.yaml').write_text('id: ornek-2026-as01\n')
+    (tmp_path / 'ornek-2026-as01' / 'degerlendirme.yaml').write_text('id: ornek-2026-as01\ndurum: taslak\n')
     (tmp_path / 'baska-dizin').mkdir()
     html = uygulama(tmp_path, LECTA_USER='gokhan').test_client().get('/').get_data(as_text=True)
     assert 'ornek-2026-as01' in html and 'baska-dizin' not in html
