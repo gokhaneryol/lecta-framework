@@ -1,0 +1,10 @@
+<nav class="sekmeler" aria-label="Değerlendirme adımları">
+  {% for ad, baslik, url in [('kapsam', 'Kurum ve kapsam', url_for('ekran.kapsam', did=dg.id)),
+                              ('gorusme', 'Görüşme', url_for('gorusme.baslat', did=dg.id)),
+                              ('kapanis', 'Kapanış', url_for('kapanis.kapanis', did=dg.id)),
+                              ('inceleme', 'İnceleme', url_for('kapanis.inceleme', did=dg.id)),
+                              ('sonuc', 'Sonuç', url_for('kapanis.sonuc', did=dg.id))] %}
+  <a href="{{ url }}"{% if sekme == ad %} aria-current="page" class="aktif"{% endif %}>{{ baslik }}</a>
+  {% endfor %}
+  <span class="rozet durum-dg-{{ dg.durum }}">{{ {'taslak': 'taslak', 'incelemede': 'incelemede', 'kapali': 'kapalı'}[dg.durum] }}</span>
+</nav>

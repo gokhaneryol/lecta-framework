@@ -4,10 +4,8 @@
 <input type="hidden" id="kurum-surum" name="surum" value="{{ kurum_s }}">
 <input type="hidden" id="dg-surum" name="surum" value="{{ dg_s }}">
 <p class="yol"><a href="{{ url_for('ekran.degerlendirmeler') }}">Değerlendirmeler</a> / {{ dg.id }}</p>
-<div class="baslik-satir">
-  <h1>{{ kurum.ad.tam }}</h1>
-  <span class="rozet">{{ dg.servis }} · {{ dg.durum }}</span>
-</div>
+<h1>{{ kurum.ad.tam }}</h1>
+{% with sekme='kapsam' %}{% include '_sekmeler.html' %}{% endwith %}
 {% if commit_uyari %}
 <div class="uyari" role="alert">Bu değerlendirme framework <code>{{ dg.framework.commit }}</code> ile açıldı; arayüz <code>{{ commit }}</code> sürümünde. Madde ve kontrol metinleri farklı olabilir; CSV başlığına iki commit de yazılacak.</div>
 {% endif %}

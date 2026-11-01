@@ -5,6 +5,7 @@
 <input type="hidden" id="m-surum" name="surum" value="{{ surum }}">
 <p class="yol"><a href="{{ url_for('ekran.degerlendirmeler') }}">Değerlendirmeler</a> /
   <a href="{{ url_for('ekran.kapsam', did=dg.id) }}">{{ dg.id }}</a> / {{ birim.ad }} / {{ madde.id }}</p>
+{% with sekme='gorusme' %}{% include '_sekmeler.html' %}{% endwith %}
 <div class="gorusme">
   <nav class="madde-listesi" aria-label="Maddeler">
     {% for bb in birimler %}

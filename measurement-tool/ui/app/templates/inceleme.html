@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block baslik %}İnceleme · {{ dg.id }} · Lecta{% endblock %}
+{% block icerik %}
+<p class="yol"><a href="{{ url_for('ekran.degerlendirmeler') }}">Değerlendirmeler</a> / {{ dg.id }}</p>
+<h1>{{ kurum.ad.tam }}</h1>
+{% include '_sekmeler.html' %}
+<section class="kart">
+  <div class="baslik-satir"><h2>İnceleme</h2><span id="inceleme-durum" class="durum" role="status"></span></div>
+  {% if hata %}<div class="uyari hata" role="alert">{{ hata }}</div>{% endif %}
+  {% set onceki = satirlar | selectattr('inceleme.karar') | list %}
+  {% if dg.durum == 'taslak' and not onceki %}
+  <p>Değerlendirme henüz incelemeye gönderilmedi. Değerlendirici kapanışta gönderir.</p>
+  {% else %}
+  {% if dg.durum == 'taslak' %}<div class="uyari">Gözden geçiren değerlendirmeyi geri gönderdi. Aşağıda önceki inceleme kararları var; düzelttikten sonra kapanıştan yeniden gönderin.</div>{% endif %}
+  <p class="kucuk">Değerlendirici: {{ dg.degerlendirici }} · Gözden geçiren: {{ dg.gozden_geciren }}.
+    Her maddeye <strong>katılıyorum</strong> ya da <strong>katılmıyorum</strong> verin; katılmıyorsanız yorumda nedenini yazın. Uyuşmazlıklar kalibrasyonun girdisidir.</p>
+  {% with oob=False %}{% include '_inceleme_ozet.html' %}{% endwith %}
+  <table class="tablo inceleme">
+    <thead><tr><th>Birim</th><th>Madde</th><th>Puan</th><th>Karşılanmayan</th><th>Karar</th><th>Yorum</th></tr></thead>
+    <tbody>
+    {% for s in satirlar %}
+      <tr class="{% if s.inceleme.karar == 'katilmiyor' %}uyusmaz{% endif %}">
+        <td>{{ s.birim.ad }}</td>
+        <td><a href="{{ url_for('gorusme.madde', did=dg.id, birim=s.birim.id, madde_id=s.madde.id) }}">{{ s.madde.id }}</a>
+            {% if s.degisti %}<span class="rozet uyari-rozet" title="Bu karardan sonra madde değişti">sonra değişti</span>{% endif %}</td>
+        <td><strong>{{ s.tespit.puan }}</strong></td>
+        <td class="kucuk">{{ s.tespit.karsilanmayan | join(', ') }}</td>
+        <td colspan="2">
+          <form class="inceleme-form" hx-post="{{ url_for('kapanis.inceleme_kaydet', did=dg.id, birim=s.birim.id, madde_id=s.madde.id) }}"
+                hx-trigger="change, keyup delay:800ms from:find textarea" hx-swap="none" hx-sync="this:queue last">
+            <fieldset {% if not yetkili %}disabled{% endif %}>
+              <label class="cevap"><input type="radio" name="karar" value="katiliyor" {% if s.inceleme.karar == 'katiliyor' %}checked{% endif %}> Katılıyorum</label>
+              <label class="cevap"><input type="radio" name="karar" value="katilmiyor" {% if s.inceleme.karar == 'katilmiyor' %}checked{% endif %}> Katılmıyorum</label>
+              <textarea name="yorum" rows="1" placeholder="Yorum" aria-label="{{ s.madde.id }} yorumu">{{ s.inceleme.yorum or '' }}</textarea>
+            </fieldset>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if yetkili %}
+  <div class="madde-alt">
+    <form method="post" action="{{ url_for('kapanis.inceleme_bitir', did=dg.id) }}"><button class="dugme" type="submit">İncelemeyi bitir ve kapat</button></form>
+    <form method="post" action="{{ url_for('kapanis.inceleme_geri', did=dg.id) }}"><button class="dugme ikincil" type="submit">Değerlendiriciye geri gönder</button></form>
+  </div>
+  {% elif dg.durum == 'incelemede' %}
+  <p class="kucuk">Kararları yalnız gözden geçiren ({{ dg.gozden_geciren }}) verir.</p>
+  {% endif %}
+  {% endif %}
+</section>
+{% endblock %}

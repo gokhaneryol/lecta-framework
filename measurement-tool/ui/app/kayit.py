@@ -207,6 +207,7 @@ def sistem_ekle(dg, form):
     if len(sistemler) >= QS_EN_COK_SISTEM:
         raise Hata(f"Quick Scan'de en çok {QS_EN_COK_SISTEM} sistem")
     s = _sistem_alanlari(form)
+    _ad_benzersiz(sistemler, s['ad'])
     temel = kimlik_uret(s['ad']) or 'sistem'
     if temel in AYRILMIS:
         temel += '-sistem'
@@ -225,6 +226,7 @@ def sistem_guncelle(dg, sid, form, cevap_var):
     if s is None:
         raise Hata(f'Sistem yok: {sid}')
     yeni = _sistem_alanlari(form)
+    _ad_benzersiz([x for x in sistemler if x['id'] != sid], yeni['ad'])
     if yeni['profil'] != s['profil'] and cevap_var:
         raise Hata('Bu sistemde cevap var; profil değiştirilemez')
     s.update(yeni)
@@ -237,6 +239,12 @@ def sistem_sil(dg, sid, cevap_var):
         raise Hata('Bu sistemde cevap var; silinemez')
     sistemler = [x for x in dg.get('sistemler') or [] if x['id'] != sid]
     return dict(dg, sistemler=sistemler)
+
+
+def _ad_benzersiz(sistemler, ad):
+    # Sistem adı puanlama CSV'sinde birim anahtarıdır (qs.py seviye adla gruplar)
+    if ad.casefold() in {x['ad'].casefold() for x in sistemler}:
+        raise Hata(f'Bu adla bir sistem zaten var: {ad}')
 
 
 def _sistem_alanlari(form):

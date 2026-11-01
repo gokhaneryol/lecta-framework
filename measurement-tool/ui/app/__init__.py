@@ -11,7 +11,7 @@ import os
 
 from flask import Flask, abort, g, request
 
-from . import framework, gorusme_ekran, rotalar
+from . import framework, gorusme_ekran, kapanis_ekran, rotalar
 from .depo import Depo
 
 
@@ -61,4 +61,5 @@ def create_app(ayar=None):
 
     app.register_blueprint(rotalar.bp)
     app.register_blueprint(gorusme_ekran.bp)
+    app.register_blueprint(kapanis_ekran.bp)
     return app

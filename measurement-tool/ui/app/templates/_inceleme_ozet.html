@@ -1,0 +1,5 @@
+<div id="inceleme-ozet" class="inceleme-ozet"{% if oob %} hx-swap-oob="true"{% endif %}>
+  <span><strong>{{ satirlar | length - kararsiz }}</strong> / {{ satirlar | length }} maddede karar verildi</span>
+  <span>Uyuşmazlık: <strong>{{ uyusmazlik | length }}</strong></span>
+  {% if uyusmazlik %}<span class="kucuk">{% for s in uyusmazlik %}{{ s.birim.ad }} · {{ s.madde.id }}{% if not loop.last %}, {% endif %}{% endfor %}</span>{% endif %}
+</div>

@@ -44,6 +44,7 @@ pytest
 - `test_depo.py`: atomik yazma, dosya kilidi, sürüm çakışması.
 - `test_uygulama.py`: kimlik, boş liste sayfası, `org_fields.yaml`.
 - `test_kapsam.py`: değerlendirme açma, kurum ve kapsam ekranları; fixture kurumun arayüzle oluşturulması (adım 3 kabulü).
+- `test_kapanis.py`: **kabul testi** — aynı cevaplarla elle doldurulmuş CSV ile arayüz CSV'si bayt bayt aynı, `qs.py seviye` çıktıları aynı (5 sentetik CSV); kapanış → inceleme → kapanma akışı, git commit'leri (adım 5).
 - `test_gorusme.py`: `fixtures/qs/*.csv` cevapları arayüzden girilir, her maddenin tespiti `qs.hesapla()` puanıyla aynı olmalı; skip ve NA kuralları, madde düzeyinde çakışma (adım 4 kabulü).
 
 ## Dosyalar
@@ -55,6 +56,8 @@ app/kayit.py        değerlendirme dizini: açma (şablon + git init), kurum/sis
 app/gorusme.py      görüşme: birimler, madde cevapları, skip kuralları (K4), madde durumu, tespit (kontrol.py ile)
 app/gorusme_ekran.py madde ekranları, madde düzeyinde sürüm kontrolü, aynı birimde başka kullanıcı uyarısı
 app/static/klavye.js klavye kısayolları; sayfa kapanırken kaydedilmemiş değişikliği gönderir
+app/cikti.py        CSV'ye dönüşüm (qs.puanlama_satirlari üstüne), eksikler, inceleme, durum geçişleri, cikti/ dosyaları
+app/kapanis_ekran.py kapanış, inceleme, sonuç ekranları; durum geçişlerinde yerel git commit
 app/sablon/         yeni değerlendirme dizininin şablonu (.gitignore, README)
 app/depo.py         YAML dosya katmanı: atomik yazma, kilit, sürüm kontrolü
 app/framework.py    source/ ve tools/ için tek giriş

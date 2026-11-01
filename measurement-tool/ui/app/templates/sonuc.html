@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block baslik %}Sonuç · {{ dg.id }} · Lecta{% endblock %}
+{% block icerik %}
+<p class="yol"><a href="{{ url_for('ekran.degerlendirmeler') }}">Değerlendirmeler</a> / {{ dg.id }}</p>
+<h1>{{ kurum.ad.tam }}</h1>
+{% include '_sekmeler.html' %}
+{% if mesaj %}<div class="uyari">{{ mesaj }}</div>{% endif %}
+{% if dg.durum == 'taslak' %}<div class="uyari">Önizleme: değerlendirme henüz kapanmadı. Boş ve atlanan kontroller burada B (bilmiyor) sayılır.</div>{% endif %}
+<section class="kart">
+  <h2>Gösterge seviye</h2>
+  <table class="tablo">
+    <thead><tr><th>Sistem</th><th>Profil</th><th>Matris</th><th>G bloğu</th><th>Raporlanan</th></tr></thead>
+    <tbody>
+    {% for s in h.seviyeler %}
+      <tr><td>{{ s.birim }}</td><td>{{ s.profil }}</td><td>{{ lvname(s.matris) }}</td><td>{{ lvname(s.g) }}</td><td><strong>{{ lvname(s.raporlanan) }}</strong></td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="kucuk">Beyana dayalı gösterge seviyedir; L1'in üstünde seviye üretmez. Hesap <code>qs.py</code> ile yapılır.</p>
+</section>
+<section class="kart">
+  <h2>Seviyeyi bloklayan maddeler</h2>
+  {% for ad, liste in h.bloklayanlar.items() %}
+  <h3>{{ ad }}</h3>
+  {% if liste %}
+  <ul>{% for r in liste %}<li><a href="{{ url_for('gorusme.madde', did=dg.id, birim=bid(r), madde_id=r.item_id) }}">{{ r.item_id }}</a> · {{ r.title_tr }} <span class="kucuk">({{ r.unit }}, {{ r.level }}, puan {{ r.score }})</span></li>{% endfor %}</ul>
+  {% else %}<p class="kucuk">Yok — Quick Scan'in üst sınırına (L1) ulaşıldı.</p>{% endif %}
+  {% endfor %}
+</section>
+<section class="kart">
+  <h2>En kritik 5 risk</h2>
+  <table class="tablo">
+    <thead><tr><th>#</th><th>Madde</th><th>Birim</th><th>Seviye</th><th>Puan</th><th>Not</th></tr></thead>
+    <tbody>
+    {% for r in h.riskler[:5] %}
+      <tr><td>{{ loop.index }}</td><td><a href="{{ url_for('gorusme.madde', did=dg.id, birim=bid(r), madde_id=r.item_id) }}">{{ r.item_id }}</a> · {{ r.title_tr }}</td>
+          <td>{{ r.unit }}</td><td>{{ r.level }}</td><td>{{ r.score or 'boş' }}</td><td class="kucuk">{{ r.note }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="kucuk">Geçmeyen madde sayısı: {{ h.riskler | length }}. Sıralama: puan ↑ · seviye ↑ · CE zinciri önce · kurum önce · ID.</p>
+</section>
+<section class="kart">
+  <h2>Çıktılar</h2>
+  {% if dosyalar %}
+  <ul>{% for ad in dosyalar %}<li><a href="{{ url_for('kapanis.cikti_dosyasi', did=dg.id, ad=ad) }}">{{ ad }}</a></li>{% endfor %}</ul>
+  <p class="kucuk">Kapanışta, kapanırken ve geri gönderilirken yeniden üretilir. <code>seviye.md</code>, <code>qs.py seviye qs.csv</code> ile aynıdır.</p>
+  {% else %}<p class="kucuk">Çıktılar kapanışta üretilir.</p>{% endif %}
+  <form method="post" action="{{ url_for('kapanis.goruntu', did=dg.id) }}"><button class="dugme ikincil" type="submit">Anlık görüntü al</button>
+    <small>O anki durumu değerlendirme deposuna kaydeder (yerel git commit).</small></form>
+</section>
+{% endblock %}

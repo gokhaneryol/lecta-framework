@@ -97,3 +97,17 @@ kbd { border: 1px solid var(--cizgi); border-bottom-width: 2px; border-radius: 3
 @media (max-width: 720px) { .gorusme { grid-template-columns: minmax(0, 1fr); } .madde-listesi { position: static; max-height: 12rem; } .kontrol-alt { grid-template-columns: minmax(0, 1fr); } }
 .madde-durum.durum-tamam { background: #e2f1e4; color: #1e5b22; }
 .madde-durum.durum-not-alindi, .madde-durum.durum-atlandi { background: #fbf0d9; color: #7a4f0a; }
+
+.sekmeler { display: flex; gap: 0.25rem; align-items: center; flex-wrap: wrap; border-bottom: 1px solid var(--cizgi); margin: 0.5rem 0 1rem; }
+.sekmeler a { padding: 0.45rem 0.8rem; text-decoration: none; color: var(--soluk); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.sekmeler a.aktif { color: var(--vurgu); border-bottom-color: var(--vurgu); font-weight: 600; }
+.sekmeler .rozet { margin-left: auto; }
+.durum-dg-incelemede { background: #fbf0d9; color: #7a4f0a; }
+.durum-dg-kapali { background: #e2f1e4; color: #1e5b22; }
+.inceleme-ozet { display: flex; gap: 1.5rem; flex-wrap: wrap; background: #eef3f8; border-radius: 6px; padding: 0.5rem 0.8rem; margin: 0.75rem 0; }
+.tablo.inceleme td { vertical-align: top; }
+.inceleme-form fieldset { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+.inceleme-form textarea { flex: 1 1 14rem; font: inherit; font-size: 0.9rem; padding: 0.3rem; border: 1px solid var(--cizgi); border-radius: 4px; }
+tr.uyusmaz { background: #fdf3f3; }
+.uyari-rozet { background: #fbf0d9; color: #7a4f0a; }
+.kart h3 { font-size: 0.95rem; margin: 0.75rem 0 0.25rem; }
