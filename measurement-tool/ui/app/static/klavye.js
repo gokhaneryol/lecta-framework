@@ -28,6 +28,7 @@
       e.preventDefault();
     }
     else if (tus === 's' && s) { const a = s.querySelector('button.atla'); if (a) a.click(); e.preventDefault(); }
+    else if (e.key === '?') { const d = document.getElementById('neden'); if (d) d.open = !d.open; e.preventDefault(); }
     else if (tus === 'g') { document.getElementById('gorusme-notu').focus(); e.preventDefault(); }
     else if (e.key === '[') { document.getElementById('onceki').click(); }
     else if (e.key === ']') { document.getElementById('sonraki').click(); }

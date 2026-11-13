@@ -20,6 +20,15 @@ items:
         AI sistemine veri sağlayan her sistem, bağlayıcı ya da kullanıcı, veri kabul edilmeden
         önce kendine ait bir kimlik bilgisiyle doğrulanır; kimliği doğrulanmamış gönderimler
         reddedilir.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        A source that is not authenticated can bypass the approved source register (CON-ING-01) by
+        impersonating an approved one. This item measures that every data supplier is authenticated
+        with a credential of its own; it is part of the L0 baseline.
+      tr: >
+        Kimliği doğrulanmayan bir kaynak, onaylı bir kaynağı taklit ederek onaylı kaynak kaydını
+        (CON-ING-01) aşabilir. Bu madde her veri sağlayıcının kendine ait bir kimlik bilgisiyle
+        doğrulanmasını ölçer; L0 tabanının parçasıdır.
     question:
       en: How does each source prove its identity before its data is accepted?
       tr: Her kaynak, verisi kabul edilmeden önce kimliğini nasıl kanıtlıyor?
@@ -120,6 +129,15 @@ items:
         AI veri depolarına ve artefaktlarına (belge korpusları, indeksler, model dosyaları,
         prompt ve yanıt kayıtları) erişim, adı belli kimliklere rol bazında verilir; anonim ya
         da paylaşımlı erişim yoktur ve erişimler gözden geçirilir.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        AI stores, prompt and response logs in particular, hold the organisation's most sensitive
+        and often least protected data. Role-based access tied to named identities both prevents
+        unauthorised reads and makes it possible to trace who accessed what during an incident.
+      tr: >
+        AI depoları, özellikle prompt ve yanıt kayıtları, kurumun en hassas ve çoğu zaman en az
+        korunan verisini tutar. Adı belli kimliklere bağlı rol bazlı erişim hem yetkisiz okumayı
+        önler hem de bir olayda kimin neye eriştiğinin izlenmesini sağlar.
     question:
       en: Who can read or change the documents, indexes, model files and logs of this AI system, and how is that decided?
       tr: Bu AI sisteminin belgelerini, indekslerini, model dosyalarını ve kayıtlarını kim okuyabilir ya da değiştirebilir, buna nasıl karar veriliyor?

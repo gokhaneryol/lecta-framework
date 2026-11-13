@@ -21,6 +21,16 @@ items:
         Yapay zekâ sistemini besleyen her veri kaynağı için tespit edilecek kişisel veri
         kategorileri, özel nitelikli veriler ve yerel tanımlayıcılar dahil yazılıdır ve her
         kategori için bir muamele tanımlanmıştır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        If it is not written down which personal data to look for, what automated detection misses
+        cannot be measured. This item is the precondition for HYG-ING-02..04 and HYG-PRM-01: the
+        categories to detect (including local identifiers such as TCKN and IBAN) and the treatment
+        of each are set here.
+      tr: >
+        Hangi kişisel verinin aranacağı yazılı değilse otomatik tespitin neyi kaçırdığı ölçülemez.
+        Bu madde HYG-ING-02..04 ve HYG-PRM-01'in ön koşuludur: tespit edilecek kategoriler (TCKN,
+        IBAN gibi yerel tanımlayıcılar dahil) ve her birine ne yapılacağı burada belirlenir.
     question:
       en: >
         Which personal data categories must be detected in data entering this AI system,
@@ -153,6 +163,16 @@ items:
       tr: >
         Kapsamdaki her veri giriş yolu, veri saklanmadan, indekslenmeden ya da eğitimde
         kullanılmadan önce otomatik tespit ve tanımlı muameleyi uygular.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        Once personal data is stored, indexed or used for training, removing it is costly and often
+        impossible; a model or search index can reproduce it later. Detection and treatment
+        therefore have to run on every ingestion path before the data enters the pipeline.
+      tr: >
+        Kişisel veri bir kez saklandıktan, indekslendikten ya da eğitimde kullanıldıktan sonra
+        temizlenmesi pahalı, çoğu zaman imkânsızdır; model ya da arama indeksi veriyi sonradan
+        yeniden üretebilir. Bu yüzden tespit ve muamele, veri pipeline'a girmeden önce her giriş
+        yolunda çalışmalıdır.
     question:
       en: >
         On which ingestion paths is personal data detected and treated automatically,
@@ -303,6 +323,17 @@ items:
         Tespit kontrolü erişilemez olduğunda, hata döndürdüğünde ya da desteklemediği bir
         dil, format veya kategoriyle karşılaştığında veri geçirilmez; engellenir ya da
         karantinaya alınır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        A detection component that lets data through when it fails (fail-open) switches the control
+        off exactly when it is needed and makes HYG-ING-02 meaningless. The item measures that data
+        is stopped in three cases: detection unreachable, detection returns an error, or it meets a
+        language, format or category it does not support.
+      tr: >
+        Hata verdiğinde veriyi geçiren (fail-open) bir tespit bileşeni, kontrolü tam ihtiyaç
+        duyulduğu anda devre dışı bırakır ve HYG-ING-02'yi anlamsız kılar. Madde verinin üç durumda
+        durdurulmasını ölçer: tespit erişilemez, hata döndürür ya da desteklemediği bir dil, format
+        veya kategoriyle karşılaşır.
     question:
       en: What happens to incoming data when the personal data detection control is down or cannot process the input?
       tr: >
@@ -439,6 +470,15 @@ items:
       tr: >
         Tespit kalitesi, HYG-ING-01'deki her kategoriyi kapsayan bilinen-cevaplı bir test
         setiyle ölçülür ve sonuçlar sahibin belirlediği eşikle karşılaştırılır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        The existence of a detection control (L1) says nothing about its quality; recall can be low,
+        especially for Turkish content and local identifiers. The item requires quality to be
+        measured with a known-answer test set; a control of known quality is a condition of L3.
+      tr: >
+        Tespit kontrolünün varlığı (L1) kalitesini göstermez; özellikle Türkçe içerikte ve yerel
+        tanımlayıcılarda tespit oranı düşük kalabilir. Madde kalitenin bilinen-cevaplı bir test
+        setiyle ölçülmesini ister; kalitesi bilinen kontrol L3'ün şartıdır.
     question:
       en: How do you know what share of personal data the detection actually catches?
       tr: Tespit bileşeninin kişisel verilerin ne kadarını yakaladığını ölçtünüz mü? Sonuç ve kabul eşiği nedir?
@@ -558,6 +598,16 @@ items:
         Kullanıcıların ya da sistemlerin prompt olarak gönderdiği metin ve ekler, sistem için
         tanımlı kişisel veri kategorilerine göre kontrol edilir ve içerik modele ulaşmadan
         (dış modellerde kurumdan çıkmadan) önce tanımlı muamele uygulanır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        Users paste personal data into prompts and attachments; in systems using external models
+        that data cannot be recalled once it has left the organisation. It is L1 in CE because this
+        is where data crosses the organisation's boundary; in SOV the data stays inside, so it is
+        L2.
+      tr: >
+        Kullanıcılar prompt'a ve eklere kişisel veri yapıştırır; dış model kullanan sistemlerde bu
+        veri kurumdan çıktığı anda geri alınamaz. CE profilinde L1'dir, çünkü verinin kurum sınırını
+        geçtiği nokta burasıdır; SOV profilinde veri kurumda kaldığı için L2'dir.
     question:
       en: If a user pastes a customer's national ID or health data into a prompt, what happens before it reaches the model?
       tr: Bir kullanıcı prompt'a müşterinin TCKN'sini ya da sağlık verisini yapıştırırsa, bu veri modele ulaşmadan ne oluyor?

@@ -22,6 +22,15 @@ items:
         Kurumun, yapay zekâ kullanımının amacını ve sınırlarını, hesap verecek kişileri ve
         AI sistemlerinin nasıl onaylandığını belirten, onaylanmış ve çalışanlara duyurulmuş
         bir yapay zekâ politikası vardır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        The policy sets who is accountable for AI use and how a new system gets approved; the other
+        governance items (inventory, roles, risk assessment) rest on this frame. Without it, AI
+        decisions depend on individuals and cannot be repeated.
+      tr: >
+        Politika, AI kullanımında kimin hesap verdiğini ve yeni bir sistemin hangi yoldan
+        onaylandığını belirler; G bloğundaki diğer maddeler (envanter, roller, risk değerlendirmesi)
+        bu çerçeveye dayanır. Politika yoksa AI kararları kişilere bağlı kalır ve tekrarlanamaz.
     question:
       en: Does the organisation have an approved AI policy, and how was it communicated to staff?
       tr: Kurumun onaylanmış bir yapay zekâ politikası var mı ve çalışanlara nasıl duyuruldu?
@@ -133,6 +142,15 @@ items:
         Çalışanlar için hangi yapay zekâ araçlarının kullanılabileceğini ve her birine
         hangi veri sınıflarının girilebileceğini belirten yazılı kurallar ve güncel bir onaylı
         araç listesi vardır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        Employees start entering data into external AI tools before the organisation builds any
+        technical control, so acceptable-use rules are L0 in every profile. If the rules do not say
+        which tool may be used with which data class, correct behaviour is left to guesswork.
+      tr: >
+        Çalışanlar dış AI araçlarına veri girmeye kurum herhangi bir teknik kontrol kurmadan önce
+        başlar; bu yüzden kabul edilebilir kullanım kuralı her profilde L0'dır. Kural hangi aracın
+        hangi veri sınıfıyla kullanılabileceğini söylemiyorsa doğru davranış tahmine kalır.
     question:
       en: Can staff tell which AI tools they may use and what data they may enter into them?
       tr: Çalışanlar hangi yapay zekâ araçlarını kullanabileceklerini ve bunlara hangi verileri girebileceklerini biliyor mu?
@@ -245,6 +263,15 @@ items:
         Kurum, yapay zekâ sistemlerinin ve kullanım senaryolarının envanterini tutar; her
         biri için amaç, sahip, kullanıcı grupları, veri kategorileri, sağlayıcı ve profil
         kaydedilir.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        A system that is not in the inventory cannot be measured, owned or risk-assessed. The
+        inventory decides which systems the Detailed Scan measures with the matrix and under which
+        profile (CE/SOV) each is assessed.
+      tr: >
+        Envanterde olmayan bir sistem ölçülemez, sahiplenilemez ve risk değerlendirmesine giremez.
+        Envanter, Detailed Scan'de hangi sistemlerin matrisle ölçüleceğinin ve her sistemin hangi
+        profille (CE/SOV) değerlendirileceğinin girdisidir.
     question:
       en: Which AI systems and use cases are in operation or pilot, and where are they recorded?
       tr: Hangi yapay zekâ sistemleri ve kullanım senaryoları canlıda ya da pilotta, nerede kayıtlı?
@@ -347,6 +374,16 @@ items:
       tr: >
         Kurumdan dış yapay zekâ servislerine giden ağ trafiği tanımlanabilir ve üst veri
         düzeyinde kayıt altındadır; böylece AI kullanımı birim ve hacim bazında ölçülebilir.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        The gap between known and actual AI use (shadow AI) can only be measured if the traffic is
+        visible. This item lets the inventory and the acceptable-use rules be compared with reality;
+        it is L1 in CE because this is the channel through which data leaves.
+      tr: >
+        Kurumun bildiği AI kullanımı ile fiilî kullanım arasındaki fark (gölge AI) ancak trafik
+        görünürse ölçülebilir. Bu madde envanterin ve kabul edilebilir kullanım kurallarının
+        gerçekle karşılaştırılmasını sağlar; CE profilinde verinin dışarı çıktığı kanal olduğu için
+        L1'dir.
     question:
       en: Can you show which external AI services were reached from your network last month, and by which units?
       tr: Geçen ay ağınızdan hangi dış AI servislerine, hangi birimlerden erişildiğini gösterebilir misiniz?
@@ -463,6 +500,15 @@ items:
         Envanterdeki her AI sisteminin adı belli bir sahibi vardır; kurum genelinde bir
         yapay zekâ yönetişim rolü atanmıştır ve veri koruma ile güvenlik birimlerine
         danışılması gereken noktalar tanımlıdır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        In an AI system without an owner, risk decisions, incident response and change approval are
+        nobody's job. This item measures that every system has a named owner and that the points
+        where data protection and security must be consulted are defined.
+      tr: >
+        Sahibi olmayan bir AI sisteminde risk kararı, olay müdahalesi ve değişiklik onayı kimsenin
+        işi değildir. Bu madde her sistemin adı belli bir sahibi olmasını ve veri koruma ile
+        güvenlik birimlerine hangi noktada danışılacağının tanımlı olmasını ölçer.
     question:
       en: Who is accountable for each AI system, and when must the DPO and the security function be involved?
       tr: Her AI sisteminden kim sorumlu? KVKK irtibat kişisi/DPO ve güvenlik birimi hangi noktalarda devreye girmek zorunda?
@@ -574,6 +620,15 @@ items:
       tr: >
         Her AI sistemi için canlı kullanımdan önce, tanımlı bir yöntemle yazılı risk
         değerlendirmesi yapılır ve tanımlı tetikleyicilerde tekrarlanır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        Risk assessment provides the reason why a control is needed in a given system; controls
+        built without it are either missing or add cost for nothing. The four AI-specific risk
+        groups are fixed so that the scope of the assessment is not open to interpretation.
+      tr: >
+        Risk değerlendirmesi, bir kontrolün o sistemde neden gerektiğinin gerekçesini üretir; onsuz
+        kurulan kontroller ya eksik kalır ya da boşuna maliyet çıkarır. AI'ye özgü dört risk grubu
+        sabit verilir ki değerlendirmenin kapsamı yoruma kalmasın.
     question:
       en: How are the risks of an AI system assessed before it goes live, and when is that assessment repeated?
       tr: Bir AI sisteminin riskleri canlıya alınmadan önce nasıl değerlendiriliyor ve bu değerlendirme ne zaman tekrarlanıyor?
@@ -701,6 +756,17 @@ items:
         Her AI sistemi uygulanabilir düzenleyici risk kategorilerine (EU AI Act kategorileri
         ve ilgili sektör kuralları) göre sınıflandırılır; gerekçe yazılıdır ve adı belli bir
         kişi tarafından onaylanır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        A system's regulatory risk category (e.g. EU AI Act high-risk) determines which obligations
+        apply; if the decision is not written down with its reasoning, preparation for higher levels
+        may aim at the wrong target. Lecta does not make the classification decision; it measures
+        that the record and its reasoning exist.
+      tr: >
+        Bir sistemin düzenleyici risk kategorisi (ör. EU AI Act yüksek risk) hangi yükümlülüklerin
+        uygulanacağını belirler; karar gerekçesiyle yazılı değilse üst seviyelere hazırlık yanlış
+        hedefe yönelebilir. Lecta sınıflandırma kararını vermez; kaydın ve gerekçesinin varlığını
+        ölçer.
     question:
       en: Into which regulatory risk category does each AI system fall, and who signed that decision?
       tr: Her AI sistemi hangi düzenleyici risk kategorisine giriyor ve bu kararı kim imzaladı?
@@ -800,6 +866,17 @@ items:
         Kişisel veri işleyen AI sistemleri için canlı kullanımdan önce veri akışını,
         gerekliliği, kişiler üzerindeki riskleri ve teknik önlemleri kapsayan bir etki
         değerlendirmesi tamamlanır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        For an AI system processing personal data, where the data goes at each stage, especially
+        where it leaves the country, must be known before go-live. The impact assessment ties that
+        map and the owners of the measures to a record; the legal conclusion is not the measure of
+        this item and belongs to the legal partner.
+      tr: >
+        Kişisel veri işleyen bir AI sisteminde verinin hangi aşamada nereye gittiği, özellikle yurt
+        dışına çıktığı noktalar, canlıya almadan önce bilinmelidir. Etki değerlendirmesi bu haritayı
+        ve önlemlerin sahiplerini kayda bağlar; hukuki sonuç bu maddenin ölçütü değildir, hukuk
+        ortağının işidir.
     question:
       en: For AI systems that process personal data, has an impact assessment been done before go-live?
       tr: Kişisel veri işleyen AI sistemleri için canlıya geçmeden önce etki değerlendirmesi yapıldı mı?
@@ -926,6 +1003,17 @@ items:
         Dış bir AI modeli ya da servisi kurum verisiyle kullanılmadan önce sağlayıcı; verinin
         tutulduğu yer, saklama süresi, müşteri verisinin eğitimde kullanımı, alt işleyenler ve
         yurt dışı aktarım mekanizması açısından değerlendirilir.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        Once an external AI service is used with organisational data, the data is subject to the
+        provider's retention, training and sub-processor rules. The assessment therefore has to
+        happen before use; it is the core item of the CE profile and the source of the approved
+        provider list enforced in CON-INF-02.
+      tr: >
+        Dış bir AI servisi kurum verisiyle kullanıldığı anda veri, sağlayıcının saklama, eğitim ve
+        alt işleyen kurallarına tabi olur. Bu yüzden değerlendirme kullanımdan önce yapılmalıdır; CE
+        profilinin çekirdek maddesidir ve CON-INF-02'de uygulanan onaylı sağlayıcı listesinin
+        kaynağıdır.
     question:
       en: Before using an external AI service, what do you check about where data goes and how the provider uses it?
       tr: Dış bir AI servisini kullanmadan önce verinin nereye gittiği ve sağlayıcının onu nasıl kullandığı konusunda neyi kontrol ediyorsunuz?
@@ -1042,6 +1130,17 @@ items:
         Her AI sağlayıcısı ve barındırma düzeni için üç soru kanıtla cevaplanır: nihai ana
         şirketin hukuki yetki alanı; verinin işlendiği mimari sınırın kanıtı; sağlayıcıdan
         bağımsız işletebilme ya da hizmetten çıkabilme.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        Sovereignty is not a provider statement but the evidenced answer to three questions: which
+        jurisdiction the provider is bound by, within which boundary the data is processed, and
+        whether the organisation can operate independently of the provider or exit. It is L1 in SOV
+        because the sovereignty claim rests directly on these answers.
+      tr: >
+        Egemenlik bir sağlayıcı beyanı değil, üç sorunun kanıtlı cevabıdır: sağlayıcı hangi hukuki
+        yetki alanına bağlı, veri hangi sınır içinde işleniyor, kurum sağlayıcıdan bağımsız
+        çalışabilir ya da çıkabilir mi. SOV profilinde L1'dir, çünkü egemenlik iddiası doğrudan bu
+        cevaplara dayanır.
     question:
       en: For each AI provider, which jurisdiction can compel access to your data, where is the processing boundary, and could you continue without them?
       tr: Her AI sağlayıcısı için verinize hangi hukuki yetki alanı erişim zorlayabilir, işleme sınırı nerede ve sağlayıcı olmadan devam edebilir misiniz?
@@ -1153,6 +1252,15 @@ items:
         AI sağlayıcılarıyla sözleşmeler; veri işleme şartlarını, müşteri verisinin eğitimde
         kullanılmasının yasağını ya da bundan çıkışı, sona ermede silmeyi, belirtilmiş süre
         içinde ihlal bildirimini ve denetim ya da güvence haklarını içerir.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        If the conditions set in the supplier assessment (G-SUP-01) are not in the contract,
+        enforcing them depends on the provider's goodwill. This item measures whether the five
+        contractual safeguards exist; it does not assess their legal sufficiency.
+      tr: >
+        Sağlayıcı değerlendirmesinde (G-SUP-01) belirlenen şartlar sözleşmede yoksa uygulanmaları
+        sağlayıcının iyi niyetine kalır. Bu madde beş sözleşme güvencesinin varlığını ölçer; hukuki
+        yeterliliğini değerlendirmez.
     question:
       en: Do your AI provider contracts cover training use, deletion, breach notification and audit rights?
       tr: AI sağlayıcı sözleşmeleriniz eğitimde kullanım, silme, ihlal bildirimi ve denetim haklarını kapsıyor mu?
@@ -1236,6 +1344,15 @@ items:
         AI sistemlerini kullanan çalışanlar; kabul edilebilir kullanımı, veri risklerini ve
         AI çıktısının sınırlarını kapsayan tanımlı bir okuryazarlık programını tamamlar ve
         tamamlama kayıt altındadır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        Where technical controls do not reach (external tools, trust in AI output) the last line of
+        defence is the user. EU AI Act Art. 4 also sets literacy as an obligation of its own; the
+        item measures that a programme exists and how many users have completed it.
+      tr: >
+        Teknik kontrollerin ulaşmadığı yerde (dış araçlar, AI çıktısına güven) son savunma hattı
+        kullanıcının kendisidir. EU AI Act md. 4 okuryazarlığı ayrıca bir yükümlülük olarak
+        tanımlar; madde programın varlığını ve tamamlanma oranını ölçer.
     question:
       en: What training do AI users receive, and what share of them has completed it?
       tr: AI kullanıcıları hangi eğitimi alıyor ve ne kadarı tamamladı?
@@ -1350,6 +1467,15 @@ items:
       tr: >
         AI sistemlerini geliştiren, işleten, gözden geçiren ya da insan gözetimi yapan
         kişiler rollerine özgü eğitim alır ve tamamlama kayıt altındadır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        People who build, operate or review an AI system, or oversee its output, need more than
+        general literacy; human oversight (G-OVS-01) does not work with an untrained reviewer. This
+        is why the item sits at the same level as G-OVS-01 (L3).
+      tr: >
+        AI sistemini geliştiren, işleten, gözden geçiren ya da çıktısını gözetleyen kişinin genel
+        okuryazarlıktan fazlasını bilmesi gerekir; insan gözetimi (G-OVS-01) eğitimsiz bir gözden
+        geçirenle işlemez. Madde bu yüzden G-OVS-01 ile aynı seviyededir (L3).
     question:
       en: What training do developers, operators and reviewers of AI systems receive for their roles?
       tr: AI sistemlerinin geliştiricileri, işletenleri ve gözden geçirenleri rollerine yönelik hangi eğitimi alıyor?
@@ -1434,6 +1560,15 @@ items:
       tr: >
         Olay prosedürü AI'ye özgü olay türlerini, raporlama zincirini ve uygulanan
         düzenleyici bildirim sürelerini tanımlar ve genel güvenlik olay süreciyle bağlantılıdır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        AI-specific incidents may not be recognised by the general security incident process, and
+        notification deadlines such as the 72 hours under KVKK can be missed. The item measures that
+        the procedure names these incident types, the reporting chain and the applicable deadlines.
+      tr: >
+        AI'ye özgü olaylar genel güvenlik olay sürecinde tanınmayabilir ve KVKK'daki 72 saat gibi
+        bildirim süreleri kaçabilir. Madde, prosedürün bu olay türlerini, raporlama zincirini ve
+        uygulanan süreleri tanımlamasını ölçer.
     question:
       en: If personal data leaked through a prompt or an AI system produced a harmful output, who would be notified, by whom, and within what time?
       tr: Bir prompt üzerinden kişisel veri sızsa ya da bir AI sistemi zararlı bir çıktı üretse kime, kim tarafından, ne kadar sürede bildirilir?
@@ -1560,6 +1695,16 @@ items:
         Her AI sistemi için insan incelemesi gerektiren çıktı sınıfları, inceleyen rol, karar
         için süre sınırı ve inceleme beklerken çıktıya ne olacağı tanımlıdır; prosedür uçtan
         uca işletilmiştir.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        Keeping the final decision with a human for high-impact AI output is a shared expectation of
+        several regulations (EU AI Act Art. 14, GDPR Art. 22, KVKK Art. 11). A procedure on paper
+        does not open the L3 gate; the item requires oversight to have been run end to end at least
+        once.
+      tr: >
+        Yüksek etkili AI çıktılarında son kararın insanda kalması birçok düzenlemenin ortak
+        beklentisidir (EU AI Act md. 14, GDPR md. 22, KVKK md. 11). Kâğıt üzerindeki prosedür L3
+        kapısını açmaz; madde gözetimin en az bir kez uçtan uca işletilmiş olmasını ister.
     question:
       en: Which AI outputs must a person review before they take effect, who does it, and how quickly?
       tr: Hangi AI çıktıları etkili olmadan önce bir insan tarafından incelenmeli, bunu kim yapıyor ve ne kadar sürede?

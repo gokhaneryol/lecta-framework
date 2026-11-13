@@ -9,6 +9,7 @@ import re
 from collections import defaultdict
 
 import pytest
+from markupsafe import escape
 
 import qs
 from app import create_app, gorusme
@@ -110,6 +111,27 @@ def test_madde_ekrani_metni_yamldan_gosterir(ortam):
         assert f'id="k-{s["id"]}"' in html
     for t in gorusme.terimler(m):
         assert t['ad'] in html
+
+
+def test_her_maddenin_iki_dilli_gerekcesi_var():
+    for m in qs.load_items():
+        r = m.get('rationale') or {}
+        assert str(r.get('en', '')).strip() and str(r.get('tr', '')).strip(), m['id']
+
+
+def test_neden_bu_madde_paneli(ortam):
+    c, d = ortam
+    dg = d.oku(DID, 'degerlendirme.yaml')[0]
+    for b in gorusme.birimler(dg):
+        for m, _ in b['maddeler']:
+            html = c.get(f'/d/{DID}/m/{b["id"]}/{m["id"]}').get_data(as_text=True)
+            g = gorusme.gerekce(m)
+            assert 'id="neden"' in html and str(escape(g['yer'])) in html, m['id']
+            assert str(escape(g['neden'][:40])) in html, m['id']
+            assert sum(len(x['kontroller']) for x in g['gruplar']) == len(m['checks']), m['id']
+    cmi = gorusme.gerekce(next(m for m in qs.load_items() if m['id'] == 'CON-ING-01'))
+    assert cmi['yer'] == 'Sistem matrisi · Containment × Ingestion'
+    assert cmi['hucre'] == 'Containment x Ingestion — Source boundary'
 
 
 def test_c1_hayir_cevapli_olanlar_dahil_hepsini_kapatir(ortam):

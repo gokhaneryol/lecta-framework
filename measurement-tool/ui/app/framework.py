@@ -21,6 +21,12 @@ def surum():
 
 
 @functools.lru_cache(maxsize=1)
+def meta():
+    """meta.yaml: seviye, katman, aşama ve G alanı adları."""
+    return qs.meta()
+
+
+@functools.lru_cache(maxsize=1)
 def org_fields():
     with open(os.path.join(kontrol.SRC, 'org_fields.yaml'), encoding='utf-8') as fh:
         return yaml.safe_load(fh)['fields']
