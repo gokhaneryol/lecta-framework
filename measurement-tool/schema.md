@@ -51,6 +51,7 @@ measurement-tool/
 | `domain` | G | Kod tablosundan |
 | `title` | ✓ | Kısa ad `{en, tr}` |
 | `objective` | ✓ | Kontrol hedefi, teknolojiden bağımsız, tek gereksinim `{en, tr}` |
+| `rationale` | ✓ | Maddenin neden sorulduğu: hangi riski kapattığı, framework'teki diğer maddelerle ilişkisi `{en, tr}`. Değerlendiriciye yöneliktir; arayüzde "Neden bu madde?" panelinde gösterilir. Teknolojiden bağımsız, denetim dili yok; araç adı ve iç gerekçe `notes`'ta kalır |
 | `question` | ✓ | Değerlendirme sorusu `{en, tr}` |
 | `level` | ✓ | Profil başına: `{CE: L1, SOV: L1}`; `null` = o profilde uygulanmaz |
 | `applicability` | ✓ | Maddenin hangi durumda N/A olduğu, ölçütüyle `{en, tr}` |

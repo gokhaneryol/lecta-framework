@@ -192,3 +192,37 @@ def terimler(madde):
 def metin(x):
     return ' '.join(str(x['tr']).split()) if x else ''
 
+
+_KONTROL_ROLU = {
+    'exist': 'Varlık — karşılanmıyorsa puan 0, karşılanıyorsa en az 1',
+    'core': 'Temel — hepsi karşılanırsa puan 2',
+    'sustain': 'Sürdürme — 2 puana ek olarak hepsi karşılanırsa puan 3',
+}
+
+
+def gerekce(madde):
+    """'Neden bu madde?' paneli: maddenin framework'teki yeri, gerekçesi, kontrollerin puandaki rolü.
+
+    Hepsi source/*.yaml ve meta.yaml'dan gelir; arayüz metin yazmaz. notes (iç not) gösterilmez.
+    """
+    mt = framework.meta()
+    if madde['block'] == 'matrix':
+        yer = f"Sistem matrisi · {mt['layers'][madde['layer']]} × {mt['stages'][madde['stage']]}"
+        olcum = 'Her AI sistemi için ayrı ölçülür.'
+    else:
+        yer = f"G bloğu (yönetişim) · {mt['g_domains'][madde['domain']]}"
+        olcum = 'Kurum başına bir kez ölçülür; sistem seviyesini sınırlar.'
+    seviyeler = [dict(profil=p, seviye=lv, ad=mt['levels'].get(lv, '') if lv else 'bu profilde uygulanmaz')
+                 for p, lv in madde['level'].items()]
+    gruplar = []
+    for tur, rol in _KONTROL_ROLU.items():
+        cs = [c for c in madde['checks'] if c['kind'] == tur]
+        if cs:
+            gruplar.append(dict(rol=rol, kontroller=[dict(id=c['id'], metin=kontrol.check_line(c, madde),
+                                                          qs=c.get('qs', True))
+                                                     for c in cs]))
+    eslemeler = [f"{e['framework']} — {e['ref']}" for e in madde.get('mappings', [])]
+    return dict(yer=yer, olcum=olcum, hucre=madde.get('legacy'), seviyeler=seviyeler,
+                neden=metin(madde.get('rationale')), hedef=metin(madde['objective']),
+                gruplar=gruplar, eslemeler=eslemeler, servisler=madde.get('services', []))
+

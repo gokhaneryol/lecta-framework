@@ -31,6 +31,25 @@
         <p><strong>Derinleştirme:</strong> {{ metin(madde.question) }}</p>
         <p><strong>Uygulanabilirlik:</strong> {{ metin(madde.applicability) }}</p>
       </details>
+      <details class="neden" id="neden"><summary>Neden bu madde? <small>(framework'teki yeri ve gerekçesi · <kbd>?</kbd>)</small></summary>
+        <dl>
+          <dt>Framework'teki yeri</dt>
+          <dd>{{ gerekce.yer }}. {{ gerekce.olcum }}{% if gerekce.hucre %}<br><small>v0 kontrol hücresi: {{ gerekce.hucre }}</small>{% endif %}</dd>
+          <dt>Seviye</dt>
+          <dd>{% for s in gerekce.seviyeler %}{{ s.profil }}: {% if s.seviye %}<strong>{{ s.seviye }}</strong> {% endif %}{{ s.ad }}{% if not loop.last %} · {% endif %}{% endfor %}</dd>
+          {% if gerekce.neden %}<dt>Neden soruyoruz</dt><dd>{{ gerekce.neden }}</dd>{% endif %}
+          <dt>Kontrol hedefi</dt>
+          <dd>{{ gerekce.hedef }}</dd>
+          <dt>Sorular hedefin hangi kısmını ölçüyor</dt>
+          <dd>{% for g in gerekce.gruplar %}<p class="rol">{{ g.rol }}</p><ul>
+            {% for c in g.kontroller %}<li><span class="kontrol-id">{{ c.id }}</span> {{ c.metin | kalin }}{% if not c.qs %} <small>(QS'de sorulmaz, AS-02'de bakılır)</small>{% endif %}</li>{% endfor %}
+          </ul>{% endfor %}</dd>
+          {% if gerekce.eslemeler %}<dt>Karşıladığı düzenleme ve standart maddeleri</dt>
+          <dd><ul>{% for e in gerekce.eslemeler %}<li>{{ e }}</li>{% endfor %}</ul></dd>{% endif %}
+          <dt>Kullanan servisler</dt>
+          <dd>{{ gerekce.servisler | join(', ') }}</dd>
+        </dl>
+      </details>
     </header>
 
     <form id="madde-form" hx-post="{{ url_for('gorusme.kaydet', did=dg.id, birim=birim.id, madde_id=madde.id) }}"
@@ -56,7 +75,7 @@
       <a class="dugme" href="{{ sonraki_url }}" id="sonraki">Sonraki →</a>
       <span id="m-durum" class="durum" role="status"></span>
     </div>
-    <p class="kisayol">Kısayollar: <kbd>j</kbd>/<kbd>k</kbd> kontrol seç · <kbd>e</kbd> <kbd>h</kbd> <kbd>b</kbd> <kbd>n</kbd> cevap (n = NA, yalnız c1) · <kbd>s</kbd> kontrolü atla · <kbd>g</kbd> görüşme notu · <kbd>[</kbd>/<kbd>]</kbd> önceki/sonraki madde · <kbd>Esc</kbd> metin alanından çık</p>
+    <p class="kisayol">Kısayollar: <kbd>j</kbd>/<kbd>k</kbd> kontrol seç · <kbd>e</kbd> <kbd>h</kbd> <kbd>b</kbd> <kbd>n</kbd> cevap (n = NA, yalnız c1) · <kbd>s</kbd> kontrolü atla · <kbd>g</kbd> görüşme notu · <kbd>?</kbd> neden bu madde · <kbd>[</kbd>/<kbd>]</kbd> önceki/sonraki madde · <kbd>Esc</kbd> metin alanından çık</p>
   </article>
 
   <aside class="terimler">

@@ -2,6 +2,11 @@
 
 ## Yayımlanmamış
 
+**Madde gerekçesi ve "Neden bu madde?" paneli**
+
+- Şema: yeni zorunlu alan `rationale {en, tr}` — maddenin neden sorulduğu (kapattığı risk, diğer maddelerle ilişkisi). 29 maddenin hepsine eklendi; madde metni, kontroller ve puanlama değişmedi (golden dosyalar aynı).
+- Arayüz, madde ekranı: açılır "Neden bu madde?" paneli (`?` kısayolu) — framework'teki yeri (matris hücresi ya da G alanı, v0 kontrol hücresi), profil başına seviye, gerekçe, kontrol hedefi, kontrollerin puandaki rolü (varlık / temel / sürdürme), eşlemeler, servisler. Hepsi `source/`'tan; iç not (`notes`) gösterilmez.
+
 **Değerlendirme arayüzü — adım 1 (iskelet ve hesap katmanı)**
 
 - `measurement-tool/ui/`: kararlar ve veri modeli (`TASARIM.md`, ADR-001), Flask + htmx iskeleti, Docker Compose, YAML dosya katmanı (atomik yazma, dosya kilidi, iyimser sürüm kontrolü), testler.

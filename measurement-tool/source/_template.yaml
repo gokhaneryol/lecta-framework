@@ -10,6 +10,7 @@
     domain:                   # governance: POL INV ROL RSK SUP LIT INC OVS
     title:        {en: , tr: }
     objective:    {en: , tr: }   # one requirement, technology-neutral
+    rationale:    {en: , tr: }   # why we ask: the risk it closes, links to other items (shown in the UI)
     question:     {en: , tr: }
     level: {CE: , SOV: }      # L0..L6 or null (not applicable to that profile)
     applicability: {en: , tr: }  # when the item is NA, as a testable condition

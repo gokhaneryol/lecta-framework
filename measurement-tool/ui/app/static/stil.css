@@ -65,6 +65,11 @@ main.genis { max-width: 100rem; }
 .madde h1 { font-size: 1.2rem; }
 .soru { font-size: 1.05rem; background: #fff; border-left: 3px solid var(--vurgu); padding: 0.6rem 0.8rem; }
 details { margin-bottom: 1rem; font-size: 0.9rem; }
+.neden[open] { background: #fff; border: 1px solid var(--cizgi); border-radius: 6px; padding: 0.5rem 0.8rem; }
+.neden dt { font-weight: 600; margin-top: 0.6rem; }
+.neden dd { margin: 0.15rem 0 0; }
+.neden ul { margin: 0.2rem 0 0.4rem; padding-left: 1.2rem; }
+.neden .rol { margin: 0.4rem 0 0; font-style: italic; }
 .not-alani { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1rem; }
 .not-alani textarea, .na-gerekce textarea { font: inherit; padding: 0.5rem; border: 1px solid var(--cizgi); border-radius: 4px; }
 .kontrol { background: #fff; border: 1px solid var(--cizgi); border-radius: 6px; padding: 0.6rem 0.75rem; margin-bottom: 0.6rem; }

@@ -19,6 +19,17 @@ items:
       tr: >
         AI sistemi için onaylı veri kaynakları kaydı tutulur ve her veri giriş yolu yalnız
         kayıttaki kaynaklardan veri kabul eder; diğer girdiler işlenmeden reddedilir.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        An organisation that does not know what enters an AI system cannot know what the system
+        knows, what it may leak or which personal data it processes. This is the first boundary of
+        the pipeline: until unregistered sources are closed, detection, access and logging controls
+        in later stages work on an incomplete scope.
+      tr: >
+        Bir AI sistemine neyin girdiğini bilmeyen kurum, sistemin neyi bildiğini, neyi
+        sızdırabileceğini ve hangi kişisel veriyi işlediğini de bilemez. Pipeline'ın ilk sınırı
+        burasıdır: kayıt dışı kaynaklar kapanmadan sonraki aşamalardaki tespit, erişim ve kayıt
+        kontrolleri eksik bir kapsam üzerinde çalışır.
     question:
       en: Which sources may feed data into this AI system, and what happens to data from any other source?
       tr: Bu AI sistemine hangi kaynaklar veri besleyebilir ve başka bir kaynaktan gelen veriye ne oluyor?
@@ -151,6 +162,17 @@ items:
         Dış model sağlayıcılarına yapılan çağrılar dahil AI sistemine giren, içinde dolaşan ve
         çıkan tüm veri akışları güncel protokol sürümleriyle aktarımda şifrelenir;
         şifresiz uç noktalara erişilemez.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        An unencrypted flow leaves data readable on the network even when every other control is in
+        place, and calls to external model providers are the most common way organisational data
+        leaves. It is part of the L0 baseline: controls at higher levels are built on the assumption
+        that this item is met.
+      tr: >
+        Şifresiz bir akış, diğer bütün kontroller yerindeyken bile veriyi ağ üzerinde okunabilir
+        bırakır; dış model sağlayıcılarına yapılan çağrılar kurum verisinin en sık dışarı çıktığı
+        yoldur. L0 tabanının parçasıdır: üst seviyelerdeki kontroller bu maddenin karşılandığı
+        varsayımıyla kurulur.
     question:
       en: Are all connections to, within and from the AI system encrypted, and how is that verified?
       tr: AI sistemine giden, içinde dolaşan ve ondan çıkan tüm bağlantılar şifreli mi, bu nasıl doğrulanıyor?
@@ -269,6 +291,17 @@ items:
         AI sisteminin kullandığı veri depoları (belge korpusları, vektör indeksleri, model
         dosyaları, kayıtlar) ağ düzeyinde ayrıştırılmıştır; yalnız ihtiyaç duyan bileşenler
         erişebilir ve varsayılan ağ politikası diğer tüm erişimi reddeder.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        Corpora, vector indexes and model files are where organisational data concentrates; a store
+        that is not segmented at network level can be reached from any compromised component. This
+        item measures the network boundary; who may see which document is measured separately in
+        IDE-STO and IDE-INF.
+      tr: >
+        Korpuslar, vektör indeksleri ve model dosyaları kurum verisinin yoğunlaştığı yerlerdir; ağ
+        düzeyinde ayrıştırılmamış bir depoya ele geçirilen herhangi bir bileşenden ulaşılabilir. Bu
+        madde ağ sınırını ölçer; kimin hangi belgeyi görebileceği IDE-STO ve IDE-INF maddelerinde
+        ayrıca ölçülür.
     question:
       en: Which components can reach the AI system's data stores over the network, and is everything else denied by default?
       tr: AI sisteminin veri depolarına ağ üzerinden hangi bileşenler erişebiliyor, diğer her şey varsayılan olarak engelli mi?
@@ -390,6 +423,17 @@ items:
       tr: >
         AI verisi tutan her depo (korpuslar, indeksler, model dosyaları, prompt ve yanıt
         kayıtları, yedekler) depolamada şifrelidir ve anahtarları kimin kontrol ettiği bilinir.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        Encryption at rest keeps data unreadable when media or backups are lost; knowing who
+        controls the keys is the technical basis of any sovereignty claim (G-SUP-02). Prompt and
+        response logs and backups are named explicitly because they are where encryption is most
+        often skipped.
+      tr: >
+        Depolamada şifreleme, ortam ya da yedek kaybında verinin okunmasını engeller; anahtarları
+        kimin kontrol ettiğini bilmek ise egemenlik iddiasının teknik dayanağıdır (G-SUP-02). Prompt
+        ve yanıt kayıtları ile yedekler açıkça sayılır, çünkü şifrelemenin en sık atlandığı yerler
+        bunlardır.
     question:
       en: Is every store holding AI data encrypted at rest, including logs and backups, and who holds the keys?
       tr: Kayıtlar ve yedekler dahil AI verisi tutan her depo depolamada şifreli mi, anahtarlar kimde?
@@ -501,6 +545,16 @@ items:
       tr: >
         Model çalıştırma kurumun yönetilen sınırı içinde gerçekleşir ve çıkarım ortamının açıkça
         listelenmiş iç hedefler dışında dışarıya ağ erişimi yoktur.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        The core claim of the Sovereign profile is that data does not leave the organisation's
+        boundary while the model runs. The claim is supported not by a statement but by evidence
+        that the inference environment cannot connect outwards; this is why the item applies only to
+        SOV, at L1.
+      tr: >
+        Sovereign profilinin temel iddiası, model çalışırken verinin kurum sınırından çıkmamasıdır.
+        Bu iddiayı beyan değil, çıkarım ortamının dışarıya bağlantı kuramadığının kanıtı destekler;
+        madde bu yüzden yalnız SOV profilinde ve L1'de yer alır.
     question:
       en: Where do the models run, and can the inference environment reach anything outside the boundary?
       tr: Modeller nerede çalışıyor ve çıkarım ortamı sınırın dışındaki bir yere erişebiliyor mu?
@@ -635,6 +689,17 @@ items:
         Dış model sağlayıcılarına yapılan çağrılar yalnız onaylı sağlayıcılara, uç noktalara ve
         hesaplara (kişisel değil, kurumun sözleşmeli hesapları) izin veren kontrollü bir
         noktadan geçer ve kayıt altına alınır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        In the Controlled External profile data is sent to an external model on purpose; the risk is
+        that this happens through unapproved providers, personal accounts or unrecorded paths. A
+        single controlled exit point is the CE counterpart of SOV's 'no external calls' rule and the
+        place where supplier decisions from G-SUP-01 are enforced technically.
+      tr: >
+        Controlled External profilinde veri bilerek dış bir modele gönderilir; risk, bunun onaysız
+        sağlayıcılar, kişisel hesaplar ya da kayıt dışı yollar üzerinden yapılmasıdır. Kontrollü tek
+        bir çıkış noktası, SOV'un "dış çağrı yok" kuralının CE karşılığıdır ve G-SUP-01'deki
+        sağlayıcı kararlarının teknik olarak uygulandığı yerdir.
     question:
       en: Through which point do your systems call external AI models, and can they reach a provider or account that is not sanctioned?
       tr: Sistemleriniz dış AI modellerini hangi noktadan çağırıyor; onaylı olmayan bir sağlayıcıya ya da hesaba erişebilirler mi?

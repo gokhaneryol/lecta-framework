@@ -20,6 +20,17 @@ items:
         AI sistemine giren her veri öğesi kaynak, zaman, veri kategorileri ve uygulanan
         muameleyle, olağan sistem yöneticilerinin fark edilmeden değiştiremeyeceği ya da
         silemeyeceği bir kayda yazılır.
+    rationale:   # neden soruyoruz — arayüzde "Neden bu madde?" paneli
+      en: >
+        In an incident, a data subject request or an independent audit, the question 'where did this
+        data come from, when, and how was it treated' can only be answered with a record that cannot
+        be altered. A log the administrator can delete does not give a reliable answer; this is why
+        the item requires the record to be protected.
+      tr: >
+        Bir olayda, veri sahibi başvurusunda ya da bağımsız denetimde "bu veri sisteme nereden, ne
+        zaman ve hangi muameleyle girdi" sorusu ancak değiştirilemeyen bir kayıtla cevaplanabilir.
+        Yöneticinin silebildiği bir kayıt bu soruya güvenilir cevap vermez; madde bu yüzden kaydın
+        korumalı olmasını ister.
     question:
       en: For a given document in the AI system, can you show where it came from, when, and what was done to it — and who could change that record?
       tr: AI sistemindeki herhangi bir belge için nereden, ne zaman geldiğini ve ona ne yapıldığını gösterebilir misiniz; bu kaydı kim değiştirebilir?

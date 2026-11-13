@@ -45,7 +45,7 @@ pytest
 - `test_uygulama.py`: kimlik, boş liste sayfası, `org_fields.yaml`.
 - `test_kapsam.py`: değerlendirme açma, kurum ve kapsam ekranları; fixture kurumun arayüzle oluşturulması (adım 3 kabulü).
 - `test_kapanis.py`: **kabul testi** — aynı cevaplarla elle doldurulmuş CSV ile arayüz CSV'si bayt bayt aynı, `qs.py seviye` çıktıları aynı (5 sentetik CSV); kapanış → inceleme → kapanma akışı, git commit'leri (adım 5).
-- `test_gorusme.py`: `fixtures/qs/*.csv` cevapları arayüzden girilir, her maddenin tespiti `qs.hesapla()` puanıyla aynı olmalı; skip ve NA kuralları, madde düzeyinde çakışma (adım 4 kabulü).
+- `test_gorusme.py`: `fixtures/qs/*.csv` cevapları arayüzden girilir, her maddenin tespiti `qs.hesapla()` puanıyla aynı olmalı; skip ve NA kuralları, madde düzeyinde çakışma (adım 4 kabulü). Her maddenin iki dilli `rationale`'ı var ve "Neden bu madde?" paneli her madde ekranında çiziliyor.
 
 ## Dosyalar
 
